@@ -23,6 +23,25 @@ export default function VehicleProfile() {
                                             />
                                             <h1 className="text-xl font-bold">John Doe</h1>
                                             <h1 className="text-xl font-bold">[With driver]</h1>
+
+                                            <span className="text-gray-500 text-sm">Vehicle Rating:</span>
+                                            {/* Star Rating */}
+                                            <div className="flex space-x-1">
+                                                {[...Array(5)].map((_, i) => (
+                                                    <svg
+                                                        key={i}
+                                                        className={`w-5 h-5 ${i < 4 ? "text-yellow-400" : "text-gray-300"}`}
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        fill="currentColor"
+                                                        viewBox="0 0 20 20"
+                                                    >
+                                                        <path
+                                                            d="M10 15l5.09 3-1.45-6.3L18 8.27l-6.4-.56L10 2l-1.6 5.71L2 8.27l4.36 3.43L4.91 18z"/>
+                                                    </svg>
+                                                ))}
+                                            </div>
+                                            <span className="text-gray-600 text-sm">(4.8)</span>
+
                                             <button type="button"
                                                     className=" justify-center w-full mt-6 text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 me-2 mb-2">
                                                 {/* Heroicon: User Plus Icon */}
@@ -35,7 +54,6 @@ export default function VehicleProfile() {
                                                 </svg>
                                                 Hire
                                             </button>
-
                                         </div>
                                         <hr className="my-6 border-t border-gray-300"/>
                                         <div className="flex flex-col">
@@ -51,7 +69,8 @@ export default function VehicleProfile() {
 
                                 {/* Main Content (Tabs and Sections) */}
                                 <div className="col-span-4 sm:col-span-9">
-                                    <div className="bg-white rounded-lg p-6" style={{ boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 12px' }}>
+                                    <div className="bg-white rounded-lg p-6"
+                                         style={{boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 12px'}}>
                                         {/* Navigation Tabs */}
                                         <div className="flex space-x-4 mb-6">
                                             <button
@@ -108,51 +127,6 @@ export default function VehicleProfile() {
                                         {/* vehicle Section */}
                                         {activeTab === "vehicle" && (
                                             <>
-
-                                                <div
-                                                    className="flex flex-col items-center text-center p-6 bg-white rounded-lg shadow-md">
-                                                    {/* Vehicle image */}
-                                                    <img
-                                                        src="https://randomuser.me/api/portraits/men/45.jpg"
-                                                        alt="driver profile"
-                                                        className="w-32 h-32 object-cover rounded-full mb-4 shadow-lg"
-                                                    />
-
-                                                    {/* Driver Info */}
-                                                    <h2 className="text-2xl font-bold text-gray-800 mb-2">James
-                                                        Anderson</h2>
-                                                    <div className="flex items-center space-x-2">
-                                                        <span className="text-gray-500 text-sm">Vehicle Rating:</span>
-                                                        {/* Star Rating */}
-                                                        <div className="flex space-x-1">
-                                                            {[...Array(5)].map((_, i) => (
-                                                                <svg
-                                                                    key={i}
-                                                                    className={`w-5 h-5 ${i < 4 ? "text-yellow-400" : "text-gray-300"}`}
-                                                                    xmlns="http://www.w3.org/2000/svg"
-                                                                    fill="currentColor"
-                                                                    viewBox="0 0 20 20"
-                                                                >
-                                                                    <path
-                                                                        d="M10 15l5.09 3-1.45-6.3L18 8.27l-6.4-.56L10 2l-1.6 5.71L2 8.27l4.36 3.43L4.91 18z"/>
-                                                                </svg>
-                                                            ))}
-                                                        </div>
-                                                        <span className="text-gray-600 text-sm">(4.8)</span>
-                                                    </div>
-
-                                                    <p className="text-gray-600 mt-4">
-                                                        <span className="font-bold">Experience:</span> 8 years driving
-                                                        luxury vehicles.
-                                                    </p>
-                                                    <p className="text-gray-600 mt-2">
-                                                        <span className="font-bold">Languages:</span> English, Spanish.
-                                                    </p>
-                                                    <p className="text-gray-600 mt-2">
-                                                        <span className="font-bold">Specialty:</span> Long-distance and
-                                                        city tours.
-                                                    </p>
-                                                </div>
 
                                                 {/* Driver Bio */}
                                                 <div className="mt-8 bg-gray-100 rounded-lg p-6 mt-10">
