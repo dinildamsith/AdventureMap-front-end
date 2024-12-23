@@ -1,4 +1,5 @@
 import NavBar from "../component/NavBar";
+import Footer from "../component/contacUs";
 
 export default function Layout({ children }: any) {
     return (
@@ -17,9 +18,9 @@ export default function Layout({ children }: any) {
                 </div>
 
                 {/*/!* Footer *!/*/}
-                {/*<footer className="bg-gray-800 text-white p-4 text-center">*/}
-                {/*    <p>&copy; 2024 My Tourism Website. All rights reserved.</p>*/}
-                {/*</footer>*/}
+                <footer className={"mt-40"}>
+                    <Footer/>
+                </footer>
             </div>
         </>
     )
