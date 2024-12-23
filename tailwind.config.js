@@ -2,7 +2,7 @@
 
 export default {
   content: [
-    "./index.tsx.html",
+    "./guidesShowArea.tsx.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {

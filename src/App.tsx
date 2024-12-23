@@ -3,7 +3,8 @@ import Home from "./views/home";
 import SignUpPage from "./views/signUp";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import SignInPage from "./views/signIn";
-import Guides from "./views/guides";
+import Guides from "./views/guides/guidesShowArea.tsx";
+import GuideProfile from "./views/guides/guideProfile.tsx";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
                   <Route path="/sign-up" element={<SignUpPage />} />
                   <Route path="/sign-in" element={<SignInPage />} />
                   <Route path="/guides" element={<Guides/>} />
+                  <Route path="/guide-profile" element={<GuideProfile/>} />
               </Routes>
           </BrowserRouter>
       </>
