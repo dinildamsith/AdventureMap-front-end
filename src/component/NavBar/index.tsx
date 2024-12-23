@@ -11,7 +11,7 @@ function NavBar() {
     };
 
     return (
-        <div className="fixed flex justify-between items-center opacity-60 top-0 left-0 w-full h-[100px] p-4 z-[999]">
+        <div className="fixed flex justify-between items-center opacity-[0.90] top-0 left-0 w-full h-[100px] p-4 z-[999]">
             <nav className="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
                 <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                     <div className="flex items-center space-x-3 rtl:space-x-reverse">
