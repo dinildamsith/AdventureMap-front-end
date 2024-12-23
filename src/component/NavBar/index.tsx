@@ -20,6 +20,10 @@ function NavBar() {
         if (selectedValue === 'option1') {
             navigate('/sign-up');  // Replace '/sign-up' with the actual route path of your sign-up page
         }
+
+        if (selectedValue === 'option2') {
+            navigate('/sign-in');  // Replace '/sign-up' with the actual route path of your sign-up page
+        }
     };
 
     return (

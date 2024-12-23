@@ -90,7 +90,7 @@ const SignUpPage = () => {
           </form>
 
           <p className="text-center mt-4 text-sm">
-            Already have an account? <a href="/login" className="text-blue-500">Login</a>
+            Already have an account? <a href="/sign-in" className="text-blue-500">Sign In</a>
           </p>
         </div>
       </div>
