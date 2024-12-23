@@ -3,7 +3,7 @@ import NavBar from "../component/NavBar";
 export default function Layout({ children }: any) {
     return (
         <>
-            <div className="">
+            <div>
                 {/*/!* Header *!/*/}
                 <header>
                     <NavBar/>

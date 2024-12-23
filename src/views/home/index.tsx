@@ -31,31 +31,30 @@ export default function Home() {
     return (
         <>
             <Layout>
-                <div>
 
-                    {/* Full-Screen Image with Subtle Blur */}
-                    <div className="absolute top-0 left-0 w-full h-full">
-                        <img
-                            src={Background}
-                            alt="Full Screen"
-                            className="w-full h-[821px] blur-[1.88px]"
-                        />
-                    </div>
+                {/*----------Home Section---------*/}
+                <div className="relative w-full h-[821px]">
+                    {/* Background Image */}
+                    <img
+                        src={Background}
+                        alt="Full Screen"
+                        className="w-full h-full object-cover blur-[1.88px]"
+                    />
 
-                    {/*left side*/}
-                    <div className={"absolute left-0 mt-44  ml-40"}>
-                        <h6 className={"text-[100px] font-bona"}>
+                    {/* Overlay Text */}
+                    <div className="absolute inset-0 flex flex-col justify-center items-start p-8">
+                        <h1 className="text-black text-[100px] font-bona leading-tight">
                             NEVER STOP <br/>
                             EXPLORING THE <br/>
                             WORLD.
-                        </h6>
-                        <h6 className={"w-[50%] ml-2"}>
+                        </h1>
+                        <p className="text-black w-[50%] mt-4 ml-2">
                             Discover breathtaking destinations, immerse yourself in new cultures,
                             and create unforgettable memories. Your next adventure awaits!
-                        </h6>
+                        </p>
                     </div>
 
-                    {/*right side*/}
+                    {/* Image Slider */}
                     <div className="absolute right-44 top-44">
                         <div className="relative w-[430px] h-[550px] mb-4 transition-all duration-700">
                             <img
@@ -65,10 +64,13 @@ export default function Home() {
                             />
                         </div>
                     </div>
-
-
                 </div>
 
+
+                {/*----------About Section---------*/}
+                <div className={"relative w-40 h-20 bg-black"}>
+
+                </div>
             </Layout>
         </>
     )
