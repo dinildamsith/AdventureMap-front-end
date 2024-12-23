@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Logo from '../../assets/logo.png';
+import {useNavigate} from "react-router-dom";
 
 function NavBar() {
     // State to handle the menu toggle
@@ -8,6 +9,17 @@ function NavBar() {
     // Function to toggle the menu
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
+    };
+
+    const navigate = useNavigate();  // Initialize navigate function
+
+    const handleChange = (event:any) => {
+        const selectedValue = event.target.value;
+
+        // Check if "Sign Up" is selected, then navigate
+        if (selectedValue === 'option1') {
+            navigate('/sign-up');  // Replace '/sign-up' with the actual route path of your sign-up page
+        }
     };
 
     return (
@@ -20,7 +32,9 @@ function NavBar() {
                     </div>
                     <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
                         <select
-                            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            onChange={handleChange}
+                            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        >
                             <option value="start">Get started</option>
                             <option value="option1">Sign Up</option>
                             <option value="option2">Sign In</option>
