@@ -8,7 +8,12 @@ export default {
   theme: {
     extend: {
       fontFamily: {
+        bona: ['"Bona Nova SC"', 'serif'],
         inter: ['Inter', 'sans-serif'],
+        kanit: ['Kanit', 'sans-serif'],
+        playfair: ['"Playfair Display"', 'serif'],
+        roboto: ['Roboto', 'sans-serif'],
+        source: ['"Source Code Pro"', 'monospace'],
       },
       },
   },
