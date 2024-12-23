@@ -71,7 +71,7 @@ function NavBar() {
                                    aria-current="page">Guides</a>
                             </li>
                             <li>
-                                <a href="#"
+                                <a href="vehicles"
                                    className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
                                    aria-current="page">Vehicles</a>
                             </li>

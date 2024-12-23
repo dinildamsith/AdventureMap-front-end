@@ -6,6 +6,7 @@ import SignInPage from "./views/signIn";
 import Guides from "./views/guides/guidesShowArea.tsx";
 import GuideProfile from "./views/guides/guideProfile.tsx";
 import Vehicles from "./views/vehicles/vehiclesShowArea.tsx";
+import VehicleProfile from "./views/vehicles/vehicleProfile.tsx";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
                   <Route path="/guides" element={<Guides/>} />
                   <Route path="/guide-profile" element={<GuideProfile/>} />
                   <Route path="/vehicles" element={<Vehicles/>} />
+                  <Route path="/vehicle-profile" element={<VehicleProfile/>} />
               </Routes>
           </BrowserRouter>
       </>
