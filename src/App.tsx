@@ -8,6 +8,7 @@ import GuideProfile from "./views/buyer/guides/guideProfile.tsx";
 import Vehicles from "./views/buyer/vehicles/vehiclesShowArea.tsx";
 import VehicleProfile from "./views/buyer/vehicles/vehicleProfile.tsx";
 import GuideProfileManage from "./views/seller/guide/guideProfileManage.tsx";
+import VehicleProfileManage from "./views/seller/vehicle/vehicleProfileManage.tsx";
 
 
 function App() {
@@ -22,7 +23,8 @@ function App() {
                   <Route path="/guide-profile" element={<GuideProfile/>} />
                   <Route path="/vehicles" element={<Vehicles/>} />
                   <Route path="/vehicle-profile" element={<VehicleProfile/>} />
-                  <Route path="/guide-my-profile" element={<GuideProfileManage/>} />
+                  <Route path="/guide-manage" element={<GuideProfileManage/>} />
+                  <Route path="/vehicle-manage" element={<VehicleProfileManage/>} />
               </Routes>
           </BrowserRouter>
       </>
