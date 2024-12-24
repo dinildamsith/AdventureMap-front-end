@@ -7,6 +7,7 @@ export default function VehicleProfileManage() {
     const [activeTab, setActiveTab] = useState("about");
 
 
+    //----------------vehicle
     const [isEditModalOpen, setIsEditModalOpen] = useState<any>(false);
     const [vehicleData, setVehicleData] = useState<any>({
         brand: "Alto",
@@ -44,6 +45,49 @@ export default function VehicleProfileManage() {
     const handleUpdate = () => {
         setVehicleData(updatedData); // Update the guide data
         closeEditModal();
+    };
+
+
+
+    //----------------driver
+    const [isEditModalOpenII, setIsEditModalOpenII] = useState<any>(false);
+    // const [driverData, setDriverData] = useState<any>({
+    //     name: "James Anderson",
+    //     languages: ["English", "Spanish"],
+    //     experience: "8 years",
+    //     speciality: "Long-distance and city tours.",
+    //     image: "https://randomuser.me/api/portraits/men/45.jpg",
+    // });
+
+    const [updatedDriverData, setUpdateDriverData] = useState<any>({
+        name: "James Anderson",
+        languages: ["English", "Spanish"],
+        experience: "8 years",
+        speciality: "Long-distance and city tours.",
+        image: "https://randomuser.me/api/portraits/men/45.jpg",
+    });
+
+    const [newLanguage, setNewLanguage] = useState<any>(""); // Temporary input for new language
+
+    // Handle modal open and close
+    const openEditModalII = () => {
+        setIsEditModalOpenII(true);
+    };
+
+    const closeEditModalII = () => {
+        setIsEditModalOpenII(false);
+    };
+
+    // Handle form input changes
+    const handleInputChangeII = (e: any) => {
+        const { name, value } = e.target;
+        setUpdateDriverData({ ...updatedDriverData, [name]: value });
+    };
+
+    // Handle update button click
+    const handleUpdateII = () => {
+        // setDriverData(updatedData); // Update the guide data
+        closeEditModalII();
     };
 
     return (
@@ -163,7 +207,7 @@ export default function VehicleProfileManage() {
                                         {activeTab === "vehicle" && (
                                             <>
 
-                                                {/* Driver Bio */}
+                                                {/* Bio */}
                                                 <div className="mt-8 bg-gray-100 rounded-lg p-6 mt-10">
                                                     <h3 className="text-xl font-bold text-gray-800 mb-4">Bio</h3>
                                                     <p className="text-gray-700 leading-relaxed">
@@ -184,21 +228,6 @@ export default function VehicleProfileManage() {
                                                         alt="gallery image"
                                                         className="w-full h-48 object-cover rounded-lg"
                                                     />
-                                                    <img
-                                                        src="https://via.placeholder.com/150"
-                                                        alt="gallery image"
-                                                        className="w-full h-48 object-cover rounded-lg"
-                                                    />
-                                                    <img
-                                                        src="https://via.placeholder.com/150"
-                                                        alt="gallery image"
-                                                        className="w-full h-48 object-cover rounded-lg"
-                                                    />
-                                                    <img
-                                                        src="https://via.placeholder.com/150"
-                                                        alt="gallery image"
-                                                        className="w-full h-48 object-cover rounded-lg"
-                                                    />
                                                 </div>
                                             </>
                                         )}
@@ -213,7 +242,7 @@ export default function VehicleProfileManage() {
                                                     <div className="w-full flex justify-end">
                                                         <button
                                                             type="button"
-                                                            // onClick={openEditModal}
+                                                            onClick={openEditModalII}
                                                             className="justify-center w-[100px] mt-6 text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center dark:focus:ring-[#4285F4]/55 me-2 mb-2"
                                                         >
                                                             {/* Heroicon: User Plus Icon */}
@@ -291,7 +320,7 @@ export default function VehicleProfileManage() {
                         </div>
                     </div>
 
-                    {/* Edit Modal */}
+                    {/*--------------------------- vehicle Edit Modal */}
                     {isEditModalOpen && (
                         <div className="fixed  inset-0 flex items-center justify-center bg-black bg-opacity-50">
                             <div className="bg-white rounded-lg p-6 w-96 mt-[5rem]">
@@ -356,12 +385,12 @@ export default function VehicleProfileManage() {
                                 <label className="block mb-2">
                                     Specification
                                     <div className="w-full border border-gray-300 rounded-lg px-4 py-2 flex flex-wrap items-center">
-                                        {updatedData.spec.map((language: string, index: number) => (
+                                        {updatedData.spec.map((spec: string, index: number) => (
                                             <span
                                                 key={index}
                                                 className="bg-blue-500 text-white rounded-full px-3 py-1 mr-2 mb-2 flex items-center"
                                             >
-                                                {language}
+                                                {spec}
                                                 <button
                                                     onClick={() =>
                                                         setUpdatedData({
@@ -417,6 +446,152 @@ export default function VehicleProfileManage() {
                                     </button>
                                     <button
                                         onClick={handleUpdate}
+                                        className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+                                    >
+                                        Update
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+
+
+                    {/*--------------------------- driver Edit Modal */}
+                    {isEditModalOpenII && (
+                        <div className="fixed  inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                            <div className="bg-white rounded-lg p-6 w-96 mt-[5rem]">
+                                <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
+
+                                {/* Current Image with "+" Mark */}
+                                <div className="relative mb-4">
+                                    <img
+                                        src={updatedDriverData.image || "https://via.placeholder.com/150"}
+                                        alt="Profile"
+                                        className="w-32 h-32 mx-auto rounded-full border border-gray-300 object-cover"
+                                    />
+                                    <label
+                                        htmlFor="imageUpload"
+                                        className="absolute bottom-0 right-10 bg-blue-500 text-white w-8 h-8 flex items-center justify-center rounded-full cursor-pointer"
+                                    >
+                                        +
+                                    </label>
+                                    <input
+                                        type="file"
+                                        id="imageUpload"
+                                        accept="image/*"
+                                        className="hidden"
+                                        onChange={(e: any) => {
+                                            const file = e.target.files[0];
+                                            if (file) {
+                                                const reader = new FileReader();
+                                                reader.onload = () => {
+                                                    setUpdateDriverData({...updatedDriverData, image: reader.result});
+                                                };
+                                                reader.readAsDataURL(file);
+                                            }
+                                        }}
+                                    />
+                                </div>
+
+                                {/* Name Input */}
+                                <label className="block mb-2">
+                                    Name
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        value={updatedDriverData.name}
+                                        onChange={handleInputChangeII}
+                                        className="w-full border border-gray-300 rounded-lg px-4 py-2"
+                                    />
+                                </label>
+
+                                {/*  */}
+                                <label className="block mb-2">
+                                    Experience
+                                    <input
+                                        name="expieince"
+                                        value={updatedDriverData.experience}
+                                        onChange={handleInputChangeII}
+                                        className="w-full border border-gray-300 rounded-lg px-4 py-2"
+                                    />
+                                </label>
+
+
+                                <label className="block mb-2">
+                                    Speciality
+                                    <input
+                                        name="expieince"
+                                        value={updatedDriverData.speciality}
+                                        onChange={handleInputChangeII}
+                                        className="w-full border border-gray-300 rounded-lg px-4 py-2"
+                                    />
+                                </label>
+
+
+                                {/* Languages Input with Tags */}
+                                <label className="block mb-2">
+                                    Languages
+                                    <div className="w-full border border-gray-300 rounded-lg px-4 py-2 flex flex-wrap items-center">
+                                        {updatedDriverData.languages.map((language: string, index: number) => (
+                                            <span
+                                                key={index}
+                                                className="bg-blue-500 text-white rounded-full px-3 py-1 mr-2 mb-2 flex items-center"
+                                            >
+                                                {language}
+                                                <button
+                                                    onClick={() =>
+                                                        setUpdateDriverData({
+                                                            ...updatedDriverData,
+                                                            languages: updatedDriverData.languages.filter(
+                                                                (_lang: string, i: number) => i !== index
+                                                            ),
+                                                        })
+                                                    }
+                                                    className="ml-2 text-white text-sm"
+                                                >
+                                                     ✕
+                                                </button>
+                                           </span>
+                                        ))}
+                                        <input
+                                            type="text"
+                                            value={newLanguage}
+                                            onChange={(e:any) => setNewLanguage(e.target.value)}
+                                            onKeyDown={(e:any) => {
+                                                if (e.key === "Enter" && newLanguage.trim() !== "") {
+                                                    setUpdateDriverData({
+                                                        ...updatedDriverData,
+                                                        languages: [...updatedDriverData.languages, newLanguage.trim()],
+                                                    });
+                                                    setNewLanguage(""); // Clear the input
+                                                }
+                                            }}
+                                            onBlur={() => {
+                                                if (newLanguage.trim() !== "") {
+                                                    setUpdateDriverData({
+                                                        ...updatedDriverData,
+                                                        languages: [...updatedDriverData.languages, newLanguage.trim()],
+                                                    });
+                                                    setNewLanguage(""); // Clear the input
+                                                }
+                                            }}
+                                            placeholder="Add a language"
+                                            className="flex-grow outline-none"
+                                        />
+                                    </div>
+                                </label>
+
+
+                                <div className="flex justify-end space-x-2">
+                                    <button
+                                        onClick={closeEditModalII}
+                                        className="text-gray-600 border border-gray-300 px-4 py-2 rounded-lg"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        onClick={handleUpdateII}
                                         className="bg-blue-500 text-white px-4 py-2 rounded-lg"
                                     >
                                         Update
