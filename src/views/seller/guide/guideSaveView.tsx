@@ -20,7 +20,7 @@ export default function GuideSaveView() {
             <div className="flex justify-center items-center min-h-screen px-4">
                 <div className="max-w-2xl w-full bg-white rounded-lg shadow-lg p-6 mt-10">
                     <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-                        Add New Guide
+                        Verify Details
                     </h2>
 
                     {/* Stepper */}
