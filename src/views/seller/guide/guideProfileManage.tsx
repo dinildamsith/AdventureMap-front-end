@@ -6,6 +6,31 @@ export default function GuideProfileManage() {
     // State to track the selected tab
     const [activeTab, setActiveTab] = useState<any>("about");
 
+    const [images, setImages] = useState<any>([
+        "https://via.placeholder.com/150",
+        "https://via.placeholder.com/150",
+        "https://via.placeholder.com/150",
+    ]);
+
+
+    // Add new image from device
+    const handleAddImage = (event:any) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                setImages([...images, reader.result]); // Add the image to the gallery
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    // Remove image
+    const removeImage = (index:any) => {
+        setImages(images.filter((_: any, i: any) => i !== index));
+    };
+
+
     // State to track the selected tab
     const [isEditModalOpen, setIsEditModalOpen] = useState<any>(false);
     const [guideData, setGuideData] = useState<any>({
@@ -150,12 +175,42 @@ export default function GuideProfileManage() {
                                         {/* Gallery Section */}
                                         {activeTab === "gallery" && (
                                             <>
-                                                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                                                    <img
-                                                        src="https://via.placeholder.com/150"
-                                                        alt="gallery image"
-                                                        className="w-full h-48 object-cover rounded-lg"
-                                                    />
+                                                <div>
+                                                    <div className="flex justify-between items-center mb-4">
+                                                        <h2 className="text-xl font-bold">Gallery</h2>
+                                                        {activeTab === "gallery" && (
+                                                            <label
+                                                                className="px-4 py-2 bg-blue-500 text-white rounded-lg cursor-pointer">
+                                                                Add Image
+                                                                <input
+                                                                    type="file"
+                                                                    accept="image/*"
+                                                                    className="hidden"
+                                                                    onChange={handleAddImage}
+                                                                />
+                                                            </label>
+                                                        )}
+                                                    </div>
+                                                    {activeTab === "gallery" && (
+                                                        <div
+                                                            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                                                            {images.map((image:any, index:any) => (
+                                                                <div key={index} className="relative">
+                                                                    <img
+                                                                        src={image}
+                                                                        alt={`Gallery image ${index + 1}`}
+                                                                        className="w-full h-48 object-cover rounded-lg"
+                                                                    />
+                                                                    <button
+                                                                        onClick={() => removeImage(index)}
+                                                                        className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full"
+                                                                    >
+                                                                        ✕
+                                                                    </button>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </>
                                         )}
@@ -167,8 +222,8 @@ export default function GuideProfileManage() {
 
                     {/* Edit Modal */}
                     {isEditModalOpen && (
-                        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                            <div className="bg-white rounded-lg p-6 w-96">
+                        <div className="fixed  inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                            <div className="bg-white rounded-lg p-6 w-96 mt-[5rem]">
                                 <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
 
                                 {/* Current Image with "+" Mark */}
@@ -221,7 +276,7 @@ export default function GuideProfileManage() {
                                         name="about"
                                         value={updatedData.about}
                                         onChange={handleInputChange}
-                                        className="w-full border border-gray-300 rounded-lg px-4 py-2"
+                                        className="w-full h-[60px] border border-gray-300 rounded-lg px-4 py-2"
                                     />
                                 </label>
 
@@ -240,7 +295,7 @@ export default function GuideProfileManage() {
                                                         setUpdatedData({
                                                             ...updatedData,
                                                             languages: updatedData.languages.filter(
-                                                                (lang: string, i: number) => i !== index
+                                                                (_lang: string, i: number) => i !== index
                                                             ),
                                                         })
                                                     }

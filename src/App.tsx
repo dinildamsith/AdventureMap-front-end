@@ -3,10 +3,12 @@ import Home from "./views/home";
 import SignUpPage from "./views/signUp";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import SignInPage from "./views/signIn";
-import Guides from "./views/guides/guidesShowArea.tsx";
-import GuideProfile from "./views/guides/guideProfile.tsx";
-import Vehicles from "./views/vehicles/vehiclesShowArea.tsx";
-import VehicleProfile from "./views/vehicles/vehicleProfile.tsx";
+import Guides from "./views/buyer/guides/guidesShowArea.tsx";
+import GuideProfile from "./views/buyer/guides/guideProfile.tsx";
+import Vehicles from "./views/buyer/vehicles/vehiclesShowArea.tsx";
+import VehicleProfile from "./views/buyer/vehicles/vehicleProfile.tsx";
+import GuideProfileManage from "./views/seller/guide/guideProfileManage.tsx";
+
 
 function App() {
   return (
@@ -20,6 +22,7 @@ function App() {
                   <Route path="/guide-profile" element={<GuideProfile/>} />
                   <Route path="/vehicles" element={<Vehicles/>} />
                   <Route path="/vehicle-profile" element={<VehicleProfile/>} />
+                  <Route path="/guide-my-profile" element={<GuideProfileManage/>} />
               </Routes>
           </BrowserRouter>
       </>

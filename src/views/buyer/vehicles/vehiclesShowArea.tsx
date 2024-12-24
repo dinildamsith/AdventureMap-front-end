@@ -1,7 +1,7 @@
-import Layout from "../../layout";
-import GuidesDetailsCard from "../../component/guidesDetailsCard";
+import Layout from "../../../layout";
+import VehicleDetailsCard from "../../../component/vehiclesDetailsCard";
 
-export default function Guides(){
+export default function Vehicles(){
     return (
         <>
             <Layout>
@@ -36,10 +36,10 @@ export default function Guides(){
                     </form>
 
 
-                    {/*-------------------guides-----------------*/}
+                    {/*-------------------vehicles-----------------*/}
                     <div className="flex flex-wrap justify-center mt-20 gap-10">  {/* Added gap-4 for spacing */}
-                        <GuidesDetailsCard name={"Dinil"} rate={"4.99"} price={"RS.5600"} languages={["English","Hindi"]} image={"https://storage.googleapis.com/stateless-ceoblognation-com/2023/03/41fcf2fd-portrait-2865605_1920-1536x1024.jpg"}/>
-                        <GuidesDetailsCard name={"Dinil"} rate={"5.00"} price={"RS.5600"} languages={["English","Hindi"]} image={"https://storage.googleapis.com/stateless-ceoblognation-com/2023/03/41fcf2fd-portrait-2865605_1920-1536x1024.jpg"}/>
+                        <VehicleDetailsCard name={"Toyata"} rate={"4.99"} price={"RS.5600"} spec={["AC","Luxury"]} images={["https://www.mbusa.com/content/dam/mb-nafta/us/myco/my25/eqb-class/class-page/series/2025-EQB-SUV-CPH-XL.jpg","https://www.mbusa.com/content/dam/mb-nafta/us/myco/my25/eqe-class/eqe-sedan/class-page/series/2025-EQE-SEDAN-CPH-XL.jpg"]}/>
+                        <VehicleDetailsCard name={"Toyata"} rate={"4.99"} price={"RS.5600"} spec={["AC","Luxury"]} images={["https://www.mbusa.com/content/dam/mb-nafta/us/myco/my25/eqb-class/class-page/series/2025-EQB-SUV-CPH-XL.jpg","https://www.mbusa.com/content/dam/mb-nafta/us/myco/my25/eqe-class/eqe-sedan/class-page/series/2025-EQE-SEDAN-CPH-XL.jpg"]}/>
                     </div>
                 </div>
             </Layout>
