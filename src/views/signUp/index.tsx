@@ -64,19 +64,49 @@ const SignUpPage = () => {
             </div>
 
             {/* Dynamic Fields based on Account Type */}
-            {accountType && (
+            {accountType === 'buyer' && (
                 <div className="mb-4">
-                  <label htmlFor={accountType === 'buyer' ? 'preferences' : 'services'}
-                         className="block text-sm font-semibold">
-                    {accountType === 'buyer' ? 'Preferred Destinations' : 'Offered Services'}
+                  <label
+                      htmlFor="currency"
+                      className="block text-sm font-semibold"
+                  >
+                    Select Your Currency
                   </label>
-                  <input
-                      type="text"
-                      id={accountType === 'buyer' ? 'preferences' : 'services'}
+                  <select
+                      id="currency"
                       className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder={accountType === 'buyer' ? 'Enter your favorite destinations' : 'Enter your services'}
                       required
-                  />
+                  >
+                    <option value="" disabled selected>
+                      Choose a currency
+                    </option>
+                    <option value="usd">USD</option>
+                    <option value="eur">EUR</option>
+                    <option value="gbp">GBP</option>
+                    <option value="inr">INR</option>
+                  </select>
+                </div>
+            )}
+
+            {accountType === 'seller' && (
+                <div className="mb-4">
+                  <label
+                      htmlFor="sellerType"
+                      className="block text-sm font-semibold"
+                  >
+                    Select Your Seller Type
+                  </label>
+                  <select
+                      id="sellerType"
+                      className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required
+                  >
+                    <option value="" disabled selected>
+                      Choose a seller type
+                    </option>
+                    <option value="guide">Guide</option>
+                    <option value="rent_vehicle">Rent Vehicle</option>
+                  </select>
                 </div>
             )}
 
