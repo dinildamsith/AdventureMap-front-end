@@ -1,8 +1,66 @@
 import { useState } from "react";
-import SignInBackgroundImage from '../../assets/signupBackground.jpg'; // Import the background image
+import SignInBackgroundImage from '../../assets/signupBackground.jpg';
+// @ts-ignore
+import {postRequest} from "../../services/httpServices";
+// @ts-ignore
+import {BASE_URL, BUYER_SIGN_IN_URL, GUIDE_SIGN_IN_URL, VEHICLE_SIGN_IN_URL} from "../../config&Varibles/endPointUrls";
+import toast from "react-hot-toast"; // Import the background image
 
 const SignInPage = () => {
-    const [accountType, setAccountType] = useState<any>(null);
+
+    //------buyer or seller
+    const [accountType, setAccountType] = useState<any>('buyer');
+    const [email, setEmail] = useState<any>(null)
+    const [password, setPassword] = useState<any>(null)
+    const [sellerType, setSellerType] = useState<any>(null)
+
+
+    const signInHandel = async () => {
+
+        if (email !=null && password !=null) {
+            if (accountType == 'buyer'){
+                postRequest({
+                    url: BASE_URL + BUYER_SIGN_IN_URL,
+                    data: {
+                        accEmail: email,
+                        accPassword: password
+                    }
+                })
+            }
+
+
+            if (accountType == 'seller'){
+                if (sellerType != null) {
+                    if (sellerType == 'guide'){
+                        postRequest({
+                            url: BASE_URL + GUIDE_SIGN_IN_URL,
+                            data: {
+                                accEmail: email,
+                                accPassword: password
+                            }
+                        })
+                    }
+
+
+                    if (sellerType == 'rent_vehicle'){
+                        postRequest({
+                            url: BASE_URL + VEHICLE_SIGN_IN_URL,
+                            data: {
+                                accEmail: email,
+                                accPassword: password
+                            }
+                        })
+                    }
+                } else {
+                    toast.error("Select Seller Type")
+                }
+            }
+        } else {
+            toast.error("Input Data")
+        }
+
+    }
+
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-cover bg-center relative"
@@ -39,6 +97,7 @@ const SignInPage = () => {
                             id="email"
                             className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
+                            onChange={(event) => setEmail(event.target.value)}
                         />
                     </div>
 
@@ -54,6 +113,7 @@ const SignInPage = () => {
                       id="sellerType"
                       className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       required
+                      onChange={(event) => setSellerType(event.target.value)}
                   >
                     <option value="" disabled selected>
                       Choose a seller type
@@ -71,12 +131,14 @@ const SignInPage = () => {
                             id="password"
                             className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
+                            onChange={(event) => setPassword(event.target.value)}
                         />
                     </div>
 
                     {/* Submit Button */}
                     <button
-                        type="submit"
+                        type="button"
+                        onClick={signInHandel}
                         className="w-full bg-blue-500 text-white py-2 rounded-md mt-4 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                         Sign In
