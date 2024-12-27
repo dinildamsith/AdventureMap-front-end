@@ -157,6 +157,18 @@ export default function VehicleSaveView() {
                                     className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
                             </div>
+                            <div>
+                                <label htmlFor="rentWithDriver" className="block text-sm font-semibold text-gray-700">
+                                    Passenger Sheet Count
+                                </label>
+                                <input
+                                    type="number"
+                                    id="rentWithDriver"
+                                    onChange={handleInputChange}
+                                    placeholder="Enter daily rent amount"
+                                    className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
                             {rentType === "with-driver" && (
                                 <div className="space-y-4">
                                     <div>

@@ -1,14 +1,47 @@
-import { useState } from "react";
+import {useState} from "react";
 import SingUpBackgroundImage from '../../assets/signupBackground.jpg'
+// @ts-ignore
+import {postRequest} from '../../services/httpServices.js'
+// @ts-ignore
+import {BASE_URL, BUYER_SIGNUP_URL} from "../../config&Varibles/endPointUrls";
+import {Toaster} from "react-hot-toast";
+
 
 
 const SignUpPage = () => {
-  const [accountType, setAccountType] = useState<any>(null);
+
+  const [accountType, setAccountType] = useState<any>('buyer');
+  const [email, setEmail] = useState<any>('');
+  const [username, setUsername] = useState<any>('');
+  const [password, setPassword] = useState<any>('');
+  const [sellerType, setSellerType] = useState<any>('guide');
+  const [currency, setCurrency] = useState<any>('usd');
+
+
+
+  const handelSignUp = async () => {
+         const response = await postRequest({
+            url: BASE_URL + BUYER_SIGNUP_URL,
+            data: {
+              accEmail: email,
+              accUserName: username,
+              accPassword: password,
+              currency,
+              accType: accountType
+            }
+          })
+
+    console.log(response)
+  }
 
   return (
+
       <div className="min-h-screen flex items-center justify-center bg-cover bg-center relative"
            style={{ backgroundImage: `url(${SingUpBackgroundImage})` }}>
-
+        <Toaster
+            position="top-right"
+            reverseOrder={false}
+        />
         {/* Background overlay with opacity */}
         <div className="absolute inset-0 bg-black opacity-50"></div>
 
@@ -36,10 +69,10 @@ const SignUpPage = () => {
             <div className="mb-4">
               <label htmlFor="email" className="block text-sm font-semibold">Email</label>
               <input
-                  type="email"
                   id="email"
                   className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
+                  onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
@@ -50,6 +83,7 @@ const SignUpPage = () => {
                   id="username"
                   className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
+                  onChange={(e) => setUsername(e.target.value)}
               />
             </div>
 
@@ -60,6 +94,7 @@ const SignUpPage = () => {
                   id="password"
                   className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
+                  onChange={(e) => setPassword(e.target.value)}
               />
             </div>
 
@@ -76,8 +111,10 @@ const SignUpPage = () => {
                       id="currency"
                       className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       required
+                      value={currency}
+                      onChange={(e) => setCurrency(e.target.value)}
                   >
-                    <option value="" disabled selected>
+                    <option value="" disabled>
                       Choose a currency
                     </option>
                     <option value="usd">USD</option>
@@ -100,6 +137,8 @@ const SignUpPage = () => {
                       id="sellerType"
                       className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       required
+                      value={sellerType}
+                      onChange={(e) => setSellerType(e.target.value)}
                   >
                     <option value="" disabled selected>
                       Choose a seller type
@@ -112,8 +151,9 @@ const SignUpPage = () => {
 
             {/* Submit Button */}
             <button
-                type="submit"
+                type={"button"}
                 className="w-full bg-blue-500 text-white py-2 rounded-md mt-4 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onClick={handelSignUp}
             >
               Sign Up
             </button>

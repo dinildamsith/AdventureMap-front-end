@@ -42,6 +42,28 @@ const SignInPage = () => {
                         />
                     </div>
 
+                    {accountType === 'seller' && (
+                <div className="mb-4">
+                  <label
+                      htmlFor="sellerType"
+                      className="block text-sm font-semibold"
+                  >
+                    Select Your Seller Type
+                  </label>
+                  <select
+                      id="sellerType"
+                      className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required
+                  >
+                    <option value="" disabled selected>
+                      Choose a seller type
+                    </option>
+                    <option value="guide">Guide</option>
+                    <option value="rent_vehicle">Rent Vehicle</option>
+                  </select>
+                </div>
+            )}
+            
                     <div className="mb-6">
                         <label htmlFor="password" className="block text-sm font-semibold">Password</label>
                         <input
