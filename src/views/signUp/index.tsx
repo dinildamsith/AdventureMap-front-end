@@ -3,35 +3,73 @@ import SingUpBackgroundImage from '../../assets/signupBackground.jpg'
 // @ts-ignore
 import {postRequest} from '../../services/httpServices.js'
 // @ts-ignore
-import {BASE_URL, BUYER_SIGNUP_URL} from "../../config&Varibles/endPointUrls";
-import {Toaster} from "react-hot-toast";
+import {BASE_URL, BUYER_SIGNUP_URL, GUIDE_SIGNUP_URL, VEHICLE_SIGNUP_URL} from "../../config&Varibles/endPointUrls";
+import toast, {Toaster} from "react-hot-toast";
 
 
 
 const SignUpPage = () => {
 
   const [accountType, setAccountType] = useState<any>('buyer');
-  const [email, setEmail] = useState<any>('');
-  const [username, setUsername] = useState<any>('');
-  const [password, setPassword] = useState<any>('');
+  const [email, setEmail] = useState<any>(null);
+  const [username, setUsername] = useState<any>(null);
+  const [password, setPassword] = useState<any>(null);
   const [sellerType, setSellerType] = useState<any>('guide');
   const [currency, setCurrency] = useState<any>('usd');
 
 
 
   const handelSignUp = async () => {
-         const response = await postRequest({
-            url: BASE_URL + BUYER_SIGNUP_URL,
-            data: {
-              accEmail: email,
-              accUserName: username,
-              accPassword: password,
-              currency,
-              accType: accountType
-            }
-          })
 
-    console.log(response)
+    if (accountType == 'buyer') {
+      if (email != null && username != null && password != null){
+        await postRequest({
+          url: BASE_URL + BUYER_SIGNUP_URL,
+          data: {
+            accEmail: email,
+            accUserName: username,
+            accPassword: password,
+            currency,
+            accType: accountType
+          }
+        })
+      } else {
+        toast.error("Please Input Details..")
+      }
+    }
+
+    if (accountType == 'seller' && sellerType == 'guide'){
+      if (email != null && username != null && password != null){
+        await postRequest({
+          url: BASE_URL + GUIDE_SIGNUP_URL,
+          data: {
+            accEmail: email,
+            accUserName: username,
+            accPassword: password,
+            accType: accountType
+          }
+        })
+      } else {
+        toast.error("Please Input Details..")
+      }
+    }
+
+
+    if (accountType == 'seller' && sellerType == 'rent_vehicle'){
+      if (email != null && username != null && password != null){
+        await postRequest({
+          url: BASE_URL + VEHICLE_SIGNUP_URL,
+          data: {
+            accEmail: email,
+            accUserName: username,
+            accPassword: password,
+            accType: accountType
+          }
+        })
+      } else {
+        toast.error("Please Input Details..")
+      }
+    }
   }
 
   return (
