@@ -1,19 +1,62 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Layout from "../../../layout";
+// @ts-ignore
+import {postRequest} from "../../../services/httpServices";
+// @ts-ignore
+import {BASE_URL, GUIDE_SAVE_URL} from "../../../config&Varibles/endPointUrls";
 
 export default function GuideSaveView() {
-    const [selectedImage, setSelectedImage] = useState<any>(null);
+
     const [step, setStep] = useState(1);
 
-    const handleImageChange = (event: any) => {
-        const file = event.target.files[0];
+    const [base64Image, setBase64Image] = useState<string | null>(null);
+    const [guideName, setGuideName] = useState<any>(null)
+    const [guideAge, setGuideAge] = useState<any>(null)
+    const [guidePrice, setGuidePrice] = useState<any>(null)
+    const [languages, setLanguages] = useState<any>(null)
+
+
+    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
         if (file) {
-            setSelectedImage(URL.createObjectURL(file));
+            const reader = new FileReader();
+
+            // Convert file to base64 string
+            reader.onload = () => {
+                setBase64Image(reader.result as string); // Base64 string
+            };
+
+            reader.readAsDataURL(file); // Read file as Data URL
         }
+    };
+
+    const handleLanguageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        // Convert the selectedOptions to an array and join them with #
+        const selectedLanguages = Array.from(event.target.selectedOptions)
+            .map(option => option.value)
+            .join("#");
+        setLanguages(selectedLanguages);
     };
 
     const nextStep = () => setStep((prev) => Math.min(prev + 1, 3));
     const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
+
+
+    const guideDetailsSaveHandel = async () => {
+        await postRequest({
+            url: BASE_URL + GUIDE_SAVE_URL,
+            data: {
+                accEmail: localStorage.getItem("loginUserEmail"),
+                guideImage: base64Image,
+                guideName,
+                guideAge,
+                guidePrice,
+                languages
+            }
+        })
+        console.log(base64Image)
+        console.log(guideName,guideAge,guidePrice,languages)
+    }
 
     return (
         <Layout>
@@ -49,9 +92,9 @@ export default function GuideSaveView() {
                     {step === 1 && (
                         <div className="flex flex-col items-center mb-6">
                             <label htmlFor="guideImage" className="cursor-pointer">
-                                {selectedImage ? (
+                                {base64Image ? (
                                     <img
-                                        src={selectedImage}
+                                        src={base64Image}
                                         alt="Selected Guide"
                                         className="w-32 h-32 object-cover rounded-full shadow-lg"
                                     />
@@ -83,6 +126,7 @@ export default function GuideSaveView() {
                                     id="guideName"
                                     placeholder="Enter guide name"
                                     className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    onChange={(event) => setGuideName(event.target.value)}
                                 />
                             </div>
                             <div>
@@ -94,6 +138,18 @@ export default function GuideSaveView() {
                                     id="guideAge"
                                     placeholder="Enter guide age"
                                     className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    onChange={(event) => setGuideAge(event.target.value)}
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="guideAge" className="block text-sm font-semibold text-gray-700">
+                                    Guide Amount
+                                </label>
+                                <input
+                                    type="number"
+                                    placeholder="Enter guide amount"
+                                    className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    onChange={(event) => setGuidePrice(event.target.value)}
                                 />
                             </div>
                             <div>
@@ -104,6 +160,7 @@ export default function GuideSaveView() {
                                     id="guideLanguages"
                                     multiple
                                     className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    onChange={handleLanguageChange}
                                 >
                                     <option value="english">English</option>
                                     <option value="spanish">Spanish</option>
@@ -145,6 +202,7 @@ export default function GuideSaveView() {
                             <button
                                 type="button"
                                 className="px-4 py-2 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600"
+                                onClick={guideDetailsSaveHandel}
                             >
                                 Save Guide
                             </button>

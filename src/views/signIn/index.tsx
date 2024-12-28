@@ -3,53 +3,74 @@ import SignInBackgroundImage from '../../assets/signupBackground.jpg';
 // @ts-ignore
 import {postRequest} from "../../services/httpServices";
 // @ts-ignore
-import {BASE_URL, BUYER_SIGN_IN_URL, GUIDE_SIGN_IN_URL, VEHICLE_SIGN_IN_URL} from "../../config&Varibles/endPointUrls";
-import toast from "react-hot-toast"; // Import the background image
+import {BASE_URL, BUYER_SIGN_IN_URL, GUIDE_SIGN_IN_URL, VEHICLE_SIGN_IN_URL} from "../../config&Varibles/endPointUrls.js";
+import toast from "react-hot-toast";
+import {useNavigate} from "react-router-dom"; // Import the background image
 
 const SignInPage = () => {
+
+    const navigation = useNavigate()
 
     //------buyer or seller
     const [accountType, setAccountType] = useState<any>('buyer');
     const [email, setEmail] = useState<any>(null)
     const [password, setPassword] = useState<any>(null)
-    const [sellerType, setSellerType] = useState<any>(null)
+    const [sellerType, setSellerType] = useState<any>('guide')
 
 
     const signInHandel = async () => {
 
         if (email !=null && password !=null) {
             if (accountType == 'buyer'){
-                postRequest({
+                const res = await postRequest({
                     url: BASE_URL + BUYER_SIGN_IN_URL,
                     data: {
                         accEmail: email,
                         accPassword: password
                     }
                 })
+
+                if (res.status === 'SUCCESS'){
+                    navigation("")
+                }
             }
 
 
             if (accountType == 'seller'){
                 if (sellerType != null) {
                     if (sellerType == 'guide'){
-                        postRequest({
+                        const res = await postRequest({
                             url: BASE_URL + GUIDE_SIGN_IN_URL,
                             data: {
                                 accEmail: email,
                                 accPassword: password
                             }
                         })
+                        console.log(res)
+                        if(res.status == 'SUCCESS' && res.data.guideCode == null){
+                            localStorage.setItem("loginUserEmail", res.data.accEmail)
+                            navigation("/guide-save")
+                        }else {
+                            navigation("/guide-manage")
+                        }
                     }
 
 
                     if (sellerType == 'rent_vehicle'){
-                        postRequest({
+                        const res = await postRequest({
                             url: BASE_URL + VEHICLE_SIGN_IN_URL,
                             data: {
                                 accEmail: email,
                                 accPassword: password
                             }
                         })
+
+                        if(res.status == 'SUCCESS' && res.data.vehicleCode == null){
+                            localStorage.setItem("loginUserEmail", res.data.accEmail)
+                            navigation("/vehicle-save")
+                        }else {
+                            navigation("/vehicle-manage")
+                        }
                     }
                 } else {
                     toast.error("Select Seller Type")
@@ -113,6 +134,7 @@ const SignInPage = () => {
                       id="sellerType"
                       className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       required
+                      value={sellerType}
                       onChange={(event) => setSellerType(event.target.value)}
                   >
                     <option value="" disabled selected>

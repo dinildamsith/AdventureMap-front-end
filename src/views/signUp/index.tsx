@@ -3,7 +3,7 @@ import SingUpBackgroundImage from '../../assets/signupBackground.jpg'
 // @ts-ignore
 import {postRequest} from '../../services/httpServices.js'
 // @ts-ignore
-import {BASE_URL, BUYER_SIGNUP_URL, GUIDE_SIGNUP_URL, VEHICLE_SIGNUP_URL} from "../../config&Varibles/endPointUrls";
+import {BASE_URL, BUYER_SIGNUP_URL, GUIDE_SIGNUP_URL, VEHICLE_SIGNUP_URL} from "../../config&Varibles/endPointUrls.js";
 import toast, {Toaster} from "react-hot-toast";
 
 

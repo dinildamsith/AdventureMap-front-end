@@ -11,6 +11,7 @@ const postRequest = async (requestConfig) => {
     try {
         const response = await AxiosInstance.post(url, data);
         if (response.status === 200) {
+            console.error(response)
             toast.success(response.data.description || 'Request successful');
             return response.data;
         } else {
@@ -32,19 +33,30 @@ const postRequest = async (requestConfig) => {
 
 
 
-
 const getRequest = async (requestConfig) => {
-
     const url = requestConfig.url;
 
-    const response = await AxiosInstance.get(url)
-
-    if (response.status === 200) {
-        return response.data;
-    } else {
-        return response;
+    try {
+        const response = await AxiosInstance.get(url);
+        if (response.status === 200) {
+            toast.success(response.data.description || 'Request successful');
+            return response.data;
+        } else {
+            console.error("Unexpected response status:", response.status);
+            toast.error('Failed to process request');
+            return response;
+        }
+    } catch (error) {
+        if (error.response) {
+            // If error.response is defined, show the description from the response
+            toast.error(error.response.data.description || 'An error occurred');
+        } else {
+            // If error.response is undefined, show a fallback error message
+            toast.error('Network error or server is down');
+        }
+        return error.response || error;
     }
-}
+};
 
 
 const putRequest = async (requestConfig) => {
@@ -52,28 +64,57 @@ const putRequest = async (requestConfig) => {
     const url = requestConfig.url;
     const data = requestConfig.data;
 
-    const response = await AxiosInstance.put(url, data)
-
-    if (response.status === 200) {
-        return response.data;
-    } else {
-        return response;
+    try {
+        const response = await AxiosInstance.put(url,data);
+        if (response.status === 200) {
+            toast.success(response.data.description || 'Request successful');
+            return response.data;
+        } else {
+            console.error("Unexpected response status:", response.status);
+            toast.error('Failed to process request');
+            return response;
+        }
+    } catch (error) {
+        if (error.response) {
+            // If error.response is defined, show the description from the response
+            toast.error(error.response.data.description || 'An error occurred');
+        } else {
+            // If error.response is undefined, show a fallback error message
+            toast.error('Network error or server is down');
+        }
+        return error.response || error;
     }
-}
+};
 
 
 const deleteRequest = async (requestConfig) => {
 
     const url = requestConfig.url;
 
-    const response = await AxiosInstance.delete(url)
-
-    if (response.status === 200) {
-        return response.data;
-    } else {
-        return response;
+    try {
+        const response = await AxiosInstance.delete(url);
+        if (response.status === 200) {
+            toast.success(response.data.description || 'Request successful');
+            return response.data;
+        } else {
+            console.error("Unexpected response status:", response.status);
+            toast.error('Failed to process request');
+            return response;
+        }
+    } catch (error) {
+        if (error.response) {
+            // If error.response is defined, show the description from the response
+            toast.error(error.response.data.description || 'An error occurred');
+        } else {
+            // If error.response is undefined, show a fallback error message
+            toast.error('Network error or server is down');
+        }
+        return error.response || error;
     }
-}
+};
+
+
+
 
 
 export { postRequest, getRequest, putRequest, deleteRequest };
