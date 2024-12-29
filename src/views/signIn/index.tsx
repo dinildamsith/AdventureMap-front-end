@@ -51,7 +51,7 @@ const SignInPage = () => {
                             localStorage.setItem("loginUserEmail", res.data.accEmail)
                             navigation("/guide-save")
                         }else {
-                            navigation("/guide-manage")
+                            toast.error("Login Failed")
                         }
                     }
 
@@ -69,7 +69,7 @@ const SignInPage = () => {
                             localStorage.setItem("loginUserEmail", res.data.accEmail)
                             navigation("/vehicle-save")
                         }else {
-                            navigation("/vehicle-manage")
+                            toast.error("Login Failed")
                         }
                     }
                 } else {

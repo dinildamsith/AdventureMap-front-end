@@ -1,28 +1,41 @@
 import Layout from "../../../layout";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { PencilIcon } from "@heroicons/react/16/solid";
+// @ts-ignore
+import {getRequest, postRequest, putRequest} from "../../../services/httpServices.js";
+// @ts-ignore
+import {BASE_URL, GUIDE_GALLERY_UPDATE_URL, GUIDE_UPDATE_URL, IMAGE_UPLOAD_URL, SELECTED_GUIDE_GET_URL} from "../../../config&Varibles/endPointUrls.js";
 
 export default function GuideProfileManage() {
     // State to track the selected tab
     const [activeTab, setActiveTab] = useState<any>("about");
 
-    const [images, setImages] = useState<any>([
-        "https://via.placeholder.com/150",
-        "https://via.placeholder.com/150",
-        "https://via.placeholder.com/150",
-    ]);
+    const [images, setImages] = useState<any>([]);
 
 
     // Add new image from device
-    const handleAddImage = (event:any) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                setImages([...images, reader.result]); // Add the image to the gallery
-            };
-            reader.readAsDataURL(file);
-        }
+    const handleAddImage = async (e:any) => {
+        const selectedFile = e.target.files[0]; // Get the selected file directly from the event
+
+        if (!selectedFile) return; // If no file is selected, exit the function
+
+        const formData = new FormData();
+        formData.append("image", selectedFile); // Append the file directly from the event
+
+        console.log(formData); // Log the FormData object
+
+        // Make the API request to upload the image
+        const res = await postRequest({
+            url: BASE_URL + IMAGE_UPLOAD_URL,
+            data: formData,
+            headers: headers,
+        });
+
+
+           setImages([...images, res.filePath]); // Add the image to the gallery
+
+
+
     };
 
     // Remove image
@@ -33,24 +46,49 @@ export default function GuideProfileManage() {
 
     // State to track the selected tab
     const [isEditModalOpen, setIsEditModalOpen] = useState<any>(false);
-    const [guideData, setGuideData] = useState<any>({
-        name: "John Doe",
-        languages: ["JavaScript", "English", "Spanish"],
-        about: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    });
+
 
     const [updatedData, setUpdatedData] = useState<any>({
+        accEmail: "",
         name: "",
         about: "",
-        image: "https://randomuser.me/api/portraits/men/94.jpg",
-        languages: [], // Array to store language tags
+        image: "",
+        age: "",
+        price: "",
+        languages: ["LKKK"], // Array to store language tags
     });
+
+
+    const headers = {
+        "Content-Type": "multipart/form-data" // This is usually handled automatically by FormData, but you can include it explicitly if needed
+    };
+
+    const newProfilePicSelectHandel = async (e: any) => {
+        const selectedFile = e.target.files[0]; // Get the selected file directly from the event
+
+        if (!selectedFile) return; // If no file is selected, exit the function
+
+        const formData = new FormData();
+        formData.append("image", selectedFile); // Append the file directly from the event
+
+        console.log(formData); // Log the FormData object
+
+        // Make the API request to upload the image
+        const res = await postRequest({
+            url: BASE_URL + IMAGE_UPLOAD_URL,
+            data: formData,
+            headers: headers,
+        });
+
+        // Set the image URL or file path returned from the response
+        setUpdatedData({ ...updatedData, image: res.filePath });
+        console.log(res); // Log the response to see the file path
+    }
 
     const [newLanguage, setNewLanguage] = useState<any>(""); // Temporary input for new language
 
     // Handle modal open and close
     const openEditModal = () => {
-        setUpdatedData(guideData); // Load current guide data into the update form
         setIsEditModalOpen(true);
     };
 
@@ -64,11 +102,48 @@ export default function GuideProfileManage() {
         setUpdatedData({ ...updatedData, [name]: value });
     };
 
+
+    const handleUpdateGallery = async () => {
+        await putRequest({
+            url: BASE_URL + GUIDE_GALLERY_UPDATE_URL,
+            data: {
+                accEmail: localStorage.getItem("loginUserEmail"),
+                images
+            }
+
+        })
+    }
+
     // Handle update button click
-    const handleUpdate = () => {
-        setGuideData(updatedData); // Update the guide data
-        closeEditModal();
+    const handleUpdate = async () => {
+        await putRequest({
+            url: BASE_URL + GUIDE_UPDATE_URL,
+            data: updatedData
+        })
+        console.log(updatedData)
+        // closeEditModal();
     };
+
+    useEffect(() => {
+        const getGuide = async () => {
+            const res = await getRequest({url: BASE_URL + SELECTED_GUIDE_GET_URL + localStorage.getItem("loginUserEmail")})
+            const languagesArray = res.data.languages;
+            setImages(res.data.imageGallery)
+            setUpdatedData({
+                accEmail: res.data.accEmail,
+                image: res.data.guideImage,
+                name:res.data.guideName,
+                about: res.data.guideAbout,
+                age: res.data.guideAge,
+                price: res.data.guidePrice,
+                languages: languagesArray || ["N/A"]
+            })
+            console.log(res)
+        }
+        getGuide()
+    }, []);
+
+
 
     return (
         <>
@@ -82,11 +157,10 @@ export default function GuideProfileManage() {
                                     <div className="bg-white rounded-lg p-6" style={{ boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 12px' }}>
                                         <div className="flex flex-col items-center">
                                             <img
-                                                src="https://randomuser.me/api/portraits/men/94.jpg"
-                                                className="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0"
-                                                alt="profile"
+                                                src={updatedData.image || ""}
+                                                className="w-32 h-32 mx-auto rounded-full border border-gray-300 object-cover"
                                             />
-                                            <h1 className="text-xl font-bold">John Doe</h1>
+                                            <h1 className="text-xl font-bold">{updatedData.name}</h1>
 
                                             <button type="button" onClick={openEditModal}
                                                     className="justify-center w-full mt-6 text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 me-2 mb-2">
@@ -100,9 +174,12 @@ export default function GuideProfileManage() {
                                             <span
                                                 className="text-gray-700 uppercase font-bold tracking-wider mb-2">Languages</span>
                                             <ul>
-                                                <li className="mb-2 text-black">JavaScript</li>
-                                                <li className="mb-2 text-black">English</li>
-                                                <li className="mb-2 text-black">Spanish</li>
+                                                {
+                                                    updatedData.languages.map((languages:any, index:any) => (
+                                                        <li key={index} className="mb-2 text-black">{languages}</li>
+                                                    ))
+                                                }
+
                                             </ul>
                                         </div>
                                     </div>
@@ -137,7 +214,7 @@ export default function GuideProfileManage() {
                                         {activeTab === "about" && (
                                             <>
                                                 <p className="text-gray-700">
-                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed finibus est vitae tortor ullamcorper, ut vestibulum velit convallis.
+                                                    {updatedData.about}
                                                 </p>
                                             </>
                                         )}
@@ -176,44 +253,54 @@ export default function GuideProfileManage() {
                                         {activeTab === "gallery" && (
                                             <>
                                                 <div>
-                                                    <div className="flex justify-between items-center mb-4">
-                                                        <h2 className="text-xl font-bold">Gallery</h2>
-                                                        {activeTab === "gallery" && (
-                                                            <label
-                                                                className="px-4 py-2 bg-blue-500 text-white rounded-lg cursor-pointer">
-                                                                Add Image
-                                                                <input
-                                                                    type="file"
-                                                                    accept="image/*"
-                                                                    className="hidden"
-                                                                    onChange={handleAddImage}
-                                                                />
-                                                            </label>
+                                                    {/* Header with "Update" and "Add Image" buttons */}
+                                                    <div className="flex justify-end items-center mb-4 gap-4">
+                                                        {/* Update Button (Left of Add Image) */}
+                                                        {images.length > 0 && (
+                                                            <button
+                                                                onClick={handleUpdateGallery}
+                                                                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                                                            >
+                                                                Update
+                                                            </button>
                                                         )}
+
+                                                        {/* Add Image Button (Right Side) */}
+                                                        <label
+                                                            className="px-4 py-2 bg-blue-500 text-white rounded-lg cursor-pointer hover:bg-blue-600"
+                                                        >
+                                                            Add Image
+                                                            <input
+                                                                type="file"
+                                                                accept="image/*"
+                                                                className="hidden"
+                                                                onChange={handleAddImage}
+                                                            />
+                                                        </label>
                                                     </div>
-                                                    {activeTab === "gallery" && (
-                                                        <div
-                                                            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                                                            {images.map((image:any, index:any) => (
-                                                                <div key={index} className="relative">
-                                                                    <img
-                                                                        src={image}
-                                                                        alt={`Gallery image ${index + 1}`}
-                                                                        className="w-full h-48 object-cover rounded-lg"
-                                                                    />
-                                                                    <button
-                                                                        onClick={() => removeImage(index)}
-                                                                        className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full"
-                                                                    >
-                                                                        ✕
-                                                                    </button>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    )}
+
+                                                    {/* Gallery Grid */}
+                                                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                                                        {images.map((image: any, index: any) => (
+                                                            <div key={index} className="relative">
+                                                                <img
+                                                                    src={image}
+                                                                    alt={`Gallery image ${index + 1}`}
+                                                                    className="w-full h-48 object-cover rounded-lg"
+                                                                />
+                                                                <button
+                                                                    onClick={() => removeImage(index)}
+                                                                    className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
+                                                                >
+                                                                    ✕
+                                                                </button>
+                                                            </div>
+                                                        ))}
+                                                    </div>
                                                 </div>
                                             </>
                                         )}
+
                                     </div>
                                 </div>
                             </div>
@@ -222,8 +309,8 @@ export default function GuideProfileManage() {
 
                     {/* Edit Modal */}
                     {isEditModalOpen && (
-                        <div className="fixed  inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                            <div className="bg-white rounded-lg p-6 w-96 mt-[5rem]">
+                        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                            <div className="bg-white rounded-lg p-6 w-96 mt-[5rem]" style={{ height: '600px',width:'700px', overflowY: 'auto' }}>
                                 <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
 
                                 {/* Current Image with "+" Mark */}
@@ -244,16 +331,17 @@ export default function GuideProfileManage() {
                                         id="imageUpload"
                                         accept="image/*"
                                         className="hidden"
-                                        onChange={(e: any) => {
-                                            const file = e.target.files[0];
-                                            if (file) {
-                                                const reader = new FileReader();
-                                                reader.onload = () => {
-                                                    setUpdatedData({ ...updatedData, image: reader.result });
-                                                };
-                                                reader.readAsDataURL(file);
-                                            }
-                                        }}
+                                        onChange={newProfilePicSelectHandel}
+                                        // onChange={(e: any) => {
+                                        //     const file = e.target.files[0];
+                                        //     if (file) {
+                                        //         const reader = new FileReader();
+                                        //         reader.onload = () => {
+                                        //             setUpdatedData({ ...updatedData, image: reader.result });
+                                        //         };
+                                        //         reader.readAsDataURL(file);
+                                        //     }
+                                        // }}
                                     />
                                 </div>
 
@@ -263,7 +351,7 @@ export default function GuideProfileManage() {
                                     <input
                                         type="text"
                                         name="name"
-                                        value={updatedData.name}
+                                        value={updatedData.name || ""}
                                         onChange={handleInputChange}
                                         className="w-full border border-gray-300 rounded-lg px-4 py-2"
                                     />
@@ -274,7 +362,29 @@ export default function GuideProfileManage() {
                                     About Me
                                     <textarea
                                         name="about"
-                                        value={updatedData.about}
+                                        value={updatedData.about || ""}
+                                        onChange={handleInputChange}
+                                        className="w-full h-[60px] border border-gray-300 rounded-lg px-4 py-2"
+                                    />
+                                </label>
+
+                                <label className="block mb-2">
+                                    Age
+                                    <input
+                                        name="age"
+                                        type={"number"}
+                                        value={updatedData.age}
+                                        onChange={handleInputChange}
+                                        className="w-full h-[60px] border border-gray-300 rounded-lg px-4 py-2"
+                                    />
+                                </label>
+
+                                <label className="block mb-2">
+                                    Price
+                                    <input
+                                        name="price"
+                                        type={"number"}
+                                        value={updatedData.price}
                                         onChange={handleInputChange}
                                         className="w-full h-[60px] border border-gray-300 rounded-lg px-4 py-2"
                                     />
@@ -289,7 +399,7 @@ export default function GuideProfileManage() {
                                                 key={index}
                                                 className="bg-blue-500 text-white rounded-full px-3 py-1 mr-2 mb-2 flex items-center"
                                             >
-                                                {language}
+                            {language}
                                                 <button
                                                     onClick={() =>
                                                         setUpdatedData({
@@ -301,15 +411,15 @@ export default function GuideProfileManage() {
                                                     }
                                                     className="ml-2 text-white text-sm"
                                                 >
-                                                     ✕
-                                                </button>
-                                           </span>
+                                ✕
+                            </button>
+                        </span>
                                         ))}
                                         <input
                                             type="text"
                                             value={newLanguage}
-                                            onChange={(e:any) => setNewLanguage(e.target.value)}
-                                            onKeyDown={(e:any) => {
+                                            onChange={(e: any) => setNewLanguage(e.target.value)}
+                                            onKeyDown={(e: any) => {
                                                 if (e.key === "Enter" && newLanguage.trim() !== "") {
                                                     setUpdatedData({
                                                         ...updatedData,
@@ -333,9 +443,6 @@ export default function GuideProfileManage() {
                                     </div>
                                 </label>
 
-
-
-
                                 <div className="flex justify-end space-x-2">
                                     <button
                                         onClick={closeEditModal}
@@ -353,6 +460,7 @@ export default function GuideProfileManage() {
                             </div>
                         </div>
                     )}
+
                 </div>
             </Layout>
         </>

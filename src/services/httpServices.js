@@ -7,9 +7,10 @@ import toast from "react-hot-toast";
 const postRequest = async (requestConfig) => {
     const url = requestConfig.url;
     const data = requestConfig.data;
+    const headers = requestConfig.headers
 
     try {
-        const response = await AxiosInstance.post(url, data);
+        const response = await AxiosInstance.post(url, data, {headers});
         if (response.status === 200) {
             console.error(response)
             toast.success(response.data.description || 'Request successful');

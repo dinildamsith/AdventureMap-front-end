@@ -3,32 +3,51 @@ import Layout from "../../../layout";
 // @ts-ignore
 import {postRequest} from "../../../services/httpServices";
 // @ts-ignore
-import {BASE_URL, GUIDE_SAVE_URL} from "../../../config&Varibles/endPointUrls";
+import {BASE_URL, GUIDE_SAVE_URL, IMAGE_UPLOAD_URL} from "../../../config&Varibles/endPointUrls.js";
+import {useNavigate} from "react-router-dom";
 
 export default function GuideSaveView() {
 
+    const  navigate = useNavigate()
     const [step, setStep] = useState(1);
 
-    const [base64Image, setBase64Image] = useState<string | null>(null);
+    const [image, setImage] = useState<any>(null);
     const [guideName, setGuideName] = useState<any>(null)
+    const [guideAbout, setGuideAbout] = useState<any>(null)
     const [guideAge, setGuideAge] = useState<any>(null)
     const [guidePrice, setGuidePrice] = useState<any>(null)
     const [languages, setLanguages] = useState<any>(null)
 
 
-    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-
-            // Convert file to base64 string
-            reader.onload = () => {
-                setBase64Image(reader.result as string); // Base64 string
-            };
-
-            reader.readAsDataURL(file); // Read file as Data URL
-        }
+    const headers = {
+        "Content-Type": "multipart/form-data" // This is usually handled automatically by FormData, but you can include it explicitly if needed
     };
+
+
+    const handleImageChange = async (e: any) => {
+        const selectedFile = e.target.files[0]; // Get the selected file directly from the event
+
+        if (!selectedFile) return; // If no file is selected, exit the function
+
+        const formData = new FormData();
+        formData.append("image", selectedFile); // Append the file directly from the event
+
+        console.log(formData); // Log the FormData object
+
+        // Make the API request to upload the image
+        const res = await postRequest({
+            url: BASE_URL + IMAGE_UPLOAD_URL,
+            data: formData,
+            headers: headers,
+        });
+
+        // Set the image URL or file path returned from the response
+        setImage(res.filePath);
+        console.log(res); // Log the response to see the file path
+
+        // You can now display the image or save the file path as needed
+    };
+
 
     const handleLanguageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         // Convert the selectedOptions to an array and join them with #
@@ -43,18 +62,23 @@ export default function GuideSaveView() {
 
 
     const guideDetailsSaveHandel = async () => {
-        await postRequest({
+        const res = await postRequest({
             url: BASE_URL + GUIDE_SAVE_URL,
             data: {
                 accEmail: localStorage.getItem("loginUserEmail"),
-                guideImage: base64Image,
+                guideImage: image,
                 guideName,
+                guideAbout,
                 guideAge,
                 guidePrice,
                 languages
             }
         })
-        console.log(base64Image)
+
+        if (res.status == 'SUCCESS') {
+            navigate("/guide-manage")
+        }
+        console.log(image)
         console.log(guideName,guideAge,guidePrice,languages)
     }
 
@@ -92,9 +116,9 @@ export default function GuideSaveView() {
                     {step === 1 && (
                         <div className="flex flex-col items-center mb-6">
                             <label htmlFor="guideImage" className="cursor-pointer">
-                                {base64Image ? (
+                                {image ? (
                                     <img
-                                        src={base64Image}
+                                        src={image}
                                         alt="Selected Guide"
                                         className="w-32 h-32 object-cover rounded-full shadow-lg"
                                     />
@@ -127,6 +151,16 @@ export default function GuideSaveView() {
                                     placeholder="Enter guide name"
                                     className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     onChange={(event) => setGuideName(event.target.value)}
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="guideAge" className="block text-sm font-semibold text-gray-700">
+                                    Guide About
+                                </label>
+                                <input
+                                    placeholder="Enter guide about"
+                                    className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    onChange={(event) => setGuideAbout(event.target.value)}
                                 />
                             </div>
                             <div>
