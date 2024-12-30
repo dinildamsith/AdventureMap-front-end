@@ -65,11 +65,24 @@ const SignInPage = () => {
                             }
                         })
 
-                        if(res.status == 'SUCCESS' && res.data.vehicleCode == null){
+                        if(res.status == 'SUCCESS'){
                             localStorage.setItem("loginUserEmail", res.data.accEmail)
-                            navigation("/vehicle-save")
+
+                            if (res.data.vehicleCode == null){
+                                navigation("/vehicle-save")
+                            } else {
+                                navigation("/vehicle-manage")
+                            }
+
                         }else {
                             toast.error("Login Failed")
+                            // if (res.data.vehicleCode != null){
+                            //     navigation("/vehicle-manage")
+                            // } else {
+                            //     navigation("/vehicle-save")
+                            // }
+
+
                         }
                     }
                 } else {
