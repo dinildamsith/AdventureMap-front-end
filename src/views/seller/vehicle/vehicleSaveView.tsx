@@ -1,44 +1,132 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Layout from "../../../layout";
+// @ts-ignore
+import {BASE_URL, IMAGE_UPLOAD_URL, VEHICLE_DETAILS_SAVE_URL} from "../../../config&Varibles/endPointUrls.js";
+// @ts-ignore
+import {postRequest} from "../../../services/httpServices.js";
 
 export default function VehicleSaveView() {
-    const [images, setImages] = useState<any[]>([]);
+
     const [step, setStep] = useState(1);
-    const [rentType, setRentType] = useState<string>("without-driver");
+    // const [vehicleImages, setVehicleImages] = useState<string[]>([]); // State to store image URLs
+    // const [rentType, setRentType] = useState<string>("without-driver");
     const [driverDetails, setDriverDetails] = useState({
-        image: "",
-        name: "",
-        age: "",
+        accEmail: localStorage.getItem("loginUserEmail"),
+        driverImage: "",
+        driverName: "",
+        driverAge: "",
         license: "",
-        languages: "",
+        driverLanguages: "",
         rentWithDriver: "",
+        rentAmount: "",
+        rentType: "WITH_DRIVER",
+
+        vehicleImage: [],
+        vehicleNumber: "",
+        vehicleBrand: "toyota",
+        vehicleType: "ac",
+        sheetCount: ""
     });
 
-    const handleImageChange = (event: any) => {
-        const files = event.target.files;
-        if (files) {
-            const imageUrls = Array.from(files).map((file: any) => URL.createObjectURL(file));
-            setImages((prevImages) => [...prevImages, ...imageUrls].slice(0, 5)); // Limit to 5 images
+
+    const headers = {
+        "Content-Type": "multipart/form-data" // This is usually handled automatically by FormData, but you can include it explicitly if needed
+    };
+
+
+
+
+    const handleVehicleImageChange = async (e: any) => {
+        const selectedFile = e.target.files[0]; // Get the selected file directly from the event
+
+        if (!selectedFile) return; // If no file is selected, exit the function
+
+        const formData = new FormData();
+        formData.append("image", selectedFile); // Append the file to the FormData object
+
+        try {
+            // Make the API request to upload the image
+            const res = await postRequest({
+                url: BASE_URL + IMAGE_UPLOAD_URL,
+                data: formData,
+                headers: headers,
+            });
+
+            if (res && res.filePath) {
+                // Assuming `res.filePath` contains the URL of the uploaded image
+                setDriverDetails((prevDetails:any) => {
+                    const updatedImages = [...prevDetails.vehicleImage, res.filePath]; // Add new URL to the array
+                    return {
+                        ...prevDetails,
+                        vehicleImage: updatedImages.slice(0, 5) // Limit the array to a maximum of 5 images
+                    };
+                });
+
+
+                // setVehicleImages((prevImages) => {
+                //     const updatedImages = [...prevImages, res.filePath]; // Add new URL to the array
+                //     return updatedImages.slice(0, 5); // Limit the array to a maximum of 5 vehicleImages
+                // });
+            } else {
+                console.error("Failed to upload image. Invalid response:", res);
+            }
+        } catch (error) {
+            console.error("Error uploading image:", error);
         }
     };
 
-    const handleDriverImageChange = (event: any) => {
-        const file = event.target.files[0];
-        if (file) {
-            const imageUrl = URL.createObjectURL(file);
-            setDriverDetails((prev) => ({ ...prev, image: imageUrl }));
+
+    const handleDriverImageChange = async (e: any) => {
+        const selectedFile = e.target.files[0]; // Get the selected file directly from the event
+
+        if (!selectedFile) return; // If no file is selected, exit the function
+
+        const formData = new FormData();
+        formData.append("image", selectedFile); // Append the file to the FormData object
+
+        try {
+            // Make the API request to upload the image
+            const res = await postRequest({
+                url: BASE_URL + IMAGE_UPLOAD_URL,
+                data: formData,
+                headers: headers,
+            });
+
+            if (res && res.filePath) {
+                // Assuming `res.filePath` contains the URL of the uploaded image
+                setDriverDetails((prev) => ({ ...prev, driverImage: res.filePath }));
+            } else {
+                console.error("Failed to upload image. Invalid response:", res);
+            }
+        } catch (error) {
+            console.error("Error uploading image:", error);
         }
     };
+
+
+    // const handleDriverImageChange = (event: any) => {
+    //     const file = event.target.files[0];
+    //     if (file) {
+    //         const imageUrl = URL.createObjectURL(file);
+    //
+    //     }
+    // };
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { id, value } = event.target;
-        if (rentType === "with-driver") {
-            setDriverDetails((prev) => ({ ...prev, [id]: value }));
-        }
+         setDriverDetails((prev) => ({ ...prev, [id]: value }));
     };
 
     const nextStep = () => setStep((prev) => Math.min(prev + 1, 3));
     const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
+
+    const handelSave = async () => {
+        await postRequest({
+            url: BASE_URL + VEHICLE_DETAILS_SAVE_URL,
+            data: driverDetails
+        })
+        console.log(driverDetails)
+    }
 
     return (
         <Layout>
@@ -75,7 +163,7 @@ export default function VehicleSaveView() {
                         <div className="flex flex-col items-center mb-6">
                             <label htmlFor="vehicleImages" className="cursor-pointer">
                                 <div className="flex flex-wrap justify-center grid-cols-3 gap-4">
-                                    {images.map((image, index) => (
+                                    {driverDetails.vehicleImage.map((image, index) => (
                                         <img
                                             key={index}
                                             src={image}
@@ -83,7 +171,7 @@ export default function VehicleSaveView() {
                                             className="w-24 h-24 object-cover rounded-md shadow-lg"
                                         />
                                     ))}
-                                    {images.length < 5 && (
+                                    {driverDetails.vehicleImage.length < 5 && (
                                         <div
                                             className="w-24 h-24 flex items-center justify-center bg-gray-200 rounded-md shadow-md">
                                             <span className="text-gray-500">Add Image</span>
@@ -96,7 +184,7 @@ export default function VehicleSaveView() {
                                 id="vehicleImages"
                                 accept="image/*"
                                 multiple
-                                onChange={handleImageChange}
+                                onChange={handleVehicleImageChange}
                                 className="hidden"
                             />
                             <small className="text-gray-500 mt-2">You can upload up to 5 images.</small>
@@ -111,6 +199,8 @@ export default function VehicleSaveView() {
                                 </label>
                                 <select
                                     id="vehicleBrand"
+                                    value={driverDetails.vehicleBrand}
+                                    onChange={handleInputChange}
                                     className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 >
                                     <option value="toyota">Toyota</option>
@@ -124,6 +214,8 @@ export default function VehicleSaveView() {
                                 </label>
                                 <select
                                     id="vehicleType"
+                                    value={driverDetails.vehicleType}
+                                    onChange={handleInputChange}
                                     className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 >
                                     <option value="ac">AC</option>
@@ -136,12 +228,12 @@ export default function VehicleSaveView() {
                                 </label>
                                 <select
                                     id="rentType"
-                                    value={rentType}
-                                    onChange={(e) => setRentType(e.target.value)}
+                                    value={driverDetails.rentType}
+                                    onChange={handleInputChange}
                                     className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 >
-                                    <option value="with-driver">With Driver</option>
-                                    <option value="without-driver">Without Driver</option>
+                                    <option value="WITH_DRIVER">With Driver</option>
+                                    <option value="WITH_OUT_DRIVER">Without Driver</option>
                                 </select>
                             </div>
                             <div>
@@ -150,8 +242,8 @@ export default function VehicleSaveView() {
                                 </label>
                                 <input
                                     type="number"
-                                    id="rentWithDriver"
-                                    value={driverDetails.rentWithDriver}
+                                    id="rentAmount"
+                                    value={driverDetails.rentAmount || ""}
                                     onChange={handleInputChange}
                                     placeholder="Enter daily rent amount"
                                     className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -163,13 +255,27 @@ export default function VehicleSaveView() {
                                 </label>
                                 <input
                                     type="number"
-                                    id="rentWithDriver"
+                                    id="sheetCount"
+                                    value={driverDetails.sheetCount || ""}
                                     onChange={handleInputChange}
-                                    placeholder="Enter daily rent amount"
+                                    placeholder="Enter sheet count"
                                     className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
                             </div>
-                            {rentType === "with-driver" && (
+                            <div>
+                                <label htmlFor="rentWithDriver" className="block text-sm font-semibold text-gray-700">
+                                    Vehicle Number
+                                </label>
+                                <input
+                                    type="text"
+                                    id="vehicleNumber"
+                                    value={driverDetails.vehicleNumber || ""}
+                                    onChange={handleInputChange}
+                                    placeholder="Enter sheet count"
+                                    className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                            {driverDetails.rentType === "WITH_DRIVER" && (
                                 <div className="space-y-4">
                                     <div>
                                         <label htmlFor="driverImage"
@@ -183,9 +289,9 @@ export default function VehicleSaveView() {
                                             onChange={handleDriverImageChange}
                                             className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         />
-                                        {driverDetails.image && (
+                                        {driverDetails.driverImage && (
                                             <img
-                                                src={driverDetails.image}
+                                                src={driverDetails.driverImage}
                                                 alt="Driver"
                                                 className="mt-2 w-24 h-24 rounded-md shadow-md object-cover"
                                             />
@@ -197,8 +303,8 @@ export default function VehicleSaveView() {
                                         </label>
                                         <input
                                             type="text"
-                                            id="name"
-                                            value={driverDetails.name}
+                                            id="driverName"
+                                            value={driverDetails.driverName}
                                             onChange={handleInputChange}
                                             placeholder="Enter driver name"
                                             className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -210,8 +316,8 @@ export default function VehicleSaveView() {
                                         </label>
                                         <input
                                             type="number"
-                                            id="age"
-                                            value={driverDetails.age}
+                                            id="driverAge"
+                                            value={driverDetails.driverAge}
                                             onChange={handleInputChange}
                                             placeholder="Enter driver age"
                                             className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -237,8 +343,8 @@ export default function VehicleSaveView() {
                                         </label>
                                         <input
                                             type="text"
-                                            id="languages"
-                                            value={driverDetails.languages}
+                                            id="driverLanguages"
+                                            value={driverDetails.driverLanguages}
                                             onChange={handleInputChange}
                                             placeholder="Enter driver languages"
                                             className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -267,7 +373,13 @@ export default function VehicleSaveView() {
                             Previous
                         </button>
                         <button
-                            onClick={nextStep}
+                            onClick={() => {
+                                if (step === 3) {
+                                    handelSave(); // Call save function
+                                } else {
+                                    nextStep(); // Proceed to the next step
+                                }
+                            }}
                             className="px-4 py-2 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600"
                         >
                             {step === 3 ? "Save Vehicle" : "Next"}
