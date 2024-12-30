@@ -1,6 +1,11 @@
 import Layout from "../../../layout";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import {PencilIcon} from "@heroicons/react/16/solid";
+// @ts-ignore
+import {getRequest} from "../../../services/httpServices.js";
+// @ts-ignore
+import {BASE_URL, GET_SELECTED_VEHICLE} from "../../../config&Varibles/endPointUrls.js";
+
 
 export default function VehicleProfileManage() {
     // State to track the selected tab
@@ -9,25 +14,24 @@ export default function VehicleProfileManage() {
 
     //----------------vehicle
     const [isEditModalOpen, setIsEditModalOpen] = useState<any>(false);
-    const [vehicleData, setVehicleData] = useState<any>({
-        brand: "Alto",
-        spec: ["AC", "Luxury"],
-        driver: "With driver",
-        image: "https://randomuser.me/api/portraits/men/94.jpg",
-    });
 
-    const [updatedData, setUpdatedData] = useState<any>({
-        brand: "Alto",
-        spec: ["AC", "Luxury"],
-        driver: "With driver",
-        image: "https://randomuser.me/api/portraits/men/94.jpg",
+    const [vehicleDetails, setVehicleDetails] = useState<any>({
+
+        //-------------vehicle details
+        vehicleBrand: "",
+        vehicleNumber: "",
+        vehicleImage: [],
+        vehicleType: "",
+        rentType: "",
+        sheetCount: "",
+        rentAmount: "",
+
     });
 
     const [newSpec, setNewSpec] = useState<any>(""); // Temporary input for new language
 
     // Handle modal open and close
     const openEditModal = () => {
-        setUpdatedData(vehicleData); // Load current guide data into the update form
         setIsEditModalOpen(true);
     };
 
@@ -38,26 +42,38 @@ export default function VehicleProfileManage() {
     // Handle form input changes
     const handleInputChange = (e: any) => {
         const { name, value } = e.target;
-        setUpdatedData({ ...updatedData, [name]: value });
+        setVehicleDetails({ ...vehicleDetails, [name]: value });
     };
 
     // Handle update button click
     const handleUpdate = () => {
-        setVehicleData(updatedData); // Update the guide data
         closeEditModal();
     };
 
 
+    useEffect(() => {
+
+        const getVehicle = async () => {
+            const res = await getRequest({url: BASE_URL + GET_SELECTED_VEHICLE + localStorage.getItem("loginUserEmail")})
+            setVehicleDetails({
+                vehicleBrand: res.data.vehicleBrand,
+                vehicleNumber: res.data.vehicleNumber,
+                vehicleImage: res.data.vehicleImage,
+                vehicleType: res.data.vehicleType,
+                rentType: res.data.rentType,
+                sheetCount: res.data.sheetCount,
+                rentAmount: res.data.rentAmount
+                })
+            console.log(res)
+        }
+
+        getVehicle()
+    }, []);
+
 
     //----------------driver
     const [isEditModalOpenII, setIsEditModalOpenII] = useState<any>(false);
-    // const [driverData, setDriverData] = useState<any>({
-    //     name: "James Anderson",
-    //     languages: ["English", "Spanish"],
-    //     experience: "8 years",
-    //     speciality: "Long-distance and city tours.",
-    //     image: "https://randomuser.me/api/portraits/men/45.jpg",
-    // });
+
 
     const [updatedDriverData, setUpdateDriverData] = useState<any>({
         name: "James Anderson",
@@ -86,9 +102,14 @@ export default function VehicleProfileManage() {
 
     // Handle update button click
     const handleUpdateII = () => {
-        // setDriverData(updatedData); // Update the guide data
+        // setDriverData(vehicleDetails); // Update the guide data
         closeEditModalII();
     };
+
+    function capitalizeFirstLetter(str:any) {
+        if (!str) return ""; // Handle empty or null strings
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
 
     return (
         <>
@@ -102,12 +123,13 @@ export default function VehicleProfileManage() {
                                     <div className="bg-white rounded-lg p-6" style={{ boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 12px' }}>
                                         <div className="flex flex-col items-center">
                                             <img
-                                                src="https://imgd.aeplcdn.com/664x374/cw/ec/39013/Maruti-Suzuki-Alto-Right-Front-Three-Quarter-154833.jpg?wm=0&q=80"
+                                                src={vehicleDetails.vehicleImage[0]}
                                                 className="w-32  bg-gray-300 rounded-full mb-4 shrink-0"
                                                 alt="profile"
                                             />
-                                            <h1 className="text-xl font-bold">Alto</h1>
-                                            <h1 className="text-xl font-bold">[With driver]</h1>
+                                            <h1 className="text-xl font-bold">{capitalizeFirstLetter(vehicleDetails.vehicleBrand)}</h1>
+                                            <h1 className="text-[16px] font-bold">{vehicleDetails.rentType}</h1>
+                                            <h1 className="text-[16px] font-bold">Rs {vehicleDetails.rentAmount}.00</h1>
 
                                             <span className="text-gray-500 text-sm">Vehicle Rating:</span>
                                             {/* Star Rating */}
@@ -130,7 +152,7 @@ export default function VehicleProfileManage() {
                                             <button type="button" onClick={openEditModal}
                                                     className=" justify-center w-full mt-6 text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 me-2 mb-2">
                                                 {/* Heroicon: User Plus Icon */}
-                                                <PencilIcon className="w-4 h-4 me-2 text-current" aria-hidden="true" />
+                                                <PencilIcon className="w-4 h-4 me-2 text-current" aria-hidden="true"/>
                                                 Edit
                                             </button>
                                         </div>
@@ -139,8 +161,9 @@ export default function VehicleProfileManage() {
                                             <span
                                                 className="text-gray-700 uppercase font-bold tracking-wider mb-2">Specification</span>
                                             <ul>
-                                                <li className="mb-2 text-black">AC</li>
-                                                <li className="mb-2 text-black">Luxury</li>
+                                                <li className="mb-2 text-black">Vehicle Number: {vehicleDetails.vehicleNumber}</li>
+                                                <li className="mb-2 text-black">Vehicle Type: {vehicleDetails.vehicleType.toUpperCase()}</li>
+                                                <li className="mb-2 text-black">Sheet Count: {vehicleDetails.sheetCount}</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -223,11 +246,17 @@ export default function VehicleProfileManage() {
 
 
                                                 <div className="mt-14 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                                                    <img
-                                                        src="https://via.placeholder.com/150"
-                                                        alt="gallery image"
-                                                        className="w-full h-48 object-cover rounded-lg"
-                                                    />
+                                                    {
+                                                        vehicleDetails.vehicleImage.map((image:any, index:any) => (
+                                                            <img
+                                                                key={index}
+                                                                src= {image}
+                                                                alt="gallery image"
+                                                                className="w-full h-48 object-cover rounded-lg"
+                                                            />
+                                                        ))
+                                                    }
+
                                                 </div>
                                             </>
                                         )}
@@ -329,7 +358,7 @@ export default function VehicleProfileManage() {
                                 {/* Current Image with "+" Mark */}
                                 <div className="relative mb-4">
                                     <img
-                                        src={updatedData.image || "https://via.placeholder.com/150"}
+                                        src={vehicleDetails.image || "https://via.placeholder.com/150"}
                                         alt="Profile"
                                         className="w-32 h-32 mx-auto rounded-full border border-gray-300 object-cover"
                                     />
@@ -349,7 +378,7 @@ export default function VehicleProfileManage() {
                                             if (file) {
                                                 const reader = new FileReader();
                                                 reader.onload = () => {
-                                                    setUpdatedData({ ...updatedData, image: reader.result });
+                                                    setVehicleDetails({ ...vehicleDetails, image: reader.result });
                                                 };
                                                 reader.readAsDataURL(file);
                                             }
@@ -363,7 +392,7 @@ export default function VehicleProfileManage() {
                                     <input
                                         type="text"
                                         name="name"
-                                        value={updatedData.brand}
+                                        value={vehicleDetails.brand}
                                         onChange={handleInputChange}
                                         className="w-full border border-gray-300 rounded-lg px-4 py-2"
                                     />
@@ -375,7 +404,7 @@ export default function VehicleProfileManage() {
                                     <input
                                         name="driver"
                                         disabled={true}
-                                        value={updatedData.driver}
+                                        value={vehicleDetails.driver}
                                         onChange={handleInputChange}
                                         className="w-full border border-gray-300 rounded-lg px-4 py-2"
                                     />
@@ -385,7 +414,7 @@ export default function VehicleProfileManage() {
                                 <label className="block mb-2">
                                     Specification
                                     <div className="w-full border border-gray-300 rounded-lg px-4 py-2 flex flex-wrap items-center">
-                                        {updatedData.spec.map((spec: string, index: number) => (
+                                        {vehicleDetails.spec.map((spec: string, index: number) => (
                                             <span
                                                 key={index}
                                                 className="bg-blue-500 text-white rounded-full px-3 py-1 mr-2 mb-2 flex items-center"
@@ -393,9 +422,9 @@ export default function VehicleProfileManage() {
                                                 {spec}
                                                 <button
                                                     onClick={() =>
-                                                        setUpdatedData({
-                                                            ...updatedData,
-                                                            spec: updatedData.spec.filter(
+                                                        setVehicleDetails({
+                                                            ...vehicleDetails,
+                                                            spec: vehicleDetails.spec.filter(
                                                                 (_lang: string, i: number) => i !== index
                                                             ),
                                                         })
@@ -412,18 +441,18 @@ export default function VehicleProfileManage() {
                                             onChange={(e:any) => setNewSpec(e.target.value)}
                                             onKeyDown={(e:any) => {
                                                 if (e.key === "Enter" && newSpec.trim() !== "") {
-                                                    setUpdatedData({
-                                                        ...updatedData,
-                                                        spec: [...updatedData.spec, newSpec.trim()],
+                                                    setVehicleDetails({
+                                                        ...vehicleDetails,
+                                                        spec: [...vehicleDetails.spec, newSpec.trim()],
                                                     });
                                                     setNewSpec(""); // Clear the input
                                                 }
                                             }}
                                             onBlur={() => {
                                                 if (newSpec.trim() !== "") {
-                                                    setUpdatedData({
-                                                        ...updatedData,
-                                                        spec: [...updatedData.spec, newSpec.trim()],
+                                                    setVehicleDetails({
+                                                        ...vehicleDetails,
+                                                        spec: [...vehicleDetails.spec, newSpec.trim()],
                                                     });
                                                     setNewSpec(""); // Clear the input
                                                 }
