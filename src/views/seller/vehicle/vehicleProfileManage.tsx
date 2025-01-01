@@ -2,9 +2,9 @@ import Layout from "../../../layout";
 import {useEffect, useState} from "react";
 import {PencilIcon} from "@heroicons/react/16/solid";
 // @ts-ignore
-import {getRequest, putRequest} from "../../../services/httpServices.js";
+import {getRequest, postRequest, putRequest} from "../../../services/httpServices.js";
 // @ts-ignore
-import {BASE_URL, DRIVER_DETAILS_UPDATE_URL, GET_SELECTED_VEHICLE} from "../../../config&Varibles/endPointUrls.js";
+import {BASE_URL, DRIVER_DETAILS_UPDATE_URL, GET_SELECTED_VEHICLE, IMAGE_UPLOAD_URL} from "../../../config&Varibles/endPointUrls.js";
 import USER from '../../../assets/user.jpg'
 
 
@@ -129,6 +129,40 @@ export default function VehicleProfileManage() {
         })
         closeEditModalII();
     };
+
+    const headers = {
+        "Content-Type": "multipart/form-data" // This is usually handled automatically by FormData, but you can include it explicitly if needed
+    };
+
+
+    const handleDriverImageChange = async (e: any) => {
+        const selectedFile = e.target.files[0]; // Get the selected file directly from the event
+
+        if (!selectedFile) return; // If no file is selected, exit the function
+
+        const formData = new FormData();
+        formData.append("image", selectedFile); // Append the file to the FormData object
+
+        try {
+            // Make the API request to upload the image
+            const res = await postRequest({
+                url: BASE_URL + IMAGE_UPLOAD_URL,
+                data: formData,
+                headers: headers,
+            });
+
+            if (res && res.filePath) {
+                // Assuming `res.filePath` contains the URL of the uploaded image
+                setUpdateDriverData({ ...updatedDriverData, driverImage: res.filePath });
+
+            } else {
+                console.error("Failed to upload image. Invalid response:", res);
+            }
+        } catch (error) {
+            console.error("Error uploading image:", error);
+        }
+    };
+
 
     function capitalizeFirstLetter(str:any) {
         if (!str) return ""; // Handle empty or null strings
@@ -473,16 +507,7 @@ export default function VehicleProfileManage() {
                                         id="imageUpload"
                                         accept="image/*"
                                         className="hidden"
-                                        onChange={(e: any) => {
-                                            const file = e.target.files[0];
-                                            if (file) {
-                                                const reader = new FileReader();
-                                                reader.onload = () => {
-                                                    setUpdateDriverData({...updatedDriverData, image: reader.result});
-                                                };
-                                                reader.readAsDataURL(file);
-                                            }
-                                        }}
+                                        onChange={handleDriverImageChange}
                                     />
                                 </div>
 
