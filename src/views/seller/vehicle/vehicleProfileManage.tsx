@@ -2,9 +2,9 @@ import Layout from "../../../layout";
 import {useEffect, useState} from "react";
 import {PencilIcon} from "@heroicons/react/16/solid";
 // @ts-ignore
-import {getRequest} from "../../../services/httpServices.js";
+import {getRequest, putRequest} from "../../../services/httpServices.js";
 // @ts-ignore
-import {BASE_URL, GET_SELECTED_VEHICLE} from "../../../config&Varibles/endPointUrls.js";
+import {BASE_URL, DRIVER_DETAILS_UPDATE_URL, GET_SELECTED_VEHICLE} from "../../../config&Varibles/endPointUrls.js";
 import USER from '../../../assets/user.jpg'
 
 
@@ -36,7 +36,6 @@ export default function VehicleProfileManage() {
 
     });
 
-    const [newSpec, setNewSpec] = useState<any>(""); // Temporary input for new language
 
     // Handle modal open and close
     const openEditModal = () => {
@@ -123,8 +122,11 @@ export default function VehicleProfileManage() {
     };
 
     // Handle update button click
-    const handleUpdateII = () => {
-        // setDriverData(vehicleDetails); // Update the guide data
+    const handleUpdateII = async () => {
+        await putRequest({
+            url: BASE_URL + DRIVER_DETAILS_UPDATE_URL + localStorage.getItem("loginUserEmail"),
+            data: updatedDriverData
+        })
         closeEditModalII();
     };
 
@@ -426,62 +428,6 @@ export default function VehicleProfileManage() {
                                         className="w-full border border-gray-300 rounded-lg px-4 py-2"
                                     />
                                 </label>
-
-                                {/* Languages Input with Tags */}
-                                <label className="block mb-2">
-                                    Specification
-                                    <div className="w-full border border-gray-300 rounded-lg px-4 py-2 flex flex-wrap items-center">
-                                        {vehicleDetails.spec.map((spec: string, index: number) => (
-                                            <span
-                                                key={index}
-                                                className="bg-blue-500 text-white rounded-full px-3 py-1 mr-2 mb-2 flex items-center"
-                                            >
-                                                {spec}
-                                                <button
-                                                    onClick={() =>
-                                                        setVehicleDetails({
-                                                            ...vehicleDetails,
-                                                            spec: vehicleDetails.spec.filter(
-                                                                (_lang: string, i: number) => i !== index
-                                                            ),
-                                                        })
-                                                    }
-                                                    className="ml-2 text-white text-sm"
-                                                >
-                                                     ✕
-                                                </button>
-                                           </span>
-                                        ))}
-                                        <input
-                                            type="text"
-                                            value={newSpec}
-                                            onChange={(e:any) => setNewSpec(e.target.value)}
-                                            onKeyDown={(e:any) => {
-                                                if (e.key === "Enter" && newSpec.trim() !== "") {
-                                                    setVehicleDetails({
-                                                        ...vehicleDetails,
-                                                        spec: [...vehicleDetails.spec, newSpec.trim()],
-                                                    });
-                                                    setNewSpec(""); // Clear the input
-                                                }
-                                            }}
-                                            onBlur={() => {
-                                                if (newSpec.trim() !== "") {
-                                                    setVehicleDetails({
-                                                        ...vehicleDetails,
-                                                        spec: [...vehicleDetails.spec, newSpec.trim()],
-                                                    });
-                                                    setNewSpec(""); // Clear the input
-                                                }
-                                            }}
-                                            placeholder="spec"
-                                            className="flex-grow outline-none"
-                                        />
-                                    </div>
-                                </label>
-
-
-
 
                                 <div className="flex justify-end space-x-2">
                                     <button

@@ -9,6 +9,7 @@ export const GUIDE_SIGN_IN_URL = "/api/v1/guide/sign-in"
 export const VEHICLE_SIGN_IN_URL = "/api/v1/vehicle/sign-in"
 export const VEHICLE_DETAILS_SAVE_URL = "/api/v1/vehicle/save"
 export const GET_SELECTED_VEHICLE = "/api/v1/guide/selected-vehicle/"
+export const DRIVER_DETAILS_UPDATE_URL = "/api/v1/vehicle/update-driver/"
 
 export const GUIDE_SAVE_URL = "/api/v1/guide/save"
 export const SELECTED_GUIDE_GET_URL = "/api/v1/guide/selected-guide/"
