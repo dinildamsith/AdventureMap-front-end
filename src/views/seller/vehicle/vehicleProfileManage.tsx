@@ -191,6 +191,46 @@ export default function VehicleProfileManage() {
     };
 
 
+    const handleVehicleImageChange = async (e: any) => {
+        const selectedFile = e.target.files[0]; // Get the selected file directly from the event
+
+        if (!selectedFile) return; // If no file is selected, exit the function
+
+        const formData = new FormData();
+        formData.append("image", selectedFile); // Append the file to the FormData object
+
+        try {
+            // Make the API request to upload the image
+            const res = await postRequest({
+                url: BASE_URL + IMAGE_UPLOAD_URL,
+                data: formData,
+                headers: headers,
+            });
+
+            if (res && res.filePath) {
+                // Assuming `res.filePath` contains the URL of the uploaded image
+                setUpdateVehicleData({
+                    ...updateVehicleData,
+                    vehicleImage: [
+                        ...updateVehicleData.vehicleImage.slice(0, 0), // Existing elements before index 0
+                        res.filePath, // New element at index 0
+                        ...updateVehicleData.vehicleImage.slice(1) // Existing elements after index 0
+                    ]
+                });
+
+            } else {
+                console.error("Failed to upload image. Invalid response:", res);
+            }
+        } catch (error) {
+            console.error("Error uploading image:", error);
+        }
+    };
+
+    useEffect(() => {
+        console.log(updateVehicleData)
+    }, [updateVehicleData]);
+
+
     function capitalizeFirstLetter(str:any) {
         if (!str) return ""; // Handle empty or null strings
         return str.charAt(0).toUpperCase() + str.slice(1);
@@ -209,7 +249,7 @@ export default function VehicleProfileManage() {
                                         <div className="flex flex-col items-center">
                                             <img
                                                 src={vehicleDetails.vehicleImage[0]}
-                                                className="w-32  bg-gray-300 rounded-full mb-4 shrink-0"
+                                                className="w-32 h-28 mx-auto rounded-full border border-gray-300 object-cover"
                                                 alt="profile"
                                             />
                                             <h1 className="text-xl font-bold">{capitalizeFirstLetter(vehicleDetails.vehicleBrand)}</h1>
@@ -438,7 +478,7 @@ export default function VehicleProfileManage() {
                                 {/* Current Image with "+" Mark */}
                                 <div className="relative mb-4">
                                     <img
-                                        src={vehicleDetails.vehicleImage[0] || "https://via.placeholder.com/150"}
+                                        src={updateVehicleData.vehicleImage[0] || "https://via.placeholder.com/150"}
                                         alt="Profile"
                                         className="w-32 h-32 mx-auto rounded-full border border-gray-300 object-cover"
                                     />
@@ -453,6 +493,7 @@ export default function VehicleProfileManage() {
                                         id="imageUpload"
                                         accept="image/*"
                                         className="hidden"
+                                        onChange={handleVehicleImageChange}
                                     />
                                 </div>
 
