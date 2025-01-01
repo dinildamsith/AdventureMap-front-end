@@ -5,6 +5,7 @@ import {PencilIcon} from "@heroicons/react/16/solid";
 import {getRequest} from "../../../services/httpServices.js";
 // @ts-ignore
 import {BASE_URL, GET_SELECTED_VEHICLE} from "../../../config&Varibles/endPointUrls.js";
+import USER from '../../../assets/user.jpg'
 
 
 export default function VehicleProfileManage() {
@@ -77,6 +78,14 @@ export default function VehicleProfileManage() {
                 driverLanguages: res.data.driverLanguages,
                 driverExperience: res.data.driverExperience
                 })
+
+            setUpdateDriverData({
+                driverImage: res.data.driverImage,
+                driverName: res.data.driverName,
+                driverAge: res.data.driverAge,
+                driverLanguages: res.data.driverLanguages,
+                driverExperience: res.data.driverExperience
+            })
             console.log(res)
         }
 
@@ -89,14 +98,14 @@ export default function VehicleProfileManage() {
 
 
     const [updatedDriverData, setUpdateDriverData] = useState<any>({
-        name: "James Anderson",
-        languages: ["English", "Spanish"],
-        experience: "8 years",
-        speciality: "Long-distance and city tours.",
-        image: "https://randomuser.me/api/portraits/men/45.jpg",
+        driverImage: "",
+        driverName: "",
+        driverAge: "",
+        driverLanguages: "",
+        driverExperience: ""
     });
 
-    const [newLanguage, setNewLanguage] = useState<any>(""); // Temporary input for new language
+
 
     // Handle modal open and close
     const openEditModalII = () => {
@@ -503,7 +512,7 @@ export default function VehicleProfileManage() {
                                 {/* Current Image with "+" Mark */}
                                 <div className="relative mb-4">
                                     <img
-                                        src={updatedDriverData.image || "https://via.placeholder.com/150"}
+                                        src={updatedDriverData.driverImage || USER}
                                         alt="Profile"
                                         className="w-32 h-32 mx-auto rounded-full border border-gray-300 object-cover"
                                     />
@@ -536,8 +545,8 @@ export default function VehicleProfileManage() {
                                     Name
                                     <input
                                         type="text"
-                                        name="name"
-                                        value={updatedDriverData.name}
+                                        name={"driverName"}
+                                        value={updatedDriverData.driverName}
                                         onChange={handleInputChangeII}
                                         className="w-full border border-gray-300 rounded-lg px-4 py-2"
                                     />
@@ -547,19 +556,8 @@ export default function VehicleProfileManage() {
                                 <label className="block mb-2">
                                     Experience
                                     <input
-                                        name="expieince"
-                                        value={updatedDriverData.experience}
-                                        onChange={handleInputChangeII}
-                                        className="w-full border border-gray-300 rounded-lg px-4 py-2"
-                                    />
-                                </label>
-
-
-                                <label className="block mb-2">
-                                    Speciality
-                                    <input
-                                        name="expieince"
-                                        value={updatedDriverData.speciality}
+                                        name={"driverExperience"}
+                                        value={updatedDriverData.driverExperience}
                                         onChange={handleInputChangeII}
                                         className="w-full border border-gray-300 rounded-lg px-4 py-2"
                                     />
@@ -570,49 +568,11 @@ export default function VehicleProfileManage() {
                                 <label className="block mb-2">
                                     Languages
                                     <div className="w-full border border-gray-300 rounded-lg px-4 py-2 flex flex-wrap items-center">
-                                        {updatedDriverData.languages.map((language: string, index: number) => (
-                                            <span
-                                                key={index}
-                                                className="bg-blue-500 text-white rounded-full px-3 py-1 mr-2 mb-2 flex items-center"
-                                            >
-                                                {language}
-                                                <button
-                                                    onClick={() =>
-                                                        setUpdateDriverData({
-                                                            ...updatedDriverData,
-                                                            languages: updatedDriverData.languages.filter(
-                                                                (_lang: string, i: number) => i !== index
-                                                            ),
-                                                        })
-                                                    }
-                                                    className="ml-2 text-white text-sm"
-                                                >
-                                                     ✕
-                                                </button>
-                                           </span>
-                                        ))}
                                         <input
                                             type="text"
-                                            value={newLanguage}
-                                            onChange={(e:any) => setNewLanguage(e.target.value)}
-                                            onKeyDown={(e:any) => {
-                                                if (e.key === "Enter" && newLanguage.trim() !== "") {
-                                                    setUpdateDriverData({
-                                                        ...updatedDriverData,
-                                                        languages: [...updatedDriverData.languages, newLanguage.trim()],
-                                                    });
-                                                    setNewLanguage(""); // Clear the input
-                                                }
-                                            }}
-                                            onBlur={() => {
-                                                if (newLanguage.trim() !== "") {
-                                                    setUpdateDriverData({
-                                                        ...updatedDriverData,
-                                                        languages: [...updatedDriverData.languages, newLanguage.trim()],
-                                                    });
-                                                    setNewLanguage(""); // Clear the input
-                                                }
-                                            }}
+                                            name={"driverLanguages"}
+                                            onChange={handleInputChangeII}
+                                            value={updatedDriverData.driverLanguages}
                                             placeholder="Add a language"
                                             className="flex-grow outline-none"
                                         />
