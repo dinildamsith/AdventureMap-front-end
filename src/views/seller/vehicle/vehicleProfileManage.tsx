@@ -404,14 +404,14 @@ export default function VehicleProfileManage() {
 
                     {/*--------------------------- vehicle Edit Modal */}
                     {isEditModalOpen && (
-                        <div className="fixed  inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                            <div className="bg-white rounded-lg p-6 w-96 mt-[5rem]">
+                        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                            <div className="bg-white rounded-lg p-6 w-96 mt-[5rem]" style={{height: '600px', width: '700px', overflowY: 'auto'}}>
                                 <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
 
                                 {/* Current Image with "+" Mark */}
                                 <div className="relative mb-4">
                                     <img
-                                        src={vehicleDetails.image || "https://via.placeholder.com/150"}
+                                        src={vehicleDetails.vehicleImage[0] || "https://via.placeholder.com/150"}
                                         alt="Profile"
                                         className="w-32 h-32 mx-auto rounded-full border border-gray-300 object-cover"
                                     />
@@ -426,41 +426,90 @@ export default function VehicleProfileManage() {
                                         id="imageUpload"
                                         accept="image/*"
                                         className="hidden"
-                                        onChange={(e: any) => {
-                                            const file = e.target.files[0];
-                                            if (file) {
-                                                const reader = new FileReader();
-                                                reader.onload = () => {
-                                                    setVehicleDetails({ ...vehicleDetails, image: reader.result });
-                                                };
-                                                reader.readAsDataURL(file);
-                                            }
-                                        }}
                                     />
                                 </div>
 
-                                {/* Name Input */}
+                                {/* Brand */}
                                 <label className="block mb-2">
-                                    Name
+                                    Brand
                                     <input
                                         type="text"
-                                        name="name"
-                                        value={vehicleDetails.brand}
+                                        name="vehicleBrand"
+                                        value={vehicleDetails.vehicleBrand}
                                         onChange={handleInputChange}
                                         className="w-full border border-gray-300 rounded-lg px-4 py-2"
                                     />
                                 </label>
 
-                                {/* Drive */}
+                                {/* Name Input */}
                                 <label className="block mb-2">
-                                    Driver
+                                    Vehicle Number
                                     <input
-                                        name="driver"
-                                        disabled={true}
-                                        value={vehicleDetails.driver}
+                                        type="text"
+                                        name="vehicleNumber"
+                                        value={vehicleDetails.vehicleNumber}
                                         onChange={handleInputChange}
                                         className="w-full border border-gray-300 rounded-lg px-4 py-2"
                                     />
+                                </label>
+
+                                {/* type*/}
+                                <label className="block mb-2">
+                                    <label htmlFor="vehicleType" className="block text-sm font-semibold text-gray-700">
+                                        Vehicle Type
+                                    </label>
+                                    <select
+                                        id="vehicleType"
+                                        value={vehicleDetails.vehicleType}
+                                        onChange={handleInputChange}
+                                        className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    >
+                                        <option value="ac">AC</option>
+                                        <option value="non-ac">Non-AC</option>
+                                    </select>
+                                </label>
+
+
+                                {/* sheet */}
+                                <label className="block mb-2">
+                                    Sheet Count
+                                    <input
+                                        type="text"
+                                        name="vehicleNumber"
+                                        value={vehicleDetails.sheetCount}
+                                        onChange={handleInputChange}
+                                        className="w-full border border-gray-300 rounded-lg px-4 py-2"
+                                    />
+                                </label>
+
+                                {/* rent amount */}
+                                <label className="block mb-2">
+                                    Sheet Count
+                                    <input
+                                        type="text"
+                                        name="vehicleNumber"
+                                        value={vehicleDetails.rentAmount}
+                                        onChange={handleInputChange}
+                                        className="w-full border border-gray-300 rounded-lg px-4 py-2"
+                                    />
+                                </label>
+
+
+                                {/* rent type*/}
+                                <label className="block mb-2">
+                                    <label htmlFor="rentType" className="block text-sm font-semibold text-gray-700">
+                                        Rent Type
+                                    </label>
+                                    <select
+                                        disabled={true}
+                                        id="rentType"
+                                        value={vehicleDetails.rentType}
+                                        onChange={handleInputChange}
+                                        className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    >
+                                        <option value="WITH_DRIVER">With Driver</option>
+                                        <option value="WITH_OUT_DRIVER">Without Driver</option>
+                                    </select>
                                 </label>
 
                                 <div className="flex justify-end space-x-2">
@@ -480,7 +529,6 @@ export default function VehicleProfileManage() {
                             </div>
                         </div>
                     )}
-
 
 
                     {/*--------------------------- driver Edit Modal */}
