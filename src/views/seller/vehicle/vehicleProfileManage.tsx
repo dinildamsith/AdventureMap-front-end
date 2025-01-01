@@ -26,6 +26,12 @@ export default function VehicleProfileManage() {
         sheetCount: "",
         rentAmount: "",
 
+        //------------- driver details
+        driverImage: "",
+        driverName: "",
+        driverAge: "",
+        driverLanguages: ""
+
     });
 
     const [newSpec, setNewSpec] = useState<any>(""); // Temporary input for new language
@@ -62,7 +68,12 @@ export default function VehicleProfileManage() {
                 vehicleType: res.data.vehicleType,
                 rentType: res.data.rentType,
                 sheetCount: res.data.sheetCount,
-                rentAmount: res.data.rentAmount
+                rentAmount: res.data.rentAmount,
+
+                driverImage: res.data.driverImage,
+                driverName: res.data.driverName,
+                driverAge: res.data.driverAge,
+                driverLanguages: res.data.driverLanguages
                 })
             console.log(res)
         }
@@ -285,14 +296,14 @@ export default function VehicleProfileManage() {
 
                                                     {/* Driver Image */}
                                                     <img
-                                                        src="https://randomuser.me/api/portraits/men/45.jpg"
+                                                        src={vehicleDetails.driverImage}
                                                         alt="driver profile"
                                                         className="w-32 h-32 object-cover rounded-full mb-4 shadow-lg"
                                                     />
 
                                                     {/* Driver Info */}
                                                     <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                                                        James Anderson
+                                                        {vehicleDetails.driverName}
                                                     </h2>
                                                     <div className="flex items-center space-x-2">
                                                         <span className="text-gray-500 text-sm">Driver Rating:</span>
@@ -320,7 +331,7 @@ export default function VehicleProfileManage() {
                                                         luxury vehicles.
                                                     </p>
                                                     <p className="text-gray-600 mt-2">
-                                                        <span className="font-bold">Languages:</span> English, Spanish.
+                                                        <span className="font-bold">Languages:</span> {vehicleDetails.driverLanguages}
                                                     </p>
                                                     <p className="text-gray-600 mt-2">
                                                         <span className="font-bold">Specialty:</span> Long-distance and
