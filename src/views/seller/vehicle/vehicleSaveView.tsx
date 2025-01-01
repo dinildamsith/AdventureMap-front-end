@@ -16,6 +16,7 @@ export default function VehicleSaveView() {
         driverName: "",
         driverAge: "",
         license: "",
+        driverExperience: "",
         driverLanguages: "",
         rentWithDriver: "",
         rentAmount: "",
@@ -337,6 +338,19 @@ export default function VehicleSaveView() {
                                         />
                                     </div>
                                     <div>
+                                        <label htmlFor="license" className="block text-sm font-semibold text-gray-700">
+                                            Driver Experience
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="driverExperience"
+                                            value={driverDetails.driverExperience}
+                                            onChange={handleInputChange}
+                                            placeholder="Enter driver license details"
+                                            className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        />
+                                    </div>
+                                    <div>
                                         <label htmlFor="languages"
                                                className="block text-sm font-semibold text-gray-700">
                                             Driver Languages
@@ -370,7 +384,7 @@ export default function VehicleSaveView() {
                             disabled={step === 1}
                             className="px-6 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
                         >
-                            Previous
+                        Previous
                         </button>
                         <button
                             onClick={() => {
