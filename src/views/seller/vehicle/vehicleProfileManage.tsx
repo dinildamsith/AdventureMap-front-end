@@ -4,7 +4,7 @@ import {PencilIcon} from "@heroicons/react/16/solid";
 // @ts-ignore
 import {getRequest, postRequest, putRequest} from "../../../services/httpServices.js";
 // @ts-ignore
-import {BASE_URL, DRIVER_DETAILS_UPDATE_URL, GET_SELECTED_VEHICLE, IMAGE_UPLOAD_URL} from "../../../config&Varibles/endPointUrls.js";
+import {BASE_URL, DRIVER_DETAILS_UPDATE_URL, GET_SELECTED_VEHICLE, IMAGE_UPLOAD_URL, VEHICLE_DETAILS_UPDATE_URL} from "../../../config&Varibles/endPointUrls.js";
 import USER from '../../../assets/user.jpg'
 
 
@@ -46,15 +46,14 @@ export default function VehicleProfileManage() {
         setIsEditModalOpen(false);
     };
 
-    // Handle form input changes
-    const handleInputChange = (e: any) => {
-        const { name, value } = e.target;
-        setVehicleDetails({ ...vehicleDetails, [name]: value });
-    };
+
 
     // Handle update button click
-    const handleUpdate = () => {
-        closeEditModal();
+    const handleUpdate = async () => {
+        await putRequest({
+            url: BASE_URL + VEHICLE_DETAILS_UPDATE_URL + localStorage.getItem("loginUserEmail"),
+            data: updateVehicleData
+        })
     };
 
 
@@ -78,6 +77,16 @@ export default function VehicleProfileManage() {
                 driverExperience: res.data.driverExperience
                 })
 
+            setUpdateVehicleData({
+                vehicleBrand: res.data.vehicleBrand,
+                vehicleNumber: res.data.vehicleNumber,
+                vehicleImage: res.data.vehicleImage,
+                vehicleType: res.data.vehicleType,
+                rentType: res.data.rentType,
+                sheetCount: res.data.sheetCount,
+                rentAmount: res.data.rentAmount
+            })
+
             setUpdateDriverData({
                 driverImage: res.data.driverImage,
                 driverName: res.data.driverName,
@@ -85,6 +94,7 @@ export default function VehicleProfileManage() {
                 driverLanguages: res.data.driverLanguages,
                 driverExperience: res.data.driverExperience
             })
+
             console.log(res)
         }
 
@@ -95,6 +105,16 @@ export default function VehicleProfileManage() {
     //----------------driver
     const [isEditModalOpenII, setIsEditModalOpenII] = useState<any>(false);
 
+
+    const [updateVehicleData, setUpdateVehicleData] = useState<any>({
+        vehicleBrand: "",
+        vehicleNumber: "",
+        vehicleImage: [],
+        vehicleType: "",
+        rentType: "",
+        sheetCount: "",
+        rentAmount: ""
+    })
 
     const [updatedDriverData, setUpdateDriverData] = useState<any>({
         driverImage: "",
@@ -113,6 +133,13 @@ export default function VehicleProfileManage() {
 
     const closeEditModalII = () => {
         setIsEditModalOpenII(false);
+    };
+
+    // Handle form input changes
+    const handleInputChange = (e: any) => {
+        const { name, value } = e.target;
+        console.log(name, value )
+        setUpdateVehicleData({ ...updateVehicleData, [name]: value });
     };
 
     // Handle form input changes
@@ -431,14 +458,20 @@ export default function VehicleProfileManage() {
 
                                 {/* Brand */}
                                 <label className="block mb-2">
-                                    Brand
-                                    <input
-                                        type="text"
+                                    <label htmlFor="vehicleBrand" className="block text-sm font-semibold text-gray-700">
+                                        Vehicle Brand
+                                    </label>
+                                    <select
+                                        id="vehicleBrand"
                                         name="vehicleBrand"
-                                        value={vehicleDetails.vehicleBrand}
+                                        value={updateVehicleData.vehicleBrand}
                                         onChange={handleInputChange}
-                                        className="w-full border border-gray-300 rounded-lg px-4 py-2"
-                                    />
+                                        className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    >
+                                        <option value="toyota">Toyota</option>
+                                        <option value="alto">Alto</option>
+                                        <option value="benz">Benz</option>
+                                    </select>
                                 </label>
 
                                 {/* Name Input */}
@@ -447,7 +480,7 @@ export default function VehicleProfileManage() {
                                     <input
                                         type="text"
                                         name="vehicleNumber"
-                                        value={vehicleDetails.vehicleNumber}
+                                        value={updateVehicleData.vehicleNumber}
                                         onChange={handleInputChange}
                                         className="w-full border border-gray-300 rounded-lg px-4 py-2"
                                     />
@@ -459,8 +492,8 @@ export default function VehicleProfileManage() {
                                         Vehicle Type
                                     </label>
                                     <select
-                                        id="vehicleType"
-                                        value={vehicleDetails.vehicleType}
+                                        name="vehicleType"
+                                        value={updateVehicleData.vehicleType}
                                         onChange={handleInputChange}
                                         className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     >
@@ -475,8 +508,8 @@ export default function VehicleProfileManage() {
                                     Sheet Count
                                     <input
                                         type="text"
-                                        name="vehicleNumber"
-                                        value={vehicleDetails.sheetCount}
+                                        name="sheetCount"
+                                        value={updateVehicleData.sheetCount}
                                         onChange={handleInputChange}
                                         className="w-full border border-gray-300 rounded-lg px-4 py-2"
                                     />
@@ -484,11 +517,11 @@ export default function VehicleProfileManage() {
 
                                 {/* rent amount */}
                                 <label className="block mb-2">
-                                    Sheet Count
+                                   Rent Amount
                                     <input
                                         type="text"
-                                        name="vehicleNumber"
-                                        value={vehicleDetails.rentAmount}
+                                        name="rentAmount"
+                                        value={updateVehicleData.rentAmount}
                                         onChange={handleInputChange}
                                         className="w-full border border-gray-300 rounded-lg px-4 py-2"
                                     />
@@ -503,7 +536,7 @@ export default function VehicleProfileManage() {
                                     <select
                                         disabled={true}
                                         id="rentType"
-                                        value={vehicleDetails.rentType}
+                                        value={updateVehicleData.rentType}
                                         onChange={handleInputChange}
                                         className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     >
