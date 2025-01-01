@@ -333,10 +333,6 @@ export default function VehicleProfileManage() {
                                                     <p className="text-gray-600 mt-2">
                                                         <span className="font-bold">Languages:</span> {vehicleDetails.driverLanguages}
                                                     </p>
-                                                    <p className="text-gray-600 mt-2">
-                                                        <span className="font-bold">Specialty:</span> Long-distance and
-                                                        city tours.
-                                                    </p>
                                                 </div>
 
                                                 {/* Driver Bio */}
