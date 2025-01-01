@@ -30,7 +30,8 @@ export default function VehicleProfileManage() {
         driverImage: "",
         driverName: "",
         driverAge: "",
-        driverLanguages: ""
+        driverLanguages: "",
+        driverExperience: ""
 
     });
 
@@ -73,7 +74,8 @@ export default function VehicleProfileManage() {
                 driverImage: res.data.driverImage,
                 driverName: res.data.driverName,
                 driverAge: res.data.driverAge,
-                driverLanguages: res.data.driverLanguages
+                driverLanguages: res.data.driverLanguages,
+                driverExperience: res.data.driverExperience
                 })
             console.log(res)
         }
@@ -327,8 +329,7 @@ export default function VehicleProfileManage() {
                                                     </div>
 
                                                     <p className="text-gray-600 mt-4">
-                                                        <span className="font-bold">Experience:</span> 8 years driving
-                                                        luxury vehicles.
+                                                        <span className="font-bold">Experience:</span> {vehicleDetails.driverExperience}
                                                     </p>
                                                     <p className="text-gray-600 mt-2">
                                                         <span className="font-bold">Languages:</span> {vehicleDetails.driverLanguages}
@@ -336,17 +337,17 @@ export default function VehicleProfileManage() {
                                                 </div>
 
                                                 {/* Driver Bio */}
-                                                <div className="mt-8 bg-gray-100 rounded-lg p-6">
-                                                    <h3 className="text-xl font-bold text-gray-800 mb-4">Bio</h3>
-                                                    <p className="text-gray-700 leading-relaxed">
-                                                        James is a highly skilled and experienced driver with a passion
-                                                        for ensuring passenger safety and comfort. Known for his
-                                                        punctuality and excellent navigation skills, he has
-                                                        successfully handled hundreds of trips across various terrains.
-                                                        Whether it’s a family vacation or a business trip, James is the
-                                                        go-to driver for a smooth and enjoyable ride.
-                                                    </p>
-                                                </div>
+                                                {/*<div className="mt-8 bg-gray-100 rounded-lg p-6">*/}
+                                                {/*    <h3 className="text-xl font-bold text-gray-800 mb-4">Bio</h3>*/}
+                                                {/*    <p className="text-gray-700 leading-relaxed">*/}
+                                                {/*        James is a highly skilled and experienced driver with a passion*/}
+                                                {/*        for ensuring passenger safety and comfort. Known for his*/}
+                                                {/*        punctuality and excellent navigation skills, he has*/}
+                                                {/*        successfully handled hundreds of trips across various terrains.*/}
+                                                {/*        Whether it’s a family vacation or a business trip, James is the*/}
+                                                {/*        go-to driver for a smooth and enjoyable ride.*/}
+                                                {/*    </p>*/}
+                                                {/*</div>*/}
                                             </>
                                         )}
 
