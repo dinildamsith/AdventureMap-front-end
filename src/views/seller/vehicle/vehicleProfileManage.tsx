@@ -508,7 +508,7 @@ export default function VehicleProfileManage() {
                                         className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     >
                                         <option value="WITH_DRIVER">With Driver</option>
-                                        <option value="WITH_OUT_DRIVER">Without Driver</option>
+                                        <option value="WITHOUT_DRIVER">Without Driver</option>
                                     </select>
                                 </label>
 
