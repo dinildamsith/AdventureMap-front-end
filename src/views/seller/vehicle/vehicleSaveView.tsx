@@ -4,9 +4,11 @@ import {BASE_URL, IMAGE_UPLOAD_URL, VEHICLE_DETAILS_SAVE_URL} from "../../../con
 // @ts-ignore
 import {postRequest} from "../../../services/httpServices.js";
 import SubLayout from "../../../layout/subLayout.tsx";
+import {useNavigate} from "react-router-dom";
 
 export default function VehicleSaveView() {
 
+    const navigation = useNavigate()
     const [step, setStep] = useState(1);
     // const [vehicleImages, setVehicleImages] = useState<string[]>([]); // State to store image URLs
     // const [rentType, setRentType] = useState<string>("without-driver");
@@ -63,11 +65,6 @@ export default function VehicleSaveView() {
                     };
                 });
 
-
-                // setVehicleImages((prevImages) => {
-                //     const updatedImages = [...prevImages, res.filePath]; // Add new URL to the array
-                //     return updatedImages.slice(0, 5); // Limit the array to a maximum of 5 vehicleImages
-                // });
             } else {
                 console.error("Failed to upload image. Invalid response:", res);
             }
@@ -105,14 +102,6 @@ export default function VehicleSaveView() {
     };
 
 
-    // const handleDriverImageChange = (event: any) => {
-    //     const file = event.target.files[0];
-    //     if (file) {
-    //         const imageUrl = URL.createObjectURL(file);
-    //
-    //     }
-    // };
-
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { id, value } = event.target;
          setDriverDetails((prev) => ({ ...prev, [id]: value }));
@@ -122,10 +111,14 @@ export default function VehicleSaveView() {
     const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
 
     const handelSave = async () => {
-        await postRequest({
+        const res = await postRequest({
             url: BASE_URL + VEHICLE_DETAILS_SAVE_URL,
             data: driverDetails
         })
+
+        if (res === 'SUCCESS') {
+            navigation("/vehicle-manage")
+        }
         console.log(driverDetails)
     }
 

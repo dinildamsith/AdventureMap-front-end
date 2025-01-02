@@ -1,4 +1,3 @@
-import Layout from "../../../layout/mainLayout.tsx";
 import {useEffect, useState} from "react";
 import {PencilIcon, TrashIcon} from "@heroicons/react/16/solid";
 // @ts-ignore
@@ -6,6 +5,8 @@ import {deleteRequest, getRequest, postRequest, putRequest} from "../../../servi
 // @ts-ignore
 import {BASE_URL, DELETE_DRIVER_URL, DRIVER_DETAILS_UPDATE_URL, GET_SELECTED_VEHICLE,IMAGE_UPLOAD_URL, NEW_DRIVER_SAVE_URL, VEHICLE_DETAILS_UPDATE_URL} from "../../../config&Varibles/endPointUrls.js";
 import USER from '../../../assets/user.jpg'
+import SubLayout from "../../../layout/subLayout.tsx";
+import OrderNotify from "../../../component/orderNotify";
 
 
 export default function VehicleProfileManage() {
@@ -281,7 +282,7 @@ export default function VehicleProfileManage() {
 
     return (
         <>
-            <Layout>
+            <SubLayout>
                 <div className={"mt-28"}>
                     <div>
                         <div className="container mx-auto py-8">
@@ -361,6 +362,12 @@ export default function VehicleProfileManage() {
                                             >
                                                 Driver
                                             </button>
+                                            <button
+                                                onClick={() => setActiveTab("orders")}
+                                                className={`text-xl font-bold ${activeTab === "orders" ? "text-blue-500" : "text-gray-700"}`}
+                                            >
+                                                Orders
+                                            </button>
                                         </div>
 
 
@@ -368,7 +375,8 @@ export default function VehicleProfileManage() {
                                         {activeTab === "reviews" && (
                                             <>
                                                 <div className="flex flex-col space-y-4">
-                                                    <div className="flex items-center bg-gray-100 p-4 rounded-lg shadow-md">
+                                                    <div
+                                                        className="flex items-center bg-gray-100 p-4 rounded-lg shadow-md">
                                                         <img
                                                             src="https://randomuser.me/api/portraits/women/85.jpg"
                                                             alt="reviewer"
@@ -397,21 +405,6 @@ export default function VehicleProfileManage() {
                                         {/* vehicle Section */}
                                         {activeTab === "vehicle" && (
                                             <>
-
-                                                {/* Bio */}
-                                                <div className="mt-8 bg-gray-100 rounded-lg p-6 mt-10">
-                                                    <h3 className="text-xl font-bold text-gray-800 mb-4">Bio</h3>
-                                                    <p className="text-gray-700 leading-relaxed">
-                                                        James is a highly skilled and experienced driver with a passion
-                                                        for ensuring passenger safety and comfort.
-                                                        Known for his punctuality and excellent navigation skills, he
-                                                        has successfully handled hundreds of trips
-                                                        across various terrains. Whether it’s a family vacation or a
-                                                        business trip, James is the go-to driver
-                                                        for a smooth and enjoyable ride.
-                                                    </p>
-                                                </div>
-
 
                                                 <div className="mt-14 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                                                     {
@@ -519,6 +512,50 @@ export default function VehicleProfileManage() {
                                                                 className="px-4 py-2 bg-blue-500 text-white rounded-md"
                                                             >
                                                                 Add Driver
+                                                            </button>
+                                                        </>
+                                                    )
+                                                }
+
+                                            </>
+                                        )}
+
+
+
+                                        {/* driver Section */}
+                                        {activeTab === "orders" && (
+                                            <>
+
+                                                {
+                                                    vehicleDetails.driverCode ? (
+                                                        <>
+                                                            <div
+                                                                className={"flex flex-wrap justify-center rounded-2xl"}
+                                                                style={{
+                                                                    position: 'absolute',
+                                                                    backgroundColor: 'black',
+                                                                    width: '350px',
+                                                                    height: '400px',
+                                                                    overflowY: 'auto', // Enable vertical scrolling
+                                                                    padding: '10px',   // Optional padding for spacing
+                                                                    boxSizing: 'border-box', // Ensure padding doesn't affect dimensions
+                                                                }}
+                                                            >
+                                                                <OrderNotify/>
+                                                                <OrderNotify/>
+                                                                <OrderNotify/>
+                                                                <OrderNotify/>
+                                                                <OrderNotify/>
+                                                            </div>
+
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <button
+                                                                onClick={openEditModalIII}
+                                                                className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                                                            >
+                                                            Add Driver
                                                             </button>
                                                         </>
                                                     )
@@ -865,7 +902,7 @@ export default function VehicleProfileManage() {
                         </div>
                     )}
                 </div>
-            </Layout>
+            </SubLayout>
         </>
     );
 }
