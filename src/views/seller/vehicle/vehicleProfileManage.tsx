@@ -4,7 +4,7 @@ import {PencilIcon} from "@heroicons/react/16/solid";
 // @ts-ignore
 import {getRequest, postRequest, putRequest} from "../../../services/httpServices.js";
 // @ts-ignore
-import {BASE_URL, DRIVER_DETAILS_UPDATE_URL, GET_SELECTED_VEHICLE, IMAGE_UPLOAD_URL, VEHICLE_DETAILS_UPDATE_URL} from "../../../config&Varibles/endPointUrls.js";
+import {BASE_URL, DRIVER_DETAILS_UPDATE_URL, GET_SELECTED_VEHICLE, IMAGE_UPLOAD_URL, NEW_DRIVER_SAVE_URL, VEHICLE_DETAILS_UPDATE_URL} from "../../../config&Varibles/endPointUrls.js";
 import USER from '../../../assets/user.jpg'
 
 
@@ -70,6 +70,7 @@ export default function VehicleProfileManage() {
                 sheetCount: res.data.sheetCount,
                 rentAmount: res.data.rentAmount,
 
+                driverCode: res.data.driverCode,
                 driverImage: res.data.driverImage,
                 driverName: res.data.driverName,
                 driverAge: res.data.driverAge,
@@ -104,6 +105,8 @@ export default function VehicleProfileManage() {
 
     //----------------driver
     const [isEditModalOpenII, setIsEditModalOpenII] = useState<any>(false);
+    const [isEditModalOpenIII, setIsEditModalOpenIII] = useState<any>(false);
+
 
 
     const [updateVehicleData, setUpdateVehicleData] = useState<any>({
@@ -125,6 +128,14 @@ export default function VehicleProfileManage() {
     });
 
 
+    const [newDriverData, setNewDriverData] = useState<any>({
+        driverImage: "",
+        driverName: "",
+        driverAge: "",
+        driverLanguages: "",
+        driverExperience: ""
+    });
+
 
     // Handle modal open and close
     const openEditModalII = () => {
@@ -133,6 +144,14 @@ export default function VehicleProfileManage() {
 
     const closeEditModalII = () => {
         setIsEditModalOpenII(false);
+    };
+
+    const openEditModalIII = () => {
+        setIsEditModalOpenIII(true);
+    };
+
+    const closeEditModalIII = () => {
+        setIsEditModalOpenIII(false);
     };
 
     // Handle form input changes
@@ -147,6 +166,22 @@ export default function VehicleProfileManage() {
         const { name, value } = e.target;
         setUpdateDriverData({ ...updatedDriverData, [name]: value });
     };
+
+
+    const handleInputChangeIII = (e: any) => {
+        const { name, value } = e.target;
+        setNewDriverData({ ...newDriverData, [name]: value });
+    };
+
+
+    const handelNewDriverAdd = async () => {
+        await postRequest({
+            url: BASE_URL + NEW_DRIVER_SAVE_URL + localStorage.getItem("loginUserEmail"),
+            data: newDriverData
+        })
+        console.log(newDriverData)
+    }
+
 
     // Handle update button click
     const handleUpdateII = async () => {
@@ -181,6 +216,7 @@ export default function VehicleProfileManage() {
             if (res && res.filePath) {
                 // Assuming `res.filePath` contains the URL of the uploaded image
                 setUpdateDriverData({ ...updatedDriverData, driverImage: res.filePath });
+                setNewDriverData({ ...newDriverData, driverImage: res.filePath });
 
             } else {
                 console.error("Failed to upload image. Invalid response:", res);
@@ -390,76 +426,84 @@ export default function VehicleProfileManage() {
                                         {/* driver Section */}
                                         {activeTab === "driver" && (
                                             <>
-                                                <div className="flex flex-col items-center text-center p-6 bg-white rounded-lg shadow-md">
 
-                                                    {/* Edit Button Positioned to the Right */}
-                                                    <div className="w-full flex justify-end">
-                                                        <button
-                                                            type="button"
-                                                            onClick={openEditModalII}
-                                                            className="justify-center w-[100px] mt-6 text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center dark:focus:ring-[#4285F4]/55 me-2 mb-2"
-                                                        >
-                                                            {/* Heroicon: User Plus Icon */}
-                                                            <PencilIcon
-                                                                className="w-4 h-4 me-2 text-current"
-                                                                aria-hidden="true"
-                                                            />
-                                                            Edit
-                                                        </button>
-                                                    </div>
+                                                {
+                                                    vehicleDetails.driverCode ? (
+                                                        <>
+                                                                <div
+                                                                    className="flex flex-col items-center text-center p-6 bg-white rounded-lg shadow-md">
 
-                                                    {/* Driver Image */}
-                                                    <img
-                                                        src={vehicleDetails.driverImage}
-                                                        alt="driver profile"
-                                                        className="w-32 h-32 object-cover rounded-full mb-4 shadow-lg"
-                                                    />
+                                                                    {/* Edit Button Positioned to the Right */}
+                                                                    <div className="w-full flex justify-end">
+                                                                        <button
+                                                                            type="button"
+                                                                            onClick={openEditModalII}
+                                                                            className="justify-center w-[100px] mt-0 text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center dark:focus:ring-[#4285F4]/55 me-2 mb-2"
+                                                                        >
+                                                                            {/* Heroicon: User Plus Icon */}
+                                                                            <PencilIcon
+                                                                                className="w-4 h-4 me-2 text-current"
+                                                                                aria-hidden="true"
+                                                                            />
+                                                                            Edit
+                                                                        </button>
+                                                                    </div>
 
-                                                    {/* Driver Info */}
-                                                    <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                                                        {vehicleDetails.driverName}
-                                                    </h2>
-                                                    <div className="flex items-center space-x-2">
-                                                        <span className="text-gray-500 text-sm">Driver Rating:</span>
-                                                        {/* Star Rating */}
-                                                        <div className="flex space-x-1">
-                                                            {[...Array(5)].map((_, i) => (
-                                                                <svg
-                                                                    key={i}
-                                                                    className={`w-5 h-5 ${
-                                                                        i < 4 ? "text-yellow-400" : "text-gray-300"
-                                                                    }`}
-                                                                    xmlns="http://www.w3.org/2000/svg"
-                                                                    fill="currentColor"
-                                                                    viewBox="0 0 20 20"
-                                                                >
-                                                                    <path d="M10 15l5.09 3-1.45-6.3L18 8.27l-6.4-.56L10 2l-1.6 5.71L2 8.27l4.36 3.43L4.91 18z" />
-                                                                </svg>
-                                                            ))}
-                                                        </div>
-                                                        <span className="text-gray-600 text-sm">(4.8)</span>
-                                                    </div>
+                                                                    {/* Driver Image */}
+                                                                    <img
+                                                                        src={vehicleDetails.driverImage}
+                                                                        alt="driver profile"
+                                                                        className="w-32 h-32 object-cover rounded-full mb-4 shadow-lg"
+                                                                    />
 
-                                                    <p className="text-gray-600 mt-4">
-                                                        <span className="font-bold">Experience:</span> {vehicleDetails.driverExperience}
-                                                    </p>
-                                                    <p className="text-gray-600 mt-2">
-                                                        <span className="font-bold">Languages:</span> {vehicleDetails.driverLanguages}
-                                                    </p>
-                                                </div>
+                                                                    {/* Driver Info */}
+                                                                    <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                                                                        {vehicleDetails.driverName}
+                                                                    </h2>
+                                                                    <div className="flex items-center space-x-2">
+                                                                        <span className="text-gray-500 text-sm">Driver Rating:</span>
+                                                                        {/* Star Rating */}
+                                                                        <div className="flex space-x-1">
+                                                                            {[...Array(5)].map((_, i) => (
+                                                                                <svg
+                                                                                    key={i}
+                                                                                    className={`w-5 h-5 ${
+                                                                                        i < 4 ? "text-yellow-400" : "text-gray-300"
+                                                                                    }`}
+                                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                                    fill="currentColor"
+                                                                                    viewBox="0 0 20 20"
+                                                                                >
+                                                                                    <path
+                                                                                        d="M10 15l5.09 3-1.45-6.3L18 8.27l-6.4-.56L10 2l-1.6 5.71L2 8.27l4.36 3.43L4.91 18z"/>
+                                                                                </svg>
+                                                                            ))}
+                                                                        </div>
+                                                                        <span className="text-gray-600 text-sm">(4.8)</span>
+                                                                    </div>
 
-                                                {/* Driver Bio */}
-                                                {/*<div className="mt-8 bg-gray-100 rounded-lg p-6">*/}
-                                                {/*    <h3 className="text-xl font-bold text-gray-800 mb-4">Bio</h3>*/}
-                                                {/*    <p className="text-gray-700 leading-relaxed">*/}
-                                                {/*        James is a highly skilled and experienced driver with a passion*/}
-                                                {/*        for ensuring passenger safety and comfort. Known for his*/}
-                                                {/*        punctuality and excellent navigation skills, he has*/}
-                                                {/*        successfully handled hundreds of trips across various terrains.*/}
-                                                {/*        Whether it’s a family vacation or a business trip, James is the*/}
-                                                {/*        go-to driver for a smooth and enjoyable ride.*/}
-                                                {/*    </p>*/}
-                                                {/*</div>*/}
+                                                                    <p className="text-gray-600 mt-4">
+                                                                    <span
+                                                                        className="font-bold">Experience:</span> {vehicleDetails.driverExperience}
+                                                                    </p>
+                                                                    <p className="text-gray-600 mt-2">
+                                                                    <span
+                                                                        className="font-bold">Languages:</span> {vehicleDetails.driverLanguages}
+                                                                    </p>
+                                                                </div>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <button
+                                                                onClick={openEditModalIII}
+                                                                className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                                                            >
+                                                                Add Driver
+                                                            </button>
+                                                        </>
+                                                    )
+                                                }
+
                                             </>
                                         )}
 
@@ -472,7 +516,8 @@ export default function VehicleProfileManage() {
                     {/*--------------------------- vehicle Edit Modal */}
                     {isEditModalOpen && (
                         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                            <div className="bg-white rounded-lg p-6 w-96 mt-[5rem]" style={{height: '600px', width: '700px', overflowY: 'auto'}}>
+                            <div className="bg-white rounded-lg p-6 w-96 mt-[5rem]"
+                                 style={{height: '600px', width: '700px', overflowY: 'auto'}}>
                                 <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
 
                                 {/* Current Image with "+" Mark */}
@@ -576,7 +621,7 @@ export default function VehicleProfileManage() {
                                     </label>
                                     <select
                                         disabled={true}
-                                        id="rentType"
+                                        name="rentType"
                                         value={updateVehicleData.rentType}
                                         onChange={handleInputChange}
                                         className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -607,8 +652,9 @@ export default function VehicleProfileManage() {
 
                     {/*--------------------------- driver Edit Modal */}
                     {isEditModalOpenII && (
-                        <div className="fixed  inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                            <div className="bg-white rounded-lg p-6 w-96 mt-[5rem]">
+                        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                            <div className="bg-white rounded-lg p-6 w-96 mt-[5rem]"
+                                 style={{height: '600px', width: '700px', overflowY: 'auto'}}>
                                 <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
 
                                 {/* Current Image with "+" Mark */}
@@ -660,7 +706,8 @@ export default function VehicleProfileManage() {
                                 {/* Languages Input with Tags */}
                                 <label className="block mb-2">
                                     Languages
-                                    <div className="w-full border border-gray-300 rounded-lg px-4 py-2 flex flex-wrap items-center">
+                                    <div
+                                        className="w-full border border-gray-300 rounded-lg px-4 py-2 flex flex-wrap items-center">
                                         <input
                                             type="text"
                                             name={"driverLanguages"}
@@ -685,6 +732,113 @@ export default function VehicleProfileManage() {
                                         className="bg-blue-500 text-white px-4 py-2 rounded-lg"
                                     >
                                         Update
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+
+                    {/*---------------------new driver add model*/}
+                    {isEditModalOpenIII && (
+                        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                            <div className="bg-white rounded-lg p-6 w-96 mt-[5rem]"
+                                 style={{height: '600px', width: '700px', overflowY: 'auto'}}>
+                                <h2 className="text-xl font-bold mb-4">Save New Driver</h2>
+
+                                {/* Current Image with "+" Mark */}
+                                <div className="relative mb-4">
+                                    <img
+                                        src={updatedDriverData.driverImage || USER}
+                                        alt="Profile"
+                                        className="w-32 h-32 mx-auto rounded-full border border-gray-300 object-cover"
+                                    />
+                                    <label
+                                        htmlFor="imageUpload"
+                                        className="absolute bottom-0 right-10 bg-blue-500 text-white w-8 h-8 flex items-center justify-center rounded-full cursor-pointer"
+                                    >
+                                        +
+                                    </label>
+                                    <input
+                                        type="file"
+                                        id="imageUpload"
+                                        accept="image/*"
+                                        className="hidden"
+                                        onChange={handleDriverImageChange}
+                                    />
+                                </div>
+
+                                {/* Name Input */}
+                                <label className="block mb-2">
+                                    Name
+                                    <input
+                                        type="text"
+                                        name={"driverName"}
+                                        onChange={handleInputChangeIII}
+                                        className="w-full border border-gray-300 rounded-lg px-4 py-2"
+                                    />
+                                </label>
+
+                                {/* age */}
+                                <label className="block mb-2">
+                                    Age
+                                    <input
+                                        type="text"
+                                        name={"driverAge"}
+                                        onChange={handleInputChangeIII}
+                                        className="w-full border border-gray-300 rounded-lg px-4 py-2"
+                                    />
+                                </label>
+
+                                <label className="block mb-2">
+                                    License
+                                    <input
+                                        type="text"
+                                        name={"driverLicense"}
+                                        onChange={handleInputChangeIII}
+                                        className="w-full border border-gray-300 rounded-lg px-4 py-2"
+                                    />
+                                </label>
+
+                                {/*  */}
+                                <label className="block mb-2">
+                                    Experience
+                                    <input
+                                        name={"driverExperience"}
+                                        onChange={handleInputChangeIII}
+                                        className="w-full border border-gray-300 rounded-lg px-4 py-2"
+                                    />
+                                </label>
+
+
+                                {/* Languages Input with Tags */}
+                                <label className="block mb-2">
+                                    Languages
+                                    <div
+                                        className="w-full border border-gray-300 rounded-lg px-4 py-2 flex flex-wrap items-center">
+                                        <input
+                                            type="text"
+                                            name={"driverLanguages"}
+                                            onChange={handleInputChangeIII}
+                                            placeholder="Add a language"
+                                            className="flex-grow outline-none"
+                                        />
+                                    </div>
+                                </label>
+
+
+                                <div className="flex justify-end space-x-2">
+                                    <button
+                                        onClick={closeEditModalIII}
+                                        className="text-gray-600 border border-gray-300 px-4 py-2 rounded-lg"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        onClick={handelNewDriverAdd}
+                                        className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+                                    >
+                                        Save
                                     </button>
                                 </div>
                             </div>
