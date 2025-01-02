@@ -5,11 +5,13 @@ import {postRequest} from '../../services/httpServices.js'
 // @ts-ignore
 import {BASE_URL, BUYER_SIGNUP_URL, GUIDE_SIGNUP_URL, VEHICLE_SIGNUP_URL} from "../../config&Varibles/endPointUrls.js";
 import toast, {Toaster} from "react-hot-toast";
+import {useNavigate} from "react-router-dom";
 
 
 
 const SignUpPage = () => {
 
+  const  navigation = useNavigate()
   const [accountType, setAccountType] = useState<any>('buyer');
   const [email, setEmail] = useState<any>(null);
   const [username, setUsername] = useState<any>(null);
@@ -23,7 +25,7 @@ const SignUpPage = () => {
 
     if (accountType == 'buyer') {
       if (email != null && username != null && password != null){
-        await postRequest({
+        const res = await postRequest({
           url: BASE_URL + BUYER_SIGNUP_URL,
           data: {
             accEmail: email,
@@ -33,6 +35,11 @@ const SignUpPage = () => {
             accType: accountType
           }
         })
+
+        if (res.status === 'SUCCESS') {
+          navigation('/sign-in')
+        }
+
       } else {
         toast.error("Please Input Details..")
       }
@@ -40,7 +47,7 @@ const SignUpPage = () => {
 
     if (accountType == 'seller' && sellerType == 'guide'){
       if (email != null && username != null && password != null){
-        await postRequest({
+        const res = await postRequest({
           url: BASE_URL + GUIDE_SIGNUP_URL,
           data: {
             accEmail: email,
@@ -49,6 +56,11 @@ const SignUpPage = () => {
             accType: accountType
           }
         })
+
+        if (res.status === 'SUCCESS') {
+          navigation('/sign-in')
+        }
+
       } else {
         toast.error("Please Input Details..")
       }
@@ -57,7 +69,7 @@ const SignUpPage = () => {
 
     if (accountType == 'seller' && sellerType == 'rent_vehicle'){
       if (email != null && username != null && password != null){
-        await postRequest({
+        const res = await postRequest({
           url: BASE_URL + VEHICLE_SIGNUP_URL,
           data: {
             accEmail: email,
@@ -66,6 +78,11 @@ const SignUpPage = () => {
             accType: accountType
           }
         })
+
+        if (res.status === 'SUCCESS') {
+          navigation('/sign-in')
+        }
+
       } else {
         toast.error("Please Input Details..")
       }

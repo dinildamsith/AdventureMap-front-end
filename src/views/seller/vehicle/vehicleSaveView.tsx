@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import Layout from "../../../layout";
 // @ts-ignore
 import {BASE_URL, IMAGE_UPLOAD_URL, VEHICLE_DETAILS_SAVE_URL} from "../../../config&Varibles/endPointUrls.js";
 // @ts-ignore
 import {postRequest} from "../../../services/httpServices.js";
+import SubLayout from "../../../layout/subLayout.tsx";
 
 export default function VehicleSaveView() {
 
@@ -130,7 +130,7 @@ export default function VehicleSaveView() {
     }
 
     return (
-        <Layout>
+        <SubLayout>
             <div className="flex justify-center items-center min-h-screen px-4">
                 <div className="max-w-2xl w-full bg-white rounded-lg shadow-lg p-6 mt-10">
                     <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
@@ -401,6 +401,6 @@ export default function VehicleSaveView() {
                     </div>
                 </div>
             </div>
-        </Layout>
+        </SubLayout>
     );
 }

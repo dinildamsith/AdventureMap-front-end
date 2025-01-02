@@ -1,4 +1,4 @@
-import Layout from "../../../layout";
+import Layout from "../../../layout/mainLayout.tsx";
 import VehicleDetailsCard from "../../../component/vehiclesDetailsCard";
 
 export default function Vehicles(){

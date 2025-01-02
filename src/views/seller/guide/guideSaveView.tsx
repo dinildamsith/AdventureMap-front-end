@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Layout from "../../../layout";
+import Layout from "../../../layout/mainLayout.tsx";
 // @ts-ignore
 import {postRequest} from "../../../services/httpServices";
 // @ts-ignore

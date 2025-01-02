@@ -1,4 +1,4 @@
-import Layout from "../../../layout";
+import Layout from "../../../layout/mainLayout.tsx";
 import {useEffect, useState} from "react";
 import {PencilIcon, TrashIcon} from "@heroicons/react/16/solid";
 // @ts-ignore

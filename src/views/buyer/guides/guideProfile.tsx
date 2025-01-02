@@ -1,4 +1,4 @@
-import Layout from "../../../layout";
+import Layout from "../../../layout/mainLayout.tsx";
 import { useState } from "react";
 
 export default function GuideProfile() {

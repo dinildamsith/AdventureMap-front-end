@@ -1,4 +1,4 @@
-import Layout from "../../layout";
+import Layout from "../../layout/mainLayout.tsx";
 import Background from "../../assets/bacgroudnImage.jpeg"
 import {useEffect, useState} from "react";
 import Card from "../../component/offerCard";

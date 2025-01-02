@@ -1,4 +1,4 @@
-import Layout from "../../../layout";
+import Layout from "../../../layout/mainLayout.tsx";
 import GuidesDetailsCard from "../../../component/guidesDetailsCard";
 
 export default function Guides(){
