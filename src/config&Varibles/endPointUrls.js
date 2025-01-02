@@ -12,6 +12,7 @@ export const GET_SELECTED_VEHICLE = "/api/v1/guide/selected-vehicle/"
 export const VEHICLE_DETAILS_UPDATE_URL = "/api/v1/vehicle/update/"
 export const DRIVER_DETAILS_UPDATE_URL = "/api/v1/vehicle/update-driver/"
 export const NEW_DRIVER_SAVE_URL = "/api/v1/vehicle/add-driver/"
+export const DELETE_DRIVER_URL = "/api/v1/driver/delete/"
 
 export const GUIDE_SAVE_URL = "/api/v1/guide/save"
 export const SELECTED_GUIDE_GET_URL = "/api/v1/guide/selected-guide/"

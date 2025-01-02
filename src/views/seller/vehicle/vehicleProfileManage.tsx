@@ -1,10 +1,10 @@
 import Layout from "../../../layout";
 import {useEffect, useState} from "react";
-import {PencilIcon} from "@heroicons/react/16/solid";
+import {PencilIcon, TrashIcon} from "@heroicons/react/16/solid";
 // @ts-ignore
-import {getRequest, postRequest, putRequest} from "../../../services/httpServices.js";
+import {deleteRequest, getRequest, postRequest, putRequest} from "../../../services/httpServices.js";
 // @ts-ignore
-import {BASE_URL, DRIVER_DETAILS_UPDATE_URL, GET_SELECTED_VEHICLE, IMAGE_UPLOAD_URL, NEW_DRIVER_SAVE_URL, VEHICLE_DETAILS_UPDATE_URL} from "../../../config&Varibles/endPointUrls.js";
+import {BASE_URL, DELETE_DRIVER_URL, DRIVER_DETAILS_UPDATE_URL, GET_SELECTED_VEHICLE,IMAGE_UPLOAD_URL, NEW_DRIVER_SAVE_URL, VEHICLE_DETAILS_UPDATE_URL} from "../../../config&Varibles/endPointUrls.js";
 import USER from '../../../assets/user.jpg'
 
 
@@ -172,6 +172,13 @@ export default function VehicleProfileManage() {
         const { name, value } = e.target;
         setNewDriverData({ ...newDriverData, [name]: value });
     };
+
+
+    const driverDeleteHandel = async () => {
+        await deleteRequest({
+            url: BASE_URL + DELETE_DRIVER_URL + localStorage.getItem("loginUserEmail"),
+        })
+    }
 
 
     const handelNewDriverAdd = async () => {
@@ -446,6 +453,19 @@ export default function VehicleProfileManage() {
                                                                                 aria-hidden="true"
                                                                             />
                                                                             Edit
+                                                                        </button>
+
+                                                                        <button
+                                                                            type="button"
+                                                                            onClick={driverDeleteHandel}
+                                                                            className="justify-center w-[100px] mt-0 text-white bg-amber-600 hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center dark:focus:ring-[#4285F4]/55 me-2 mb-2"
+                                                                        >
+                                                                            {/* Heroicon: User Plus Icon */}
+                                                                            <TrashIcon
+                                                                                className="w-4 h-4 me-2 text-current"
+                                                                                aria-hidden="true"
+                                                                            />
+                                                                            Delete
                                                                         </button>
                                                                     </div>
 
