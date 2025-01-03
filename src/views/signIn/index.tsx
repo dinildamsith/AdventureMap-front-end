@@ -31,7 +31,7 @@ const SignInPage = () => {
                 })
 
                 if (res.status === 'SUCCESS'){
-                    navigation("")
+                    navigation("/buyer-profile")
                 }
             }
 

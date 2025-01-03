@@ -12,6 +12,7 @@ import GuideProfileManage from "./views/seller/guide/guideProfileManage.tsx";
 import VehicleProfileManage from "./views/seller/vehicle/vehicleProfileManage.tsx";
 import GuideSaveView from "./views/seller/guide/guideSaveView.tsx";
 import VehicleSaveView from "./views/seller/vehicle/vehicleSaveView.tsx";
+import BuyerProfile from "./views/buyer/buyerProfile.tsx";
 
 function App() {
     return (
@@ -28,6 +29,7 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/sign-up" element={<SignUpPage />} />
                     <Route path="/sign-in" element={<SignInPage />} />
+                    <Route path="/buyer-profile" element={<BuyerProfile/>} />
                     <Route path="/guides" element={<Guides />} />
                     <Route path="/guide-profile" element={<GuideProfile />} />
                     <Route path="/vehicles" element={<Vehicles />} />
