@@ -8,7 +8,7 @@ export default function OrderNotify() {
             >
                 <div className="flex items-center mb-3">
                     <span className="mb-1 text-sm font-semibold text-gray-900 dark:text-white">
-                        New notification
+                        New Order
                     </span>
                     <button
                         type="button"
@@ -60,7 +60,7 @@ export default function OrderNotify() {
                     </div>
                     <div className="ms-3 text-sm font-normal">
                         <div className="text-sm font-semibold text-gray-900 dark:text-white">Bonnie Green</div>
-                        <div className="text-sm font-normal">commented on your photo</div>
+                        <div className="text-sm font-normal">You have new order</div>
                         <span className="text-xs font-medium text-blue-600 dark:text-blue-500">a few seconds ago</span>
                     </div>
                 </div>
