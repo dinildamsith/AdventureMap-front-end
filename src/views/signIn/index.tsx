@@ -31,6 +31,7 @@ const SignInPage = () => {
                 })
 
                 if (res.status === 'SUCCESS'){
+                    localStorage.setItem("loginUserEmail", res.data.accEmail)
                     navigation("/buyer-profile")
                 }
             }
