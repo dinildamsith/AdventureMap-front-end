@@ -13,6 +13,7 @@ import VehicleProfileManage from "./views/seller/vehicle/vehicleProfileManage.ts
 import GuideSaveView from "./views/seller/guide/guideSaveView.tsx";
 import VehicleSaveView from "./views/seller/vehicle/vehicleSaveView.tsx";
 import BuyerProfile from "./views/buyer/buyerProfile.tsx";
+import OrderBuyView from "./views/buyer/orderBuyView.tsx";
 
 function App() {
     return (
@@ -38,6 +39,7 @@ function App() {
                     <Route path="/vehicle-manage" element={<VehicleProfileManage />} />
                     <Route path="/guide-save" element={<GuideSaveView />} />
                     <Route path="/vehicle-save" element={<VehicleSaveView />} />
+                    <Route path="/order" element={<OrderBuyView/>} />
                 </Routes>
             </BrowserRouter>
         </>
