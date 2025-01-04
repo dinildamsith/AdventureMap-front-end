@@ -116,7 +116,9 @@ export default function VehicleSaveView() {
             data: driverDetails
         })
 
-        if (res === 'SUCCESS') {
+        if (res.status === 'SUCCESS') {
+            navigation("/vehicle-manage")
+        } else {
             navigation("/vehicle-manage")
         }
         console.log(driverDetails)
