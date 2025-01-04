@@ -3,7 +3,7 @@ import {PencilIcon, TrashIcon} from "@heroicons/react/16/solid";
 // @ts-ignore
 import {deleteRequest, getRequest, postRequest, putRequest} from "../../../services/httpServices.js";
 // @ts-ignore
-import {BASE_URL, DELETE_DRIVER_URL, DRIVER_DETAILS_UPDATE_URL, GET_SELECTED_VEHICLE,IMAGE_UPLOAD_URL, NEW_DRIVER_SAVE_URL, VEHICLE_DETAILS_UPDATE_URL} from "../../../config&Varibles/endPointUrls.js";
+import {BASE_URL, DELETE_DRIVER_URL, DRIVER_DETAILS_UPDATE_URL, GET_SELECTED_VEHICLE, IMAGE_UPLOAD_URL, NEW_DRIVER_SAVE_URL, VEHICLE_DETAILS_UPDATE_URL, VEHICLE_RENT_PENDING_ORDERS_GET_URL} from "../../../config&Varibles/endPointUrls.js";
 import USER from '../../../assets/user.jpg'
 import SubLayout from "../../../layout/subLayout.tsx";
 import OrderNotify from "../../../component/orderNotify";
@@ -11,7 +11,7 @@ import OrderNotify from "../../../component/orderNotify";
 
 export default function VehicleProfileManage() {
     // State to track the selected tab
-    const [activeTab, setActiveTab] = useState("about");
+    const [activeTab, setActiveTab] = useState<any>("about");
 
 
     //----------------vehicle
@@ -58,6 +58,8 @@ export default function VehicleProfileManage() {
     };
 
 
+    const [pendingOrder, setPendingOrders] = useState<any>([])
+
     useEffect(() => {
 
         const getVehicle = async () => {
@@ -100,6 +102,20 @@ export default function VehicleProfileManage() {
             console.log(res)
         }
 
+
+        const pendingVehicleRentOrdersGet = async () => {
+           const res = await getRequest({url: BASE_URL + VEHICLE_RENT_PENDING_ORDERS_GET_URL + localStorage.getItem("loginUserEmail")})
+
+            if (res.status === 'SUCCESS') {
+                setPendingOrders(res.data)
+            } else {
+                setPendingOrders([])
+            }
+
+            console.log(res)
+        }
+
+        pendingVehicleRentOrdersGet()
         getVehicle()
     }, []);
 
@@ -541,11 +557,18 @@ export default function VehicleProfileManage() {
                                                                     boxSizing: 'border-box', // Ensure padding doesn't affect dimensions
                                                                 }}
                                                             >
-                                                                <OrderNotify/>
-                                                                <OrderNotify/>
-                                                                <OrderNotify/>
-                                                                <OrderNotify/>
-                                                                <OrderNotify/>
+
+                                                                {
+                                                                    pendingOrder && pendingOrder.length > 0 ? (
+                                                                        pendingOrder.map((order: any) => <OrderNotify key={order.id} order={order} />)
+                                                                    ) : (
+                                                                        <>
+                                                                            <p className="text-gray-500">No Pending Orders</p>
+                                                                        </>
+
+                                                                    )
+                                                                }
+
                                                             </div>
 
                                                         </>
