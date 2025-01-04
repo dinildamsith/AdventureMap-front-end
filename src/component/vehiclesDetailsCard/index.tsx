@@ -27,7 +27,7 @@ export default function VehicleDetailsCard(props: any) {
                 {/* Display the current image */}
                 <a href="vehicle-profile">
                     <img
-                        className="p-8 rounded-t-lg"
+                        className="p-8 rounded-t-lg w-[650px] h-[250px] object-cover"
                         src={images[currentImageIndex]}
                         alt="vehicle image"
                     />
@@ -50,8 +50,11 @@ export default function VehicleDetailsCard(props: any) {
             </div>
 
             <div className="px-5 pb-5">
-                <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white uppercase">
                     {props.name}
+                </h5>
+                <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white uppercase">
+                    {props.vehicleNumber}
                 </h5>
                 <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
                     Specifications: {props.spec.join(", ")}
@@ -96,7 +99,7 @@ export default function VehicleDetailsCard(props: any) {
                     </span>
                 </div>
                 <div className="flex items-center justify-between">
-                    <span className="text-3xl font-bold text-gray-900 dark:text-white">{props.price}</span>
+                    <span className="text-3xl font-bold text-gray-900 dark:text-white">Rs:{props.price}.00</span>
                     <a
                         href="vehicle-profile"
                         className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
