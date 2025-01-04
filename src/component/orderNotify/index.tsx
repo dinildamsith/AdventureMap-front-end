@@ -1,4 +1,4 @@
-export default function OrderNotify() {
+export default function OrderNotify(params:any) {
     return (
         <>
             <div
@@ -59,9 +59,11 @@ export default function OrderNotify() {
 
                     </div>
                     <div className="ms-3 text-sm font-normal">
-                        <div className="text-sm font-semibold text-gray-900 dark:text-white">Bonnie Green</div>
+                        <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                            {params.order.buyerEmail.substring(0, params.order.buyerEmail.indexOf("@"))}
+                        </div>
                         <div className="text-sm font-normal">You have new order</div>
-                        <span className="text-xs font-medium text-blue-600 dark:text-blue-500">a few seconds ago</span>
+                        <span className="text-xs font-medium text-blue-600 dark:text-blue-500">Order Price: {params.order.orderPrice}</span>
                     </div>
                 </div>
                 {/* Order Action Buttons */}

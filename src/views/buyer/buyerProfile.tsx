@@ -1,6 +1,10 @@
 import {PencilIcon} from "@heroicons/react/16/solid";
 import Layout from "../../layout/mainLayout.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+// @ts-ignore
+import {getRequest} from "../../services/httpServices.js";
+// @ts-ignore
+import {BASE_URL, SIGN_IN_BUYER_DETAILS_GET_URL} from "../../config&Varibles/endPointUrls.js";
 
 
 
@@ -13,6 +17,21 @@ export default function BuyerProfile() {
     const closeEditModal = () => {
         setIsEditModalOpen(false);
     };
+
+    const [buyerData, setBuyerData] = useState<any>({})
+
+    useEffect(() => {
+
+        const signInBuyerGet = async () => {
+            const res = await getRequest({
+                url: BASE_URL + SIGN_IN_BUYER_DETAILS_GET_URL + localStorage.getItem("loginUserEmail")
+            })
+            setBuyerData(res.data)
+            console.log(res)
+        }
+
+        signInBuyerGet()
+    }, []);
 
 
     return (
@@ -31,8 +50,8 @@ export default function BuyerProfile() {
                                                 className="w-32 h-28 mx-auto rounded-full  object-cover"
                                                 alt="profile"
                                             />
-                                            <h1 className="text-xl font-bold">{"Dinil Damsith"}</h1>
-                                            <h1 className="text-[16px] font-bold">{"Buyer Profile"}</h1>
+                                            <h1 className="text-xl font-bold">{buyerData.accUserName}</h1>
+                                            <h1 className="text-[16px] font-bold">{buyerData.accEmail}</h1>
 
                                             <button type="button"
                                                     className=" justify-center w-full mt-6 text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 me-2 mb-2">
@@ -46,6 +65,8 @@ export default function BuyerProfile() {
                                             <span
                                                 className="text-gray-700 uppercase font-bold tracking-wider mb-2">Details</span>
                                             <ul>
+                                                <li className="mb-2 text-black">Acc Type: {buyerData.accType}</li>
+                                                <li className="mb-2 text-black">Acc Currency: {buyerData.currency}</li>
                                                 <li className="mb-2 text-black">Last Login Date: {""}</li>
                                                 <li className="mb-2 text-black">Last Login Time: {""}</li>
                                             </ul>
