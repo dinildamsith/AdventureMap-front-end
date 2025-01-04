@@ -1,7 +1,27 @@
 import Layout from "../../../layout/mainLayout.tsx";
 import VehicleDetailsCard from "../../../component/vehiclesDetailsCard";
+import {useEffect, useState} from "react";
+// @ts-ignore
+import {getRequest} from "../../../services/httpServices.js";
+// @ts-ignore
+import {ALL_AVAILABLE_VEHICLES_GET_URL, BASE_URL} from "../../../config&Varibles/endPointUrls.js";
 
 export default function Vehicles(){
+
+    const [allAvailableVehicles, setAllAvailableVehicles] = useState([])
+
+    useEffect(() => {
+
+        const getAllAvailableVehicles = async () => {
+            const res = await getRequest({url: BASE_URL + ALL_AVAILABLE_VEHICLES_GET_URL})
+            console.log(res)
+
+            setAllAvailableVehicles(res.data)
+        }
+
+        getAllAvailableVehicles()
+    }, []);
+
     return (
         <>
             <Layout>
@@ -38,8 +58,15 @@ export default function Vehicles(){
 
                     {/*-------------------vehicles-----------------*/}
                     <div className="flex flex-wrap justify-center mt-20 gap-10">  {/* Added gap-4 for spacing */}
-                        <VehicleDetailsCard name={"Toyata"} rate={"4.99"} price={"RS.5600"} spec={["AC","Luxury"]} images={["https://www.mbusa.com/content/dam/mb-nafta/us/myco/my25/eqb-class/class-page/series/2025-EQB-SUV-CPH-XL.jpg","https://www.mbusa.com/content/dam/mb-nafta/us/myco/my25/eqe-class/eqe-sedan/class-page/series/2025-EQE-SEDAN-CPH-XL.jpg"]}/>
-                        <VehicleDetailsCard name={"Toyata"} rate={"4.99"} price={"RS.5600"} spec={["AC","Luxury"]} images={["https://www.mbusa.com/content/dam/mb-nafta/us/myco/my25/eqb-class/class-page/series/2025-EQB-SUV-CPH-XL.jpg","https://www.mbusa.com/content/dam/mb-nafta/us/myco/my25/eqe-class/eqe-sedan/class-page/series/2025-EQE-SEDAN-CPH-XL.jpg"]}/>
+
+                        {
+                            allAvailableVehicles.map((vehicle:any) => (
+                                <>
+                                    <VehicleDetailsCard name={vehicle.vehicleBrand} vehicleNumber={vehicle.vehicleNumber} rate={"4.99"} price={vehicle.rentAmount} spec={[vehicle.vehicleType]} images={vehicle.vehicleImage}/>
+                                </>
+                            ))
+                        }
+
                     </div>
                 </div>
             </Layout>

@@ -4,6 +4,7 @@ export const BUYER_SIGNUP_URL = '/api/v1/buyer/signup';
 export const GUIDE_SIGNUP_URL = "/api/v1/guide/signup"
 export const VEHICLE_SIGNUP_URL = "/api/v1/vehicle/signup"
 export const VEHICLE_RENT_PENDING_ORDERS_GET_URL = "/api/v1/order/pending-vehicle-orders/"
+export const ALL_AVAILABLE_VEHICLES_GET_URL = "/api/v1/get-all-vehicles"
 
 export const BUYER_SIGN_IN_URL = "/api/v1/buyer/sign-in"
 export const GUIDE_SIGN_IN_URL = "/api/v1/guide/sign-in"
