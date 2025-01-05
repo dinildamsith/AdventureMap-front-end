@@ -62,7 +62,7 @@ export default function Vehicles(){
                         {
                             allAvailableVehicles.map((vehicle:any) => (
                                 <>
-                                    <VehicleDetailsCard name={vehicle.vehicleBrand} vehicleNumber={vehicle.vehicleNumber} rate={"4.99"} price={vehicle.rentAmount} spec={[vehicle.vehicleType]} images={vehicle.vehicleImage}/>
+                                    <VehicleDetailsCard email={vehicle.accEmail} name={vehicle.vehicleBrand} vehicleNumber={vehicle.vehicleNumber} rate={"4.99"} price={vehicle.rentAmount} spec={[vehicle.vehicleType]} images={vehicle.vehicleImage}/>
                                 </>
                             ))
                         }

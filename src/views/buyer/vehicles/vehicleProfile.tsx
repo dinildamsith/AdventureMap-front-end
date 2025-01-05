@@ -1,9 +1,29 @@
 import Layout from "../../../layout/mainLayout.tsx";
-import { useState } from "react";
+import {useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
+// @ts-ignore
+import {getRequest} from "../../../services/httpServices.js";
+// @ts-ignore
+import {BASE_URL, GET_SELECTED_VEHICLE} from "../../../config&Varibles/endPointUrls.js";
+
 
 export default function VehicleProfile() {
+
+    const { vehicleEmail } = useParams();
+
     // State to track the selected tab
     const [activeTab, setActiveTab] = useState("about");
+    const [vehicleDetails, setVehicleDetails] = useState<any>({})
+
+    useEffect(() => {
+        const getVehicle = async () => {
+            const res = await getRequest({url: BASE_URL + GET_SELECTED_VEHICLE + vehicleEmail})
+            setVehicleDetails(res.data)
+            console.log(res)
+        }
+
+        getVehicle()
+    }, []);
 
     return (
         <>

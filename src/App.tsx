@@ -34,7 +34,7 @@ function App() {
                     <Route path="/guides" element={<Guides />} />
                     <Route path="/guide-profile" element={<GuideProfile />} />
                     <Route path="/vehicles" element={<Vehicles />} />
-                    <Route path="/vehicle-profile" element={<VehicleProfile />} />
+                    <Route path="/vehicle-profile/:vehicleEmail" element={<VehicleProfile />} />
                     <Route path="/guide-manage" element={<GuideProfileManage />} />
                     <Route path="/vehicle-manage" element={<VehicleProfileManage />} />
                     <Route path="/guide-save" element={<GuideSaveView />} />
