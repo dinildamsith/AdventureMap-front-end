@@ -39,7 +39,7 @@ function App() {
                     <Route path="/vehicle-manage" element={<VehicleProfileManage />} />
                     <Route path="/guide-save" element={<GuideSaveView />} />
                     <Route path="/vehicle-save" element={<VehicleSaveView />} />
-                    <Route path="/order" element={<OrderBuyView/>} />
+                    <Route path="/order/:orderVehicle" element={<OrderBuyView/>} />
                 </Routes>
             </BrowserRouter>
         </>
