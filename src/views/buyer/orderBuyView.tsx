@@ -12,6 +12,7 @@ export default function OrderBuyView() {
     const {orderVehicle} = useParams()
     const [startDate, setStartDate] = useState<string | null>(null);
     const [endDate, setEndDate] = useState<string | null>(null);
+    const [totalAmount, setTotalAmount] = useState<any>(0)
 
     // Function to calculate the number of days between two dates
     const calculateDays = (start: string | null, end: string | null) => {
@@ -23,6 +24,13 @@ export default function OrderBuyView() {
     };
 
     const daysCount = calculateDays(startDate, endDate);
+
+
+    useEffect(() => {
+
+        setTotalAmount(Number(daysCount) * Number(vehicleDetails.rentAmount))
+
+    }, [daysCount]);
 
 
     const [vehicleDetails, setVehicleDetails] = useState<any>({})
@@ -156,6 +164,19 @@ export default function OrderBuyView() {
                             type="text"
                             className="w-full p-2 border border-gray-300 rounded-md"
                             value={daysCount}
+                            placeholder="Calculated days"
+                            disabled
+                        />
+                    </div>
+
+
+                    {/* Total Days */}
+                    <div className="mb-4">
+                        <label className="block font-medium mb-2">Total Amount:</label>
+                        <input
+                            type="number"
+                            className="w-full p-2 border border-gray-300 rounded-md"
+                            value={totalAmount}
                             placeholder="Calculated days"
                             disabled
                         />
