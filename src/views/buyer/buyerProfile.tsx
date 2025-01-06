@@ -4,7 +4,8 @@ import {useEffect, useState} from "react";
 // @ts-ignore
 import {getRequest} from "../../services/httpServices.js";
 // @ts-ignore
-import {BASE_URL, SIGN_IN_BUYER_DETAILS_GET_URL} from "../../config&Varibles/endPointUrls.js";
+import {BASE_URL, BUYER_SELECTED_ORDERS_GET, SIGN_IN_BUYER_DETAILS_GET_URL} from "../../config&Varibles/endPointUrls.js";
+import NotifyII from "../../component/orderNotify/notifyII.tsx";
 
 
 
@@ -18,6 +19,7 @@ export default function BuyerProfile() {
         setIsEditModalOpen(false);
     };
 
+    const [filterOrders, setFilterOrders] = useState([])
     const [buyerData, setBuyerData] = useState<any>({})
 
     useEffect(() => {
@@ -30,6 +32,15 @@ export default function BuyerProfile() {
             console.log(res)
         }
 
+
+        const buyerPendingOrdersGet = async () => {
+            const res = await getRequest({
+                url : BASE_URL + BUYER_SELECTED_ORDERS_GET + localStorage.getItem("loginUserEmail") +"/"+ "PENDING"
+            })
+            setFilterOrders(res.data)
+        }
+
+        buyerPendingOrdersGet()
         signInBuyerGet()
     }, []);
 
@@ -81,10 +92,10 @@ export default function BuyerProfile() {
                                         {/* Navigation Tabs */}
                                         <div className="flex space-x-4 mb-6">
                                             <button
-                                                onClick={() => setActiveTab("parchesOrders")}
-                                                className={`text-xl font-bold ${activeTab === "parchesOrders" ? "text-blue-500" : "text-gray-700"}`}
+                                                onClick={() => setActiveTab("orders")}
+                                                className={`text-xl font-bold ${activeTab === "orders" ? "text-blue-500" : "text-gray-700"}`}
                                             >
-                                                Parches Orders
+                                                Orders
                                             </button>
                                             <button
                                                 onClick={() => setActiveTab("dashBord")}
@@ -96,35 +107,52 @@ export default function BuyerProfile() {
 
 
                                         {/* Reviews Section */}
-                                        {activeTab === "parchesOrders" && (
+                                        {activeTab === "orders" && (
                                             <>
-                                                <div className="flex flex-col space-y-4">
-                                                    <div
-                                                        className="flex items-center bg-gray-100 p-4 rounded-lg shadow-md">
-                                                        <img
-                                                            src="https://randomuser.me/api/portraits/women/85.jpg"
-                                                            alt="reviewer"
-                                                            className="w-12 h-12 rounded-full mr-4"
-                                                        />
-                                                        <div>
-                                                            <h3 className="text-lg font-semibold">Alice Johnson</h3>
-                                                            <p className="text-gray-700">"It was an amazing experience! Highly recommended."</p>
-                                                        </div>
+                                                <div className="mb-6">
+                                                    {/* Filter by Order Status */}
+                                                    <div className="flex flex-wrap space-x-4 mb-4">
+                                                        <label className="block">
+                                                            <span className="text-gray-700 font-medium">Filter by Status</span>
+                                                            <select
+                                                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                                onChange={(e) => console.log("Selected Status:", e.target.value)}
+                                                            >
+                                                                <option value="all">All Orders</option>
+                                                                <option value="pending" selected={true}>Pending Orders</option>
+                                                                <option value="completed">Completed Orders</option>
+                                                                <option value="ongoing">Ongoing Orders</option>
+                                                            </select>
+                                                        </label>
+                                                        {/* Filter by Buy Time */}
+                                                        <label className="block">
+                                                            <span className="text-gray-700 font-medium">Buy Time</span>
+                                                            <select
+                                                                className="block bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                                onChange={(e) => console.log("Selected Buy Time:", e.target.value)}
+                                                            >
+                                                                <option value="last-24-hours">Last 24 Hours</option>
+                                                                <option value="last-7-days">Last 7 Days</option>
+                                                                <option value="last-30-days">Last 30 Days</option>
+                                                            </select>
+                                                        </label>
                                                     </div>
-                                                    <div className="flex items-center bg-gray-100 p-4 rounded-lg shadow-md">
-                                                        <img
-                                                            src="https://randomuser.me/api/portraits/men/92.jpg"
-                                                            alt="reviewer"
-                                                            className="w-12 h-12 rounded-full mr-4"
-                                                        />
-                                                        <div>
-                                                            <h3 className="text-lg font-semibold">Bob Smith</h3>
-                                                            <p className="text-gray-700">"Very professional and knowledgeable. Would definitely book again."</p>
-                                                        </div>
+
+                                                    {/* Filtered Orders */}
+                                                    <div className="flex flex-col space-y-4">
+                                                        {
+                                                            filterOrders.map((order:any) => (
+                                                                <>
+                                                                    <NotifyII order={order}/>
+                                                                </>
+                                                            ))
+                                                        }
+
                                                     </div>
                                                 </div>
                                             </>
                                         )}
+
 
                                     </div>
                                 </div>

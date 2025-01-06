@@ -25,6 +25,7 @@ export const GUIDE_GALLERY_UPDATE_URL = "/api/v1/guide/update-gallery"
 
 export const VEHICLE_ORDER_BUY_URL = "/api/v1/order/perches-vehicle"
 export const VEHICLE_RENT_ORDER_ACCEPT_URL = "/api/v1/order/accept-vehicle-order/"
+export const BUYER_SELECTED_ORDERS_GET = "/api/v1/buyer/pending-orders/"
 
 
 export const IMAGE_UPLOAD_URL = "/upload"
