@@ -1,14 +1,15 @@
 import {useEffect, useState} from "react";
 import SubLayout from "../../layout/subLayout.tsx";
 // @ts-ignore
-import {getRequest} from "../../services/httpServices.js";
+import {getRequest, postRequest} from "../../services/httpServices.js";
 // @ts-ignore
-import {BASE_URL, GET_SELECTED_VEHICLE} from "../../config&Varibles/endPointUrls.js";
-import {useParams} from "react-router-dom";
+import {BASE_URL, GET_SELECTED_VEHICLE, VEHICLE_ORDER_BUY_URL} from "../../config&Varibles/endPointUrls.js";
+import {useNavigate, useParams} from "react-router-dom";
 
 export default function OrderBuyView() {
 
 
+    const navigation = useNavigate()
     const {orderVehicle} = useParams()
     const [startDate, setStartDate] = useState<string | null>(null);
     const [endDate, setEndDate] = useState<string | null>(null);
@@ -30,6 +31,7 @@ export default function OrderBuyView() {
 
         setTotalAmount(Number(daysCount) * Number(vehicleDetails.rentAmount))
 
+        console.log(startDate)
     }, [daysCount]);
 
 
@@ -45,6 +47,26 @@ export default function OrderBuyView() {
         getVehicle()
     }, []);
 
+
+    const orderConfirmHandel = async () => {
+        console.log(localStorage.getItem("loginUserEmail"))
+        const res = await postRequest({
+            url: BASE_URL + VEHICLE_ORDER_BUY_URL,
+            data: {
+                orderType: 'RENT_VEHICLE',
+                orderPrice: String(totalAmount),
+                orderStartDuration: startDate,
+                orderEndDuration: endDate,
+                buyerEmail: localStorage.getItem("loginUserEmail"),
+                vehicle: orderVehicle
+
+            }
+        })
+
+        if (res.status === 'SUCCESS') {
+            navigation("/buyer-profile")
+        }
+    }
 
 
     return (
@@ -182,7 +204,7 @@ export default function OrderBuyView() {
                         />
                     </div>
 
-                    <button className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-900 transition">
+                    <button className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-900 transition" onClick={ () => orderConfirmHandel()}>
                         Confirm Order
                     </button>
                 </div>
