@@ -21,6 +21,7 @@ export const GUIDE_SAVE_URL = "/api/v1/guide/save"
 export const SELECTED_GUIDE_GET_URL = "/api/v1/guide/selected-guide/"
 export const GUIDE_UPDATE_URL = "/api/v1/guide/update"
 export const GUIDE_GALLERY_UPDATE_URL = "/api/v1/guide/update-gallery"
+export const GET_ALL_AVAILABLE_GUIDES = "/api/v1/guides"
 
 
 export const VEHICLE_ORDER_BUY_URL = "/api/v1/order/perches-vehicle"

@@ -1,7 +1,28 @@
 import Layout from "../../../layout/mainLayout.tsx";
 import GuidesDetailsCard from "../../../component/guidesDetailsCard";
+import {useEffect, useState} from "react";
+// @ts-ignore
+import {getRequest} from "../../../services/httpServices.js";
+// @ts-ignore
+import {BASE_URL, GET_ALL_AVAILABLE_GUIDES} from "../../../config&Varibles/endPointUrls.js";
 
 export default function Guides(){
+
+
+    const [allGuides, setAllGuides] = useState([])
+
+    useEffect(() => {
+
+        const getAllGuides = async () => {
+            const res = await getRequest({
+                url: BASE_URL + GET_ALL_AVAILABLE_GUIDES
+            })
+            setAllGuides(res.data)
+        }
+
+        getAllGuides()
+    }, []);
+
     return (
         <>
             <Layout>
@@ -38,8 +59,20 @@ export default function Guides(){
 
                     {/*-------------------guides-----------------*/}
                     <div className="flex flex-wrap justify-center mt-20 gap-10">  {/* Added gap-4 for spacing */}
-                        <GuidesDetailsCard name={"Dinil"} rate={"4.99"} price={"RS.5600"} languages={["English","Hindi"]} image={"https://storage.googleapis.com/stateless-ceoblognation-com/2023/03/41fcf2fd-portrait-2865605_1920-1536x1024.jpg"}/>
-                        <GuidesDetailsCard name={"Dinil"} rate={"5.00"} price={"RS.5600"} languages={["English","Hindi"]} image={"https://storage.googleapis.com/stateless-ceoblognation-com/2023/03/41fcf2fd-portrait-2865605_1920-1536x1024.jpg"}/>
+
+
+                        {allGuides?.map((guide: any) => (
+                            <GuidesDetailsCard
+                                key={guide._id} // Corrected to use _id as the unique key
+                                name={guide.guideName || "Dinil"} // Assuming guideName is the correct field for the name
+                                rate={"4.99"} // Dynamic rate based on the API response, fallback to 4.99
+                                price={`RS.${guide.guidePrice || "5600"}`} // Dynamic price, fallback to RS.5600
+                                languages={guide.languages?.[0]?.split('#') || ["English", "Hindi"]} // Assuming languages are comma separated or split by #. Adjust as per your format
+                                image={guide.guideImage || "https://storage.googleapis.com/stateless-ceoblognation-com/2023/03/41fcf2fd-portrait-2865605_1920-1536x1024.jpg"}
+                            />
+                        ))}
+
+
                     </div>
                 </div>
             </Layout>
