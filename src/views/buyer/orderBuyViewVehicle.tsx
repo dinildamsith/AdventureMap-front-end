@@ -3,10 +3,10 @@ import SubLayout from "../../layout/subLayout.tsx";
 // @ts-ignore
 import {getRequest, postRequest} from "../../services/httpServices.js";
 // @ts-ignore
-import {BASE_URL, GET_SELECTED_VEHICLE, VEHICLE_ORDER_BUY_URL} from "../../config&Varibles/endPointUrls.js";
+import {BASE_URL, GET_SELECTED_VEHICLE, ORDER_BUY_URL} from "../../config&Varibles/endPointUrls.js";
 import {useNavigate, useParams} from "react-router-dom";
 
-export default function OrderBuyView() {
+export default function OrderBuyViewVehicle() {
 
 
     const navigation = useNavigate()
@@ -51,7 +51,7 @@ export default function OrderBuyView() {
     const orderConfirmHandel = async () => {
         console.log(localStorage.getItem("loginUserEmail"))
         const res = await postRequest({
-            url: BASE_URL + VEHICLE_ORDER_BUY_URL,
+            url: BASE_URL + ORDER_BUY_URL,
             data: {
                 orderType: 'RENT_VEHICLE',
                 orderPrice: String(totalAmount),
