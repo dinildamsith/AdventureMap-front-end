@@ -4,14 +4,16 @@ import { PencilIcon } from "@heroicons/react/16/solid";
 // @ts-ignore
 import {getRequest, postRequest, putRequest} from "../../../services/httpServices.js";
 // @ts-ignore
-import {BASE_URL, GUIDE_GALLERY_UPDATE_URL, GUIDE_UPDATE_URL, IMAGE_UPLOAD_URL, SELECTED_GUIDE_GET_URL} from "../../../config&Varibles/endPointUrls.js";
+import {BASE_URL, GUIDE_GALLERY_UPDATE_URL, GUIDE_RENT_PENDING_ORDERS_GET_URL, GUIDE_UPDATE_URL, IMAGE_UPLOAD_URL, SELECTED_GUIDE_GET_URL} from "../../../config&Varibles/endPointUrls.js";
+import OrderNotify from "../../../component/orderNotify";
+
 
 export default function GuideProfileManage() {
     // State to track the selected tab
     const [activeTab, setActiveTab] = useState<any>("about");
 
     const [images, setImages] = useState<any>([]);
-
+    const [pendingOrder, setPendingOrders] = useState<any>([])
 
     // Add new image from device
     const handleAddImage = async (e:any) => {
@@ -37,6 +39,23 @@ export default function GuideProfileManage() {
 
 
     };
+
+
+    useEffect(() => {
+        const pendingGuideRentOrdersGet = async () => {
+            const res = await getRequest({url: BASE_URL + GUIDE_RENT_PENDING_ORDERS_GET_URL + localStorage.getItem("loginUserEmail")})
+
+            if (res.status === 'SUCCESS') {
+                setPendingOrders(res.data)
+            } else {
+                setPendingOrders([])
+            }
+
+            console.log(res)
+        }
+        pendingGuideRentOrdersGet()
+    }, []);
+
 
     // Remove image
     const removeImage = (index:any) => {
@@ -208,6 +227,12 @@ export default function GuideProfileManage() {
                                             >
                                                 Gallery
                                             </button>
+                                            <button
+                                                onClick={() => setActiveTab("orders")}
+                                                className={`text-xl font-bold ${activeTab === "orders" ? "text-blue-500" : "text-gray-700"}`}
+                                            >
+                                                Orders
+                                            </button>
                                         </div>
 
                                         {/* About Me Section */}
@@ -298,6 +323,37 @@ export default function GuideProfileManage() {
                                                         ))}
                                                     </div>
                                                 </div>
+                                            </>
+                                        )}
+
+
+                                        {activeTab === "orders" && (
+                                            <>
+                                                <div
+                                                    className={"flex flex-wrap justify-center rounded-2xl"}
+                                                    style={{
+                                                        position: 'absolute',
+                                                        backgroundColor: 'black',
+                                                        width: '350px',
+                                                        overflowY: 'auto', // Enable vertical scrolling
+                                                        padding: '10px',   // Optional padding for spacing
+                                                        boxSizing: 'border-box', // Ensure padding doesn't affect dimensions
+                                                    }}
+                                                >
+
+                                                    {
+                                                        pendingOrder && pendingOrder.length > 0 ? (
+                                                            pendingOrder.map((order: any) => <OrderNotify key={order.id} order={order} />)
+                                                        ) : (
+                                                            <>
+                                                                <p className="text-gray-500">No Pending Orders</p>
+                                                            </>
+
+                                                        )
+                                                    }
+
+                                                </div>
+
                                             </>
                                         )}
 

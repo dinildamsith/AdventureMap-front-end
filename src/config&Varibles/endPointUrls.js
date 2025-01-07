@@ -4,6 +4,7 @@ export const BUYER_SIGNUP_URL = '/api/v1/buyer/signup';
 export const GUIDE_SIGNUP_URL = "/api/v1/guide/signup"
 export const VEHICLE_SIGNUP_URL = "/api/v1/vehicle/signup"
 export const VEHICLE_RENT_PENDING_ORDERS_GET_URL = "/api/v1/order/pending-vehicle-orders/"
+export const GUIDE_RENT_PENDING_ORDERS_GET_URL = "/api/v1/order/pending-guide-orders/"
 export const ALL_AVAILABLE_VEHICLES_GET_URL = "/api/v1/get-all-vehicles"
 
 export const BUYER_SIGN_IN_URL = "/api/v1/buyer/sign-in"
@@ -24,8 +25,9 @@ export const GUIDE_GALLERY_UPDATE_URL = "/api/v1/guide/update-gallery"
 export const GET_ALL_AVAILABLE_GUIDES = "/api/v1/guides"
 
 
-export const VEHICLE_ORDER_BUY_URL = "/api/v1/order/perches-vehicle"
-export const VEHICLE_RENT_ORDER_ACCEPT_URL = "/api/v1/order/accept-vehicle-order/"
+export const ORDER_BUY_URL = "/api/v1/order/perches"
+export const VEHICLE_ORDER_ACCEPT_URL = "/api/v1/order/accept-vehicle-order/"
+export const GUIDE_ORDER_ACCEPT_URL = "/api/v1/order/accept-guide-order/"
 export const BUYER_SELECTED_ORDERS_GET = "/api/v1/buyer/pending-orders/"
 
 
