@@ -13,7 +13,8 @@ import VehicleProfileManage from "./views/seller/vehicle/vehicleProfileManage.ts
 import GuideSaveView from "./views/seller/guide/guideSaveView.tsx";
 import VehicleSaveView from "./views/seller/vehicle/vehicleSaveView.tsx";
 import BuyerProfile from "./views/buyer/buyerProfile.tsx";
-import OrderBuyView from "./views/buyer/orderBuyView.tsx";
+import OrderBuyViewVehicle from "./views/buyer/orderBuyViewVehicle.tsx";
+import OrderBuyViewGuide from "./views/buyer/orderBuyViewGuide.tsx";
 
 function App() {
     return (
@@ -32,14 +33,15 @@ function App() {
                     <Route path="/sign-in" element={<SignInPage />} />
                     <Route path="/buyer-profile" element={<BuyerProfile/>} />
                     <Route path="/guides" element={<Guides />} />
-                    <Route path="/guide-profile" element={<GuideProfile />} />
+                    <Route path="/guide-profile/:guideEmail" element={<GuideProfile />} />
                     <Route path="/vehicles" element={<Vehicles />} />
                     <Route path="/vehicle-profile/:vehicleEmail" element={<VehicleProfile />} />
                     <Route path="/guide-manage" element={<GuideProfileManage />} />
                     <Route path="/vehicle-manage" element={<VehicleProfileManage />} />
                     <Route path="/guide-save" element={<GuideSaveView />} />
                     <Route path="/vehicle-save" element={<VehicleSaveView />} />
-                    <Route path="/order/:orderVehicle" element={<OrderBuyView/>} />
+                    <Route path="/order/:orderVehicle" element={<OrderBuyViewVehicle/>} />
+                    <Route path="/order-guide/:orderGuide" element={<OrderBuyViewGuide/>} />
                 </Routes>
             </BrowserRouter>
         </>
