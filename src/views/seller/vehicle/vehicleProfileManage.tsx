@@ -308,10 +308,11 @@ export default function VehicleProfileManage() {
                                     <div className="bg-white rounded-lg p-6" style={{ boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 12px' }}>
                                         <div className="flex flex-col items-center">
                                             <img
-                                                src={vehicleDetails.vehicleImage[0]}
+                                                src={vehicleDetails?.vehicleImage?.[0] || "/path/to/fallback-image.jpg"}
                                                 className="w-32 h-28 mx-auto rounded-full border border-gray-300 object-cover"
-                                                alt="profile"
+                                                alt="vehicle profile"
                                             />
+
                                             <h1 className="text-xl font-bold">{capitalizeFirstLetter(vehicleDetails.vehicleBrand)}</h1>
                                             <h1 className="text-[16px] font-bold">{vehicleDetails.rentType}</h1>
                                             <h1 className="text-[16px] font-bold">Rs {vehicleDetails.rentAmount}.00</h1>

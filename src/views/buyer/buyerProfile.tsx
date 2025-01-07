@@ -45,6 +45,14 @@ export default function BuyerProfile() {
     }, []);
 
 
+    const handelStatusThroughGet = async (status:any) => {
+        const res = await getRequest({
+            url : BASE_URL + BUYER_SELECTED_ORDERS_GET + localStorage.getItem("loginUserEmail") +"/"+ status
+        })
+        setFilterOrders(res.data)
+    }
+
+
     return (
         <>
             <Layout>
@@ -116,12 +124,13 @@ export default function BuyerProfile() {
                                                             <span className="text-gray-700 font-medium">Filter by Status</span>
                                                             <select
                                                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                                onChange={(e) => console.log("Selected Status:", e.target.value)}
+                                                                onChange={(e) => handelStatusThroughGet(e.target.value)}
                                                             >
-                                                                <option value="all">All Orders</option>
-                                                                <option value="pending" selected={true}>Pending Orders</option>
-                                                                <option value="completed">Completed Orders</option>
-                                                                <option value="ongoing">Ongoing Orders</option>
+                                                                <option value="ALL">All Orders</option>
+                                                                <option value="PENDING" selected={true}>Pending Orders</option>
+                                                                <option value="ACCEPT">Accept Orders</option>
+                                                                <option value="COMPLETED">Completed Orders</option>
+                                                                <option value="ONGOING">Ongoing Orders</option>
                                                             </select>
                                                         </label>
                                                         {/* Filter by Buy Time */}
