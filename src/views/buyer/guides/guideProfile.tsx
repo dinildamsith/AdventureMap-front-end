@@ -1,9 +1,31 @@
 import Layout from "../../../layout/mainLayout.tsx";
-import { useState } from "react";
+import {useEffect, useState} from "react";
+// @ts-ignore
+import {getRequest} from "../../../services/httpServices.js";
+// @ts-ignore
+import {BASE_URL, SELECTED_GUIDE_GET_URL} from "../../../config&Varibles/endPointUrls.js";
+import {useNavigate, useParams} from "react-router-dom";
 
 export default function GuideProfile() {
     // State to track the selected tab
+    const navigation = useNavigate()
     const [activeTab, setActiveTab] = useState("about");
+    const [guideDetails, setGuideDetails] = useState<any>({})
+    const { guideEmail } = useParams()
+
+    useEffect(() => {
+        const getGuide = async () => {
+            const res = await getRequest({url: BASE_URL + SELECTED_GUIDE_GET_URL + guideEmail})
+            console.log(res)
+            setGuideDetails(res.data)
+        }
+        getGuide()
+    }, []);
+
+
+    const handelHireButton = async (email:any) => {
+        navigation("/order-guide/"+email)
+    }
 
     return (
         <>
@@ -17,13 +39,14 @@ export default function GuideProfile() {
                                     <div className="bg-white rounded-lg p-6" style={{ boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 12px' }}>
                                         <div className="flex flex-col items-center">
                                             <img
-                                                src="https://randomuser.me/api/portraits/men/94.jpg"
+                                                src={guideDetails.guideImage}
                                                 className="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0"
                                                 alt="profile"
                                             />
-                                            <h1 className="text-xl font-bold">John Doe</h1>
-
+                                            <h1 className="text-xl font-bold">{guideDetails.guideName}</h1>
+                                            <h1 className="text-xl font-bold">Rs.{guideDetails.guidePrice}.00</h1>
                                             <button type="button"
+                                                    onClick={() => handelHireButton(guideDetails.accEmail)}
                                                     className=" justify-center w-full mt-6 text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 me-2 mb-2">
                                                 {/* Heroicon: User Plus Icon */}
                                                 <svg className="w-4 h-4 me-2" aria-hidden="true"
@@ -40,11 +63,15 @@ export default function GuideProfile() {
                                         <hr className="my-6 border-t border-gray-300"/>
                                         <div className="flex flex-col">
                                             <span
-                                                className="text-gray-700 uppercase font-bold tracking-wider mb-2">Languages</span>
+                                                className="text-gray-700 uppercase font-bold tracking-wider mb-2">Details</span>
                                             <ul>
-                                                <li className="mb-2 text-black">JavaScript</li>
-                                                <li className="mb-2 text-black">English</li>
-                                                <li className="mb-2 text-black">Spanish</li>
+                                                <li className="mb-2 text-black">Guide Age: {guideDetails.guideAge}</li>
+                                                <li className="mb-2 text-black">
+                                                    Languages: {guideDetails.languages && guideDetails.languages[0]
+                                                    ? guideDetails.languages[0].split("#").join(", ")
+                                                    : "Not available"}
+                                                </li>
+
                                             </ul>
                                         </div>
                                     </div>
@@ -78,9 +105,8 @@ export default function GuideProfile() {
                                         {/* About Me Section */}
                                         {activeTab === "about" && (
                                             <>
-                                                <h2 className="text-xl font-bold mb-4">About Me</h2>
                                                 <p className="text-gray-700">
-                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed finibus est vitae tortor ullamcorper, ut vestibulum velit convallis.
+                                                    {guideDetails.guideAbout}
                                                 </p>
                                             </>
                                         )}
@@ -88,7 +114,6 @@ export default function GuideProfile() {
                                         {/* Reviews Section */}
                                         {activeTab === "reviews" && (
                                             <>
-                                                <h2 className="text-xl font-bold mt-6 mb-4">Reviews</h2>
                                                 <div className="flex flex-col space-y-4">
                                                     <div className="flex items-center bg-gray-100 p-4 rounded-lg shadow-md">
                                                         <img
@@ -119,28 +144,19 @@ export default function GuideProfile() {
                                         {/* Gallery Section */}
                                         {activeTab === "gallery" && (
                                             <>
-                                                <h2 className="text-xl font-bold mt-6 mb-4">Gallery</h2>
                                                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                                                    <img
-                                                        src="https://via.placeholder.com/150"
-                                                        alt="gallery image"
-                                                        className="w-full h-48 object-cover rounded-lg"
-                                                    />
-                                                    <img
-                                                        src="https://via.placeholder.com/150"
-                                                        alt="gallery image"
-                                                        className="w-full h-48 object-cover rounded-lg"
-                                                    />
-                                                    <img
-                                                        src="https://via.placeholder.com/150"
-                                                        alt="gallery image"
-                                                        className="w-full h-48 object-cover rounded-lg"
-                                                    />
-                                                    <img
-                                                        src="https://via.placeholder.com/150"
-                                                        alt="gallery image"
-                                                        className="w-full h-48 object-cover rounded-lg"
-                                                    />
+                                                    {
+                                                        guideDetails.imageGallery.map((image:any) => (
+                                                            <>
+                                                                <img
+                                                                    src={image}
+                                                                    alt="gallery image"
+                                                                    className="w-full h-48 object-cover rounded-lg"
+                                                                />
+                                                            </>
+                                                        ))
+                                                    }
+
                                                 </div>
                                             </>
                                         )}
