@@ -544,7 +544,7 @@ export default function VehicleProfileManage() {
                                             <>
 
                                                 {
-                                                    vehicleDetails.driverCode ? (
+                                                    // vehicleDetails.driverCode ? (
                                                         <>
                                                             <div
                                                                 className={"flex flex-wrap justify-center rounded-2xl"}
@@ -552,7 +552,6 @@ export default function VehicleProfileManage() {
                                                                     position: 'absolute',
                                                                     backgroundColor: 'black',
                                                                     width: '350px',
-                                                                    height: '400px',
                                                                     overflowY: 'auto', // Enable vertical scrolling
                                                                     padding: '10px',   // Optional padding for spacing
                                                                     boxSizing: 'border-box', // Ensure padding doesn't affect dimensions
@@ -573,16 +572,16 @@ export default function VehicleProfileManage() {
                                                             </div>
 
                                                         </>
-                                                    ) : (
-                                                        <>
-                                                            <button
-                                                                onClick={openEditModalIII}
-                                                                className="px-4 py-2 bg-blue-500 text-white rounded-md"
-                                                            >
-                                                            Add Driver
-                                                            </button>
-                                                        </>
-                                                    )
+                                                    // ) : (
+                                                    //     <>
+                                                    //         <button
+                                                    //             onClick={openEditModalIII}
+                                                    //             className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                                                    //         >
+                                                    //         Add Driver
+                                                    //         </button>
+                                                    //     </>
+                                                    // )
                                                 }
 
                                             </>
