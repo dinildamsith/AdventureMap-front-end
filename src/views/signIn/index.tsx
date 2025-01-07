@@ -48,9 +48,14 @@ const SignInPage = () => {
                             }
                         })
                         console.log(res)
-                        if(res.status == 'SUCCESS' && res.data.guideCode == null){
+                        if(res.status == 'SUCCESS'){
                             localStorage.setItem("loginUserEmail", res.data.accEmail)
-                            navigation("/guide-save")
+                            if (res.data.guideCode == null) {
+                                navigation("/guide-save")
+                            } else{
+                                navigation("/guide-manage")
+                            }
+
                         }else {
                             toast.error("Login Failed")
                         }

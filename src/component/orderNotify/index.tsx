@@ -2,7 +2,7 @@ import  { useState } from 'react';
 // @ts-ignore
 import {putRequest} from "../../services/httpServices.js";
 // @ts-ignore
-import {BASE_URL, VEHICLE_RENT_ORDER_ACCEPT_URL} from "../../config&Varibles/endPointUrls.js";
+import {BASE_URL, GUIDE_ORDER_ACCEPT_URL, VEHICLE_ORDER_ACCEPT_URL} from "../../config&Varibles/endPointUrls.js";
 
 export default function OrderNotify(params: any) {
 
@@ -10,15 +10,26 @@ export default function OrderNotify(params: any) {
     const [isVisible, setIsVisible] = useState<boolean>(true); // Track the visibility of the notification
 
     // Handle accepting the order
-    const handleAccept = async (orderId:any) => {
+    const handleAccept = async (orderId:any, orderType:any) => {
 
-        const res = await putRequest({
-            url : BASE_URL + VEHICLE_RENT_ORDER_ACCEPT_URL + orderId + "/" + localStorage.getItem("loginUserEmail")
-        })
+        if (orderType === 'RENT_VEHICLE') {
+            const res = await putRequest({
+                url : BASE_URL + VEHICLE_ORDER_ACCEPT_URL + orderId + "/" + localStorage.getItem("loginUserEmail")
+            })
+            if (res.status === 'SUCCESS') {
+                setIsVisible(false); // Hide the notification after accepting the order
+            }
+        }
 
 
-        if (res.status === 'SUCCESS') {
-            setIsVisible(false); // Hide the notification after accepting the order
+
+        if (orderType === 'RENT_GUIDE') {
+            const res = await putRequest({
+                url : BASE_URL + GUIDE_ORDER_ACCEPT_URL + orderId + "/" + localStorage.getItem("loginUserEmail")
+            })
+            if (res.status === 'SUCCESS') {
+                setIsVisible(false); // Hide the notification after accepting the order
+            }
         }
 
 
@@ -73,7 +84,7 @@ export default function OrderNotify(params: any) {
                 <div className="relative inline-block shrink-0">
                     <img
                         className="w-12 h-12 rounded-full"
-                        src="https://avatars.githubusercontent.com/u/123526874?s=400&u=f70f581a92336559fdb8e33a83777e4fbe5fe7ab&v=4"
+                        src="https://static.vecteezy.com/system/resources/previews/004/607/791/non_2x/man-face-emotive-icon-smiling-male-character-in-blue-shirt-flat-illustration-isolated-on-white-happy-human-psychological-portrait-positive-emotions-user-avatar-for-app-web-design-vector.jpg"
                         alt="Jese Leos image"
                     />
                     <span
@@ -105,7 +116,7 @@ export default function OrderNotify(params: any) {
             <div className="mt-3 ms-14 flex gap-2">
                 <button
                     className="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 focus:ring-4 focus:ring-green-300"
-                    onClick={() => handleAccept(params.order._id)}
+                    onClick={() => handleAccept(params.order._id, params.order.orderType)}
                 >
                     Accept
                 </button>

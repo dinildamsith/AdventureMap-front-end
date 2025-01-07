@@ -64,6 +64,7 @@ export default function Guides(){
                         {allGuides?.map((guide: any) => (
                             <GuidesDetailsCard
                                 key={guide._id} // Corrected to use _id as the unique key
+                                email={guide.accEmail}
                                 name={guide.guideName || "Dinil"} // Assuming guideName is the correct field for the name
                                 rate={"4.99"} // Dynamic rate based on the API response, fallback to 4.99
                                 price={`RS.${guide.guidePrice || "5600"}`} // Dynamic price, fallback to RS.5600
