@@ -16,6 +16,7 @@ import BuyerProfile from "./views/buyer/buyerProfile.tsx";
 import OrderBuyViewVehicle from "./views/buyer/orderBuyViewVehicle.tsx";
 import OrderBuyViewGuide from "./views/buyer/orderBuyViewGuide.tsx";
 import Locations from "./views/buyer/locations";
+import FestivalsView from "./views/buyer/festivels";
 
 function App() {
     return (
@@ -44,6 +45,8 @@ function App() {
                     <Route path="/order/:orderVehicle" element={<OrderBuyViewVehicle/>} />
                     <Route path="/order-guide/:orderGuide" element={<OrderBuyViewGuide/>} />
                     <Route path="/locations" element={<Locations/>} />
+                    <Route path="/festivels" element={<FestivalsView/>} />
+
                 </Routes>
             </BrowserRouter>
         </>
