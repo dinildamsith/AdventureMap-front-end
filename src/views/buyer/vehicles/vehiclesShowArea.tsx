@@ -1,6 +1,7 @@
 import Layout from "../../../layout/mainLayout.tsx";
 import VehicleDetailsCard from "../../../component/vehiclesDetailsCard";
 import {useEffect, useState} from "react";
+import NoData  from '../../../assets/noData.png'
 // @ts-ignore
 import {getRequest} from "../../../services/httpServices.js";
 // @ts-ignore
@@ -58,15 +59,34 @@ export default function Vehicles(){
 
                     {/*-------------------vehicles-----------------*/}
                     <div className="flex flex-wrap justify-center mt-20 gap-10">  {/* Added gap-4 for spacing */}
-
-                        {
-                            allAvailableVehicles.map((vehicle:any) => (
-                                <>
-                                    <VehicleDetailsCard email={vehicle.accEmail} name={vehicle.vehicleBrand} vehicleNumber={vehicle.vehicleNumber} rate={"4.99"} price={vehicle.rentAmount} spec={[vehicle.vehicleType]} images={vehicle.vehicleImage}/>
-                                </>
+                        {allAvailableVehicles && allAvailableVehicles.length > 0 ? (
+                            allAvailableVehicles.map((vehicle: any) => (
+                                <VehicleDetailsCard
+                                    key={vehicle._id} // Unique key for each vehicle
+                                    email={vehicle.accEmail}
+                                    name={vehicle.vehicleBrand || "Unknown Brand"} // Fallback for vehicle brand
+                                    vehicleNumber={vehicle.vehicleNumber || "N/A"} // Fallback for vehicle number
+                                    rate={vehicle.rate || "4.99"} // Fallback for rate
+                                    price={`RS.${vehicle.rentAmount || "0"}`} // Fallback for rent amount
+                                    spec={[vehicle.vehicleType || "Unknown Type"]} // Fallback for vehicle type
+                                    images={
+                                        vehicle.vehicleImage ||
+                                        "https://via.placeholder.com/300x200?text=No+Image+Available"
+                                    } // Fallback for image
+                                />
                             ))
-                        }
-
+                        ) : (
+                            <div className="no-data flex flex-col items-center justify-center mt-10">
+                                <img
+                                    src={NoData}
+                                    alt="No Data"
+                                    className="no-data-image w-64 mb-4"
+                                />
+                                <p className="no-data-message text-center text-lg text-gray-600">
+                                    No vehicles available at the moment.
+                                </p>
+                            </div>
+                        )}
                     </div>
                 </div>
             </Layout>

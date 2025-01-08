@@ -1,6 +1,7 @@
 import Layout from "../../../layout/mainLayout.tsx";
 import GuidesDetailsCard from "../../../component/guidesDetailsCard";
 import {useEffect, useState} from "react";
+import NoData  from '../../../assets/noData.png'
 // @ts-ignore
 import {getRequest} from "../../../services/httpServices.js";
 // @ts-ignore
@@ -17,6 +18,7 @@ export default function Guides(){
             const res = await getRequest({
                 url: BASE_URL + GET_ALL_AVAILABLE_GUIDES
             })
+            console.log(res.data)
             setAllGuides(res.data)
         }
 
@@ -59,21 +61,33 @@ export default function Guides(){
 
                     {/*-------------------guides-----------------*/}
                     <div className="flex flex-wrap justify-center mt-20 gap-10">  {/* Added gap-4 for spacing */}
-
-
-                        {allGuides?.map((guide: any) => (
-                            <GuidesDetailsCard
-                                key={guide._id} // Corrected to use _id as the unique key
-                                email={guide.accEmail}
-                                name={guide.guideName || "Dinil"} // Assuming guideName is the correct field for the name
-                                rate={"4.99"} // Dynamic rate based on the API response, fallback to 4.99
-                                price={`RS.${guide.guidePrice || "5600"}`} // Dynamic price, fallback to RS.5600
-                                languages={guide.languages?.[0]?.split('#') || ["English", "Hindi"]} // Assuming languages are comma separated or split by #. Adjust as per your format
-                                image={guide.guideImage || "https://storage.googleapis.com/stateless-ceoblognation-com/2023/03/41fcf2fd-portrait-2865605_1920-1536x1024.jpg"}
-                            />
-                        ))}
-
-
+                        {allGuides && allGuides.length > 0 ? (
+                            allGuides.map((guide: any) => (
+                                <GuidesDetailsCard
+                                    key={guide._id} // Using _id as the unique key
+                                    email={guide.accEmail}
+                                    name={guide.guideName || "Dinil"} // Default name fallback
+                                    rate={guide.rate || "4.99"} // Dynamic rate, fallback to 4.99
+                                    price={`RS.${guide.guidePrice || "5600"}`} // Dynamic price, fallback to RS.5600
+                                    languages={guide.languages?.[0]?.split('#') || ["English", "Hindi"]} // Default languages fallback
+                                    image={
+                                        guide.guideImage ||
+                                        "https://storage.googleapis.com/stateless-ceoblognation-com/2023/03/41fcf2fd-portrait-2865605_1920-1536x1024.jpg"
+                                    } // Default image fallback
+                                />
+                            ))
+                        ) : (
+                            <div className="no-data flex flex-col items-center justify-center mt-10">
+                                <img
+                                    src={NoData}
+                                    alt="No Data"
+                                    className="no-data-image w-64 mb-4"
+                                />
+                                <p className="no-data-message text-center text-lg text-gray-600">
+                                    No guides available at the moment.
+                                </p>
+                            </div>
+                        )}
                     </div>
                 </div>
             </Layout>
