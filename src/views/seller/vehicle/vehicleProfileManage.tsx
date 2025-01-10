@@ -58,6 +58,12 @@ export default function VehicleProfileManage() {
     };
 
 
+    useEffect(() => {
+        console.log(localStorage.getItem("loginUserEmail"))
+        const user:any = localStorage.getItem("user")
+        console.log(JSON.parse(user))
+    }, []);
+
     const [pendingOrder, setPendingOrders] = useState<any>([])
 
     useEffect(() => {

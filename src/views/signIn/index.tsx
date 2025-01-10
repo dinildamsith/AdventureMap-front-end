@@ -32,6 +32,7 @@ const SignInPage = () => {
 
                 if (res.status === 'SUCCESS'){
                     localStorage.setItem("loginUserEmail", res.data.accEmail)
+                    localStorage.setItem("user", JSON.stringify(res.data))
                     navigation("/buyer-profile")
                 }
             }
@@ -50,6 +51,7 @@ const SignInPage = () => {
                         console.log(res)
                         if(res.status == 'SUCCESS'){
                             localStorage.setItem("loginUserEmail", res.data.accEmail)
+                            localStorage.setItem("user", JSON.stringify(res.data))
                             if (res.data.guideCode == null) {
                                 navigation("/guide-save")
                             } else{
@@ -73,6 +75,7 @@ const SignInPage = () => {
 
                         if(res.status == 'SUCCESS'){
                             localStorage.setItem("loginUserEmail", res.data.accEmail)
+                            localStorage.setItem("user", JSON.stringify(res.data))
 
                             if (res.data.vehicleCode == null){
                                 navigation("/vehicle-save")
