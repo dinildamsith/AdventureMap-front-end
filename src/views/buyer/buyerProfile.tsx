@@ -1,4 +1,4 @@
-import {PencilIcon, TrashIcon} from "@heroicons/react/16/solid";
+import {ArrowRightCircleIcon} from "@heroicons/react/16/solid";
 import Layout from "../../layout/mainLayout.tsx";
 import {useEffect, useState} from "react";
 // @ts-ignore
@@ -86,8 +86,7 @@ export default function BuyerProfile() {
                                             <ul>
                                                 <li className="mb-2 text-black">Acc Type: {buyerData.accType}</li>
                                                 <li className="mb-2 text-black">Acc Currency: {buyerData.currency}</li>
-                                                <li className="mb-2 text-black">Last Login Date: {""}</li>
-                                                <li className="mb-2 text-black">Last Login Time: {""}</li>
+                                                <li className="mb-2 text-black">Last Login Date: {new Date().toLocaleDateString()}</li>
                                             </ul>
                                         </div>
                                         
@@ -95,7 +94,7 @@ export default function BuyerProfile() {
                                             onClick={handleLogout}
                                                     className=" justify-center w-full mt-6 text-white bg-[#ff1b1b] hover:bg-[#ff1b1b]/90 focus:ring-4 focus:outline-none focus:ring-[#ff1b1b]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 me-2 mb-2">
                                                 {/* Heroicon: User Plus Icon */}
-                                                <TrashIcon className="w-4 h-4 me-2 text-current" aria-hidden="true"/>
+                                                <ArrowRightCircleIcon className="w-4 h-4 me-2 text-current" aria-hidden="true"/>
                                                 Log out
                                             </button>
                                     </div>
