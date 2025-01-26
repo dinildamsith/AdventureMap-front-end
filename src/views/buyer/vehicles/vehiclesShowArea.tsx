@@ -10,14 +10,22 @@ import {ALL_AVAILABLE_VEHICLES_GET_URL, BASE_URL} from "../../../config&Varibles
 export default function Vehicles(){
 
     const [allAvailableVehicles, setAllAvailableVehicles] = useState([])
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
 
         const getAllAvailableVehicles = async () => {
+            setLoading(true);
             const res = await getRequest({url: BASE_URL + ALL_AVAILABLE_VEHICLES_GET_URL})
             console.log(res)
 
-            setAllAvailableVehicles(res.data)
+            if (res.status === "SUCCESS") {
+                console.log(res);
+                setAllAvailableVehicles(res.data);
+                setLoading(false);
+            } else {
+                setLoading(false);
+            }
         }
 
         getAllAvailableVehicles()
@@ -25,6 +33,11 @@ export default function Vehicles(){
 
     return (
         <>
+            {loading && (
+                <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center z-[9999] bg-opacity-50 bg-gray-200">
+                    <div className="w-10 h-10 border-4 border-gray-200 border-t-[#3bd7f7] rounded-full animate-spin"></div>
+                </div>
+            )}
             <Layout>
                 <div className={"mt-36"}>
 

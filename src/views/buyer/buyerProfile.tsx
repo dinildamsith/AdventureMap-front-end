@@ -15,6 +15,7 @@ export default function BuyerProfile() {
     const navigate = useNavigate(); // Initialize navigate function
     const [activeTab, setActiveTab] = useState("about");
     const [showPopup, setShowPopup] = useState(false); // State to toggle popup visibility
+    const [loading, setLoading] = useState(true);
 
     const handleLogout = () => {
         localStorage.clear();
@@ -32,19 +33,34 @@ export default function BuyerProfile() {
     useEffect(() => {
 
         const signInBuyerGet = async () => {
+            setLoading(true);
             const res = await getRequest({
                 url: BASE_URL + SIGN_IN_BUYER_DETAILS_GET_URL + localStorage.getItem("loginUserEmail")
             })
-            setBuyerData(res.data)
-            console.log(res)
+
+            if (res.status === "SUCCESS") {
+                console.log(res);
+                setBuyerData(res.data);
+                setLoading(false);
+            } else {
+                setLoading(false);
+            }
         }
 
 
         const buyerPendingOrdersGet = async () => {
+            setLoading(true);
             const res = await getRequest({
                 url : BASE_URL + BUYER_SELECTED_ORDERS_GET + localStorage.getItem("loginUserEmail") +"/"+ "PENDING"
             })
-            setFilterOrders(res.data)
+
+            if (res.status === "SUCCESS") {
+                console.log(res);
+                setFilterOrders(res.data);
+                setLoading(false);
+            } else {
+                setLoading(false);
+            }
         }
 
         buyerPendingOrdersGet()
@@ -53,15 +69,29 @@ export default function BuyerProfile() {
 
 
     const handelStatusThroughGet = async (status:any) => {
+        setLoading(true);
         const res = await getRequest({
             url : BASE_URL + BUYER_SELECTED_ORDERS_GET + localStorage.getItem("loginUserEmail") +"/"+ status
         })
-        setFilterOrders(res.data)
+
+        if (res.status === "SUCCESS") {
+            console.log(res);
+            setLoading(false);
+            setFilterOrders(res.data)
+        } else {
+            setLoading(false);
+        }
+
     }
 
 
     return (
         <>
+            {loading && (
+                <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center z-[9999] bg-opacity-50 bg-gray-200">
+                    <div className="w-10 h-10 border-4 border-gray-200 border-t-[#3bd7f7] rounded-full animate-spin"></div>
+                </div>
+            )}
             <Layout>
                 <div className={"mt-28"}>
                     <div>

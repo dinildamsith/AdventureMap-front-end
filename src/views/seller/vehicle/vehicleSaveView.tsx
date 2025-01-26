@@ -10,6 +10,7 @@ export default function VehicleSaveView() {
 
     const navigation = useNavigate()
     const [step, setStep] = useState(1);
+    const[loading, setLoading] = useState(false);
     // const [vehicleImages, setVehicleImages] = useState<string[]>([]); // State to store image URLs
     // const [rentType, setRentType] = useState<string>("without-driver");
     const [driverDetails, setDriverDetails] = useState({
@@ -49,6 +50,7 @@ export default function VehicleSaveView() {
 
         try {
             // Make the API request to upload the image
+            setLoading(true);
             const res = await postRequest({
                 url: BASE_URL + IMAGE_UPLOAD_URL,
                 data: formData,
@@ -56,6 +58,7 @@ export default function VehicleSaveView() {
             });
 
             if (res && res.filePath) {
+                setLoading(false);
                 // Assuming `res.filePath` contains the URL of the uploaded image
                 setDriverDetails((prevDetails:any) => {
                     const updatedImages = [...prevDetails.vehicleImage, res.filePath]; // Add new URL to the array
@@ -66,6 +69,7 @@ export default function VehicleSaveView() {
                 });
 
             } else {
+                setLoading(false);
                 console.error("Failed to upload image. Invalid response:", res);
             }
         } catch (error) {
@@ -83,7 +87,8 @@ export default function VehicleSaveView() {
         formData.append("image", selectedFile); // Append the file to the FormData object
 
         try {
-            // Make the API request to upload the image
+            // Make the API request to upload the image\
+            setLoading(true);
             const res = await postRequest({
                 url: BASE_URL + IMAGE_UPLOAD_URL,
                 data: formData,
@@ -91,9 +96,11 @@ export default function VehicleSaveView() {
             });
 
             if (res && res.filePath) {
+                setLoading(false);
                 // Assuming `res.filePath` contains the URL of the uploaded image
                 setDriverDetails((prev) => ({ ...prev, driverImage: res.filePath }));
             } else {
+                setLoading(false);
                 console.error("Failed to upload image. Invalid response:", res);
             }
         } catch (error) {
@@ -111,14 +118,17 @@ export default function VehicleSaveView() {
     const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
 
     const handelSave = async () => {
+        setLoading(true);
         const res = await postRequest({
             url: BASE_URL + VEHICLE_DETAILS_SAVE_URL,
             data: driverDetails
         })
 
         if (res.status === 'SUCCESS') {
+            setLoading(false);
             navigation("/vehicle-manage")
         } else {
+            setLoading(false);
             navigation("/vehicle-manage")
         }
         console.log(driverDetails)
@@ -126,6 +136,12 @@ export default function VehicleSaveView() {
 
     return (
         <SubLayout>
+                 {loading && (
+        <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center z-[9999] bg-opacity-50 bg-gray-200">
+          <div className="w-10 h-10 border-4 border-gray-200 border-t-[#3bd7f7] rounded-full animate-spin"></div>
+        </div>
+      )}
+      
             <div className="flex justify-center items-center min-h-screen px-4">
                 <div className="max-w-2xl w-full bg-white rounded-lg shadow-lg p-6 mt-10">
                     <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">

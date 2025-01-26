@@ -16,6 +16,7 @@ export default function OrderBuyViewGuide() {
     const [endDate, setEndDate] = useState<string | null>(null);
     const [totalAmount, setTotalAmount] = useState<any>(0)
     const [lastLoginUser, setLastLoginUser] = useState<any>();
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
       const user = JSON.parse(localStorage.getItem("user") as string);
@@ -47,9 +48,16 @@ export default function OrderBuyViewGuide() {
 
     useEffect(() => {
         const getGuide = async () => {
+            setLoading(true);
             const res = await getRequest({url: BASE_URL + SELECTED_GUIDE_GET_URL + orderGuide})
-            setGuideDetails(res.data)
-            console.log(res)
+
+            if (res.status === "SUCCESS") {
+                setLoading(false);
+                setGuideDetails(res.data)
+                console.log(res)
+            } else {
+                setLoading(false);
+            }
         }
 
         getGuide()
@@ -60,6 +68,7 @@ export default function OrderBuyViewGuide() {
         if(lastLoginUser !== null){
             if(lastLoginUser.accType === 'buyer'){
                 if(startDate !== null && endDate !== null){
+                    setLoading(true)
                     const res = await postRequest({
                         url: BASE_URL + ORDER_BUY_URL,
                         data: {
@@ -75,6 +84,9 @@ export default function OrderBuyViewGuide() {
             
                     if (res.status === 'SUCCESS') {
                         navigation("/buyer-profile")
+                        setLoading(false)
+                    } else {
+                        setLoading(false)
                     }
                 } else {
                     toast.error("Please Select Start and End Date")
@@ -93,6 +105,11 @@ export default function OrderBuyViewGuide() {
 
     return (
         <SubLayout>
+            {loading && (
+                <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center z-[9999] bg-opacity-50 bg-gray-200">
+                    <div className="w-10 h-10 border-4 border-gray-200 border-t-[#3bd7f7] rounded-full animate-spin"></div>
+                </div>
+            )}  
             <div className="flex flex-col md:flex-row gap-6 p-6 mt-[4rem]">
                 {/* Left Side: Vehicle and Driver Details */}
                 <div className="w-full md:w-1/2 bg-gray-100 p-4 rounded-md shadow h-[100%] overflow-y-scroll">

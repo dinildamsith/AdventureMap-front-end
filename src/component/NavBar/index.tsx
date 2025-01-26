@@ -132,7 +132,7 @@ function NavBar() {
               </li>
               <li>
                 <a
-                  href="guides"
+                  href="/guides"
                   className="block py-2 px-3 text-black rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 hover:bg-blue-500 hover:text-white"
                   aria-current="page"
                 >
@@ -141,7 +141,7 @@ function NavBar() {
               </li>
               <li>
                 <a
-                  href="vehicles"
+                  href="/vehicles"
                   className="block py-2 px-3 text-black rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 hover:bg-blue-500 hover:text-white"
                   aria-current="page"
                 >
@@ -150,7 +150,7 @@ function NavBar() {
               </li>
               <li>
                 <a
-                  href="locations"
+                  href="/locations"
                   className="block py-2 px-3 text-black rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500  hover:bg-blue-500 hover:text-white"
                   aria-current="page"
                 >
@@ -159,7 +159,7 @@ function NavBar() {
               </li>
               <li>
                 <a
-                  href="festivels"
+                  href="/festivels"
                   className="block py-2 px-3 text-black rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 hover:bg-blue-500 hover:text-white"
                   aria-current="page"
                 >

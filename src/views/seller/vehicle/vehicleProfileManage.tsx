@@ -12,7 +12,7 @@ import OrderNotify from "../../../component/orderNotify";
 export default function VehicleProfileManage() {
     // State to track the selected tab
     const [activeTab, setActiveTab] = useState<any>("about");
-
+    const [loading, setLoading] = useState<any>(false);
 
     //----------------vehicle
     const [isEditModalOpen, setIsEditModalOpen] = useState<any>(false);
@@ -66,55 +66,64 @@ export default function VehicleProfileManage() {
 
     const [pendingOrder, setPendingOrders] = useState<any>([])
 
+    const getVehicle = async () => {
+      setLoading(true)
+      const res = await getRequest({url: BASE_URL + GET_SELECTED_VEHICLE + localStorage.getItem("loginUserEmail")})
+
+      if(res.status === 'SUCCESS') {
+          setLoading(false)
+          setVehicleDetails({
+              vehicleBrand: res.data.vehicleBrand,
+              vehicleNumber: res.data.vehicleNumber,
+              vehicleImage: res.data.vehicleImage,
+              vehicleType: res.data.vehicleType,
+              rentType: res.data.rentType,
+              sheetCount: res.data.sheetCount,
+              rentAmount: res.data.rentAmount,
+
+              driverCode: res.data.driverCode,
+              driverImage: res.data.driverImage,
+              driverName: res.data.driverName,
+              driverAge: res.data.driverAge,
+              driverLanguages: res.data.driverLanguages,
+              driverExperience: res.data.driverExperience
+              })
+
+          setUpdateVehicleData({
+              vehicleBrand: res.data.vehicleBrand,
+              vehicleNumber: res.data.vehicleNumber,
+              vehicleImage: res.data.vehicleImage,
+              vehicleType: res.data.vehicleType,
+              rentType: res.data.rentType,
+              sheetCount: res.data.sheetCount,
+              rentAmount: res.data.rentAmount
+          })
+
+          setUpdateDriverData({
+              driverImage: res.data.driverImage,
+              driverName: res.data.driverName,
+              driverAge: res.data.driverAge,
+              driverLanguages: res.data.driverLanguages,
+              driverExperience: res.data.driverExperience
+          })
+      }
+
+      if(res.status === 'FAILED') {
+          setLoading(false)
+      }
+      console.log(res)
+  }
+
     useEffect(() => {
-
-        const getVehicle = async () => {
-            const res = await getRequest({url: BASE_URL + GET_SELECTED_VEHICLE + localStorage.getItem("loginUserEmail")})
-            setVehicleDetails({
-                vehicleBrand: res.data.vehicleBrand,
-                vehicleNumber: res.data.vehicleNumber,
-                vehicleImage: res.data.vehicleImage,
-                vehicleType: res.data.vehicleType,
-                rentType: res.data.rentType,
-                sheetCount: res.data.sheetCount,
-                rentAmount: res.data.rentAmount,
-
-                driverCode: res.data.driverCode,
-                driverImage: res.data.driverImage,
-                driverName: res.data.driverName,
-                driverAge: res.data.driverAge,
-                driverLanguages: res.data.driverLanguages,
-                driverExperience: res.data.driverExperience
-                })
-
-            setUpdateVehicleData({
-                vehicleBrand: res.data.vehicleBrand,
-                vehicleNumber: res.data.vehicleNumber,
-                vehicleImage: res.data.vehicleImage,
-                vehicleType: res.data.vehicleType,
-                rentType: res.data.rentType,
-                sheetCount: res.data.sheetCount,
-                rentAmount: res.data.rentAmount
-            })
-
-            setUpdateDriverData({
-                driverImage: res.data.driverImage,
-                driverName: res.data.driverName,
-                driverAge: res.data.driverAge,
-                driverLanguages: res.data.driverLanguages,
-                driverExperience: res.data.driverExperience
-            })
-
-            console.log(res)
-        }
-
-
         const pendingVehicleRentOrdersGet = async () => {
+            setLoading(true)
            const res = await getRequest({url: BASE_URL + VEHICLE_RENT_PENDING_ORDERS_GET_URL + localStorage.getItem("loginUserEmail")})
 
             if (res.status === 'SUCCESS') {
+                setLoading(false)
                 setPendingOrders(res.data)
             } else {
+                setLoading(false)
                 setPendingOrders([])
             }
 
@@ -198,28 +207,54 @@ export default function VehicleProfileManage() {
 
 
     const driverDeleteHandel = async () => {
-        await deleteRequest({
+        setLoading(true)
+        const res = await deleteRequest({
             url: BASE_URL + DELETE_DRIVER_URL + localStorage.getItem("loginUserEmail"),
         })
+        
+        if(res.status === 'SUCCESS'){
+             getVehicle()
+            setLoading(false)
+        } else {
+            setLoading(false)
+        }
     }
 
 
     const handelNewDriverAdd = async () => {
-        await postRequest({
+        setLoading(true)
+        const res = await postRequest({
             url: BASE_URL + NEW_DRIVER_SAVE_URL + localStorage.getItem("loginUserEmail"),
             data: newDriverData
         })
+
+        if(res.status === 'SUCCESS'){
+            getVehicle()
+            isEditModalOpenIII(false)
+            setLoading(false)
+        } else {
+            setLoading(false)
+        }
         console.log(newDriverData)
     }
 
 
     // Handle update button click
     const handleUpdateII = async () => {
-        await putRequest({
+        setLoading(true)
+        const res = await putRequest({
             url: BASE_URL + DRIVER_DETAILS_UPDATE_URL + localStorage.getItem("loginUserEmail"),
             data: updatedDriverData
         })
-        closeEditModalII();
+
+        if(res.status === 'SUCCESS'){
+            setLoading(false)
+            closeEditModalII();
+        } else {
+            setLoading(false)
+            closeEditModalII();
+        }
+        
     };
 
     const headers = {
@@ -236,6 +271,7 @@ export default function VehicleProfileManage() {
         formData.append("image", selectedFile); // Append the file to the FormData object
 
         try {
+            setLoading(true)
             // Make the API request to upload the image
             const res = await postRequest({
                 url: BASE_URL + IMAGE_UPLOAD_URL,
@@ -244,11 +280,13 @@ export default function VehicleProfileManage() {
             });
 
             if (res && res.filePath) {
+                setLoading(false)
                 // Assuming `res.filePath` contains the URL of the uploaded image
                 setUpdateDriverData({ ...updatedDriverData, driverImage: res.filePath });
                 setNewDriverData({ ...newDriverData, driverImage: res.filePath });
 
             } else {
+                setLoading(false)
                 console.error("Failed to upload image. Invalid response:", res);
             }
         } catch (error) {
@@ -266,6 +304,7 @@ export default function VehicleProfileManage() {
         formData.append("image", selectedFile); // Append the file to the FormData object
 
         try {
+            setLoading(true)
             // Make the API request to upload the image
             const res = await postRequest({
                 url: BASE_URL + IMAGE_UPLOAD_URL,
@@ -274,6 +313,7 @@ export default function VehicleProfileManage() {
             });
 
             if (res && res.filePath) {
+                setLoading(false)
                 // Assuming `res.filePath` contains the URL of the uploaded image
                 setUpdateVehicleData({
                     ...updateVehicleData,
@@ -285,6 +325,7 @@ export default function VehicleProfileManage() {
                 });
 
             } else {
+                setLoading(false)
                 console.error("Failed to upload image. Invalid response:", res);
             }
         } catch (error) {
@@ -304,6 +345,11 @@ export default function VehicleProfileManage() {
 
     return (
         <>
+                         {loading && (
+        <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center z-[9999] bg-opacity-50 bg-gray-200">
+          <div className="w-10 h-10 border-4 border-gray-200 border-t-[#3bd7f7] rounded-full animate-spin"></div>
+        </div>
+      )}
             <SubLayout>
                 <div className={"mt-28"}>
                     <div>

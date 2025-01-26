@@ -15,12 +15,19 @@ export default function VehicleProfile() {
     // State to track the selected tab
     const [activeTab, setActiveTab] = useState("about");
     const [vehicleDetails, setVehicleDetails] = useState<any>({})
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const getVehicle = async () => {
+            setLoading(true)
             const res = await getRequest({url: BASE_URL + GET_SELECTED_VEHICLE + vehicleEmail})
-            setVehicleDetails(res.data)
-            console.log(res)
+
+            if (res.status === "SUCCESS") {
+                setVehicleDetails(res.data)
+                setLoading(false)
+            } else {
+                setLoading(false)
+            }
         }
 
         getVehicle()
@@ -33,6 +40,11 @@ export default function VehicleProfile() {
 
     return (
         <>
+            {loading && (
+                <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center z-[9999] bg-opacity-50 bg-gray-200">
+                    <div className="w-10 h-10 border-4 border-gray-200 border-t-[#3bd7f7] rounded-full animate-spin"></div>
+                </div>
+            )}
             <Layout>
                 <div className={"mt-28"}>
                     <div>
