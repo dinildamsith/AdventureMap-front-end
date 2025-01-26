@@ -1,4 +1,4 @@
-export const BASE_URL = 'http://localhost:5000/adventure-map';
+export const BASE_URL = 'http://13.60.20.91:5000/adventure-map';
 
 export const BUYER_SIGNUP_URL = '/api/v1/buyer/signup';
 export const GUIDE_SIGNUP_URL = "/api/v1/guide/signup"
