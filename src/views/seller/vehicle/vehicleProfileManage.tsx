@@ -564,12 +564,31 @@ export default function VehicleProfileManage() {
                                                                 }}
                                                             >
 
+                                                                <label className="block">
+                                                                    <span className="text-gray-700 font-medium">Filter by Status</span>
+                                                                    <select
+                                                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+
+                                                                    >
+                                                                        <option value="ALL">All Orders</option>
+                                                                        <option value="PENDING" selected={true}>Pending
+                                                                            Orders
+                                                                        </option>
+                                                                        <option value="ACCEPT">Accept Orders</option>
+                                                                        <option value="COMPLETED">Completed Orders
+                                                                        </option>
+                                                                        <option value="ONGOING">Ongoing Orders</option>
+                                                                    </select>
+                                                                </label>
+
                                                                 {
                                                                     pendingOrder && pendingOrder.length > 0 ? (
-                                                                        pendingOrder.map((order: any) => <OrderNotify key={order.id} order={order} />)
+                                                                        pendingOrder.map((order: any) => <OrderNotify
+                                                                            key={order.id} order={order}/>)
                                                                     ) : (
                                                                         <>
-                                                                            <p className="text-gray-500">No Pending Orders</p>
+                                                                            <p className="text-gray-500">No Pending
+                                                                                Orders</p>
                                                                         </>
 
                                                                     )
