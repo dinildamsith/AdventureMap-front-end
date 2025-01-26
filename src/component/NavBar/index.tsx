@@ -46,6 +46,10 @@ function NavBar() {
             navigate("/guide-manage/")
         }
 
+        
+        if(lastLoginUser.accType === "buyer" ) {
+            navigate("/buyer-profile")
+        }
     }
 
     return (
