@@ -5,6 +5,7 @@ import {BASE_URL, SELECTED_GUIDE_GET_URL, ORDER_BUY_URL} from "../../config&Vari
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import SubLayout from "../../layout/subLayout.tsx";
+import toast from "react-hot-toast";
 
 export default function OrderBuyViewGuide() {
 
@@ -14,6 +15,13 @@ export default function OrderBuyViewGuide() {
     const [startDate, setStartDate] = useState<string | null>(null);
     const [endDate, setEndDate] = useState<string | null>(null);
     const [totalAmount, setTotalAmount] = useState<any>(0)
+    const [lastLoginUser, setLastLoginUser] = useState<any>();
+
+    useEffect(() => {
+      const user = JSON.parse(localStorage.getItem("user") as string);
+      console.log(user);
+      setLastLoginUser(user);
+    }, []);
 
     // Function to calculate the number of days between two dates
     const calculateDays = (start: string | null, end: string | null) => {
@@ -49,21 +57,31 @@ export default function OrderBuyViewGuide() {
 
 
     const orderConfirmHandel = async () => {
-        const res = await postRequest({
-            url: BASE_URL + ORDER_BUY_URL,
-            data: {
-                orderType: 'RENT_GUIDE',
-                orderPrice: String(totalAmount),
-                orderStartDuration: startDate,
-                orderEndDuration: endDate,
-                buyerEmail: localStorage.getItem("loginUserEmail"),
-                guide: orderGuide
-
+        if(lastLoginUser !== null){
+            if(lastLoginUser.userType === 'buyer'){
+                const res = await postRequest({
+                    url: BASE_URL + ORDER_BUY_URL,
+                    data: {
+                        orderType: 'RENT_GUIDE',
+                        orderPrice: String(totalAmount),
+                        orderStartDuration: startDate,
+                        orderEndDuration: endDate,
+                        buyerEmail: localStorage.getItem("loginUserEmail"),
+                        guide: orderGuide
+        
+                    }
+                })
+        
+                if (res.status === 'SUCCESS') {
+                    navigation("/buyer-profile")
+                }
+            }else{
+                toast.error("Please Login Buyer Acc First")
+                navigation("/sign-in")
             }
-        })
-
-        if (res.status === 'SUCCESS') {
-            navigation("/buyer-profile")
+        } else {
+            toast.error("Please Login Buyer Acc First")
+            navigation("/sign-in")
         }
     }
 

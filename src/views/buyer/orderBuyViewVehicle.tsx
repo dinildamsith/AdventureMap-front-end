@@ -59,24 +59,29 @@ export default function OrderBuyViewVehicle() {
     const orderConfirmHandel = async () => {
 
         if(lastLoginUser != null){
-            console.log(localStorage.getItem("loginUserEmail"))
-            const res = await postRequest({
-                url: BASE_URL + ORDER_BUY_URL,
-                data: {
-                    orderType: 'RENT_VEHICLE',
-                    orderPrice: String(totalAmount),
-                    orderStartDuration: startDate,
-                    orderEndDuration: endDate,
-                    buyerEmail: localStorage.getItem("loginUserEmail"),
-                    vehicle: orderVehicle
-    
+            if(lastLoginUser.userType === "buyer"){
+                console.log(localStorage.getItem("loginUserEmail"))
+                const res = await postRequest({
+                    url: BASE_URL + ORDER_BUY_URL,
+                    data: {
+                        orderType: 'RENT_VEHICLE',
+                        orderPrice: String(totalAmount),
+                        orderStartDuration: startDate,
+                        orderEndDuration: endDate,
+                        buyerEmail: localStorage.getItem("loginUserEmail"),
+                        vehicle: orderVehicle
+        
+                    }
+                })
+                if (res.status === 'SUCCESS') {
+                    navigation("/buyer-profile")
                 }
-            })
-            if (res.status === 'SUCCESS') {
-                navigation("/buyer-profile")
+            } else {
+                toast.error("Please Login Buyer Acc First")
+                navigation("/sign-in")
             }
         } else {
-            toast.error("Please Login First")
+            toast.error("Please Login Buyer Acc First")
             navigation("/sign-in")
         }
 
