@@ -151,7 +151,7 @@ function NavBar() {
               <li>
                 <a
                   href="locations"
-                  className="block py-2 px-3 text-black rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 hover:bg-blue-500 hover:text-white"
+                  className="block py-2 px-3 text-black rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500  hover:bg-blue-500 hover:text-white"
                   aria-current="page"
                 >
                   Locations
