@@ -5,6 +5,7 @@ import {getRequest, postRequest} from "../../services/httpServices.js";
 // @ts-ignore
 import {BASE_URL, GET_SELECTED_VEHICLE, ORDER_BUY_URL} from "../../config&Varibles/endPointUrls.js";
 import {useNavigate, useParams} from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function OrderBuyViewVehicle() {
 
@@ -14,6 +15,13 @@ export default function OrderBuyViewVehicle() {
     const [startDate, setStartDate] = useState<string | null>(null);
     const [endDate, setEndDate] = useState<string | null>(null);
     const [totalAmount, setTotalAmount] = useState<any>(0)
+    const [lastLoginUser, setLastLoginUser] = useState<any>();
+
+    useEffect(() => {
+      const user = JSON.parse(localStorage.getItem("user") as string);
+      console.log(user);
+      setLastLoginUser(user);
+    }, []);
 
     // Function to calculate the number of days between two dates
     const calculateDays = (start: string | null, end: string | null) => {
@@ -49,23 +57,32 @@ export default function OrderBuyViewVehicle() {
 
 
     const orderConfirmHandel = async () => {
-        console.log(localStorage.getItem("loginUserEmail"))
-        const res = await postRequest({
-            url: BASE_URL + ORDER_BUY_URL,
-            data: {
-                orderType: 'RENT_VEHICLE',
-                orderPrice: String(totalAmount),
-                orderStartDuration: startDate,
-                orderEndDuration: endDate,
-                buyerEmail: localStorage.getItem("loginUserEmail"),
-                vehicle: orderVehicle
 
+        if(lastLoginUser != null){
+            console.log(localStorage.getItem("loginUserEmail"))
+            const res = await postRequest({
+                url: BASE_URL + ORDER_BUY_URL,
+                data: {
+                    orderType: 'RENT_VEHICLE',
+                    orderPrice: String(totalAmount),
+                    orderStartDuration: startDate,
+                    orderEndDuration: endDate,
+                    buyerEmail: localStorage.getItem("loginUserEmail"),
+                    vehicle: orderVehicle
+    
+                }
+            })
+            if (res.status === 'SUCCESS') {
+                navigation("/buyer-profile")
             }
-        })
-
-        if (res.status === 'SUCCESS') {
-            navigation("/buyer-profile")
+        } else {
+            toast.error("Please Login First")
+            navigation("/sign-in")
         }
+
+
+
+
     }
 
 
