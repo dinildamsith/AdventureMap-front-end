@@ -58,23 +58,28 @@ export default function OrderBuyViewGuide() {
 
     const orderConfirmHandel = async () => {
         if(lastLoginUser !== null){
-            if(lastLoginUser.userType === 'buyer'){
-                const res = await postRequest({
-                    url: BASE_URL + ORDER_BUY_URL,
-                    data: {
-                        orderType: 'RENT_GUIDE',
-                        orderPrice: String(totalAmount),
-                        orderStartDuration: startDate,
-                        orderEndDuration: endDate,
-                        buyerEmail: localStorage.getItem("loginUserEmail"),
-                        guide: orderGuide
-        
+            if(lastLoginUser.accType === 'buyer'){
+                if(startDate !== null && endDate !== null){
+                    const res = await postRequest({
+                        url: BASE_URL + ORDER_BUY_URL,
+                        data: {
+                            orderType: 'RENT_GUIDE',
+                            orderPrice: String(totalAmount),
+                            orderStartDuration: startDate,
+                            orderEndDuration: endDate,
+                            buyerEmail: localStorage.getItem("loginUserEmail"),
+                            guide: orderGuide
+            
+                        }
+                    })
+            
+                    if (res.status === 'SUCCESS') {
+                        navigation("/buyer-profile")
                     }
-                })
-        
-                if (res.status === 'SUCCESS') {
-                    navigation("/buyer-profile")
+                } else {
+                    toast.error("Please Select Start and End Date")
                 }
+
             }else{
                 toast.error("Please Login Buyer Acc First")
                 navigation("/sign-in")
