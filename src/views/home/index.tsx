@@ -42,21 +42,21 @@ export default function Home() {
                     />
 
                     {/* Overlay Text */}
-                    <div className="absolute inset-0 flex flex-col justify-center items-start p-8">
-                        <h1 className="text-black text-[100px] font-bona leading-tight">
+                    <div className="absolute inset-0 flex flex-col justify-center items-start p-8 max-[1000px]:-top-[200px] ">
+                        <h1 className="text-black text-[100px] font-bona leading-tight max-[1338px]:text-[70px] max-[1000px]:text-[50px] max-[380px]:text-[30px]">
                             NEVER STOP <br/>
                             EXPLORING THE <br/>
                             WORLD.
                         </h1>
-                        <p className="text-black w-[50%] mt-4 ml-2">
+                        <p className="text-black  w-[50%] mt-4 ml-2 max-[790px]:w-[100%]">
                             Discover breathtaking destinations, immerse yourself in new cultures,
                             and create unforgettable memories. Your next adventure awaits!
                         </p>
                     </div>
 
                     {/* Image Slider */}
-                    <div className="absolute right-44 top-44">
-                        <div className="relative w-[430px] h-[550px] mb-4 transition-all duration-700">
+                    <div className="absolute right-44 top-44 max-[1520px]:right-11   max-[790px]:top-[462px] max-[790px]:right-5 max-[534px]:top-[542px] max-[435px]:top-[542px]">
+                        <div className="relative w-[430px] h-[550px] mb-4 transition-all duration-700 max-[1338px]:w-[350px] max-[1338px]:h-[450px] max-[1000px]:w-[300px] max-[1000px]:h-[400px]     max-[790px]:w-[500px] max-[790px]:h-[350px]  max-[534px]:w-[400px] max-[534px]:h-[250px] max-[435px]:w-[300px] max-[435px]:h-[250px]">
                             <img
                                 src={images[activeIndex]}
                                 alt={`Thumbnail ${activeIndex + 1}`}
