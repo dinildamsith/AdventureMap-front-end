@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 
 export default function OrderBuyViewVehicle() {
 
-
+    const navigate = useNavigate();
     const navigation = useNavigate()
     const {orderVehicle} = useParams()
     const [startDate, setStartDate] = useState<string | null>(null);
@@ -63,6 +63,7 @@ export default function OrderBuyViewVehicle() {
         getVehicle()
     }, []);
 
+    const [showConfirmation, setShowConfirmation] = useState(false);
 
     const orderConfirmHandel = async () => {
 
@@ -94,12 +95,10 @@ export default function OrderBuyViewVehicle() {
                 }
 
             } else {
-                toast.error("Please Login Buyer Acc First")
-                navigation("/sign-in")
+                setShowConfirmation(true)
             }
         } else {
-            toast.error("Please Login Buyer Acc First")
-            navigation("/sign-in")
+            setShowConfirmation(true)
         }
 
 
@@ -108,8 +107,28 @@ export default function OrderBuyViewVehicle() {
     }
 
 
+    const handleConfirm = () => {
+        setShowConfirmation(false);
+        navigate("/sign-in");
+    };
+
     return (
         <SubLayout>
+
+            {showConfirmation && (
+                <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center">
+                    <div className="bg-white p-5 rounded shadow-lg text-center">
+                        <p className="mb-4">You need to log in first. Click OK to proceed.</p>
+                        <button
+                            onClick={handleConfirm}
+                            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                        >
+                            OK
+                        </button>
+                    </div>
+                </div>
+            )}
+
             {loading && (
                 <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center z-[9999] bg-opacity-50 bg-gray-200">
                     <div className="w-10 h-10 border-4 border-gray-200 border-t-[#3bd7f7] rounded-full animate-spin"></div>

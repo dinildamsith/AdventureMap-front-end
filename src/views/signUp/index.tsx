@@ -18,13 +18,14 @@ const SignUpPage = () => {
   const [password, setPassword] = useState<any>(null);
   const [sellerType, setSellerType] = useState<any>('guide');
   const [currency, setCurrency] = useState<any>('usd');
-
+  const [loading, setLoading] = useState<any>(false);
 
 
   const handelSignUp = async () => {
 
     if (accountType == 'buyer') {
       if (email != null && username != null && password != null){
+        setLoading(true)
         const res = await postRequest({
           url: BASE_URL + BUYER_SIGNUP_URL,
           data: {
@@ -38,6 +39,9 @@ const SignUpPage = () => {
 
         if (res.status === 'SUCCESS') {
           navigation('/sign-in')
+          setLoading(false)
+        } else {
+          setLoading(false)
         }
 
       } else {
@@ -47,6 +51,7 @@ const SignUpPage = () => {
 
     if (accountType == 'seller' && sellerType == 'guide'){
       if (email != null && username != null && password != null){
+        setLoading(true)
         const res = await postRequest({
           url: BASE_URL + GUIDE_SIGNUP_URL,
           data: {
@@ -59,6 +64,9 @@ const SignUpPage = () => {
 
         if (res.status === 'SUCCESS') {
           navigation('/sign-in')
+          setLoading(false)
+        } else {
+          setLoading(false)
         }
 
       } else {
@@ -69,6 +77,7 @@ const SignUpPage = () => {
 
     if (accountType == 'seller' && sellerType == 'rent_vehicle'){
       if (email != null && username != null && password != null){
+        setLoading(true)
         const res = await postRequest({
           url: BASE_URL + VEHICLE_SIGNUP_URL,
           data: {
@@ -81,6 +90,9 @@ const SignUpPage = () => {
 
         if (res.status === 'SUCCESS') {
           navigation('/sign-in')
+          setLoading(false)
+        } else{
+          setLoading(false)
         }
 
       } else {
@@ -93,6 +105,11 @@ const SignUpPage = () => {
 
       <div className="min-h-screen flex items-center justify-center bg-cover bg-center relative"
            style={{ backgroundImage: `url(${SingUpBackgroundImage})` }}>
+        {loading && (
+            <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center z-[9999] bg-opacity-50 bg-gray-200">
+              <div className="w-10 h-10 border-4 border-gray-200 border-t-[#3bd7f7] rounded-full animate-spin"></div>
+            </div>
+        )}
         <Toaster
             position="top-right"
             reverseOrder={false}

@@ -51,10 +51,20 @@ export default function VehicleProfileManage() {
 
     // Handle update button click
     const handleUpdate = async () => {
-        await putRequest({
+        setLoading(true)
+        const res = await putRequest({
             url: BASE_URL + VEHICLE_DETAILS_UPDATE_URL + localStorage.getItem("loginUserEmail"),
             data: updateVehicleData
         })
+
+        if(res.status === 'SUCCESS'){
+            getVehicle()
+            setLoading(false)
+            closeEditModal();
+        } else {
+            setLoading(false)
+            closeEditModal();
+        }
     };
 
 
@@ -230,7 +240,7 @@ export default function VehicleProfileManage() {
 
         if(res.status === 'SUCCESS'){
             getVehicle()
-            isEditModalOpenIII(false)
+            setIsEditModalOpenIII(false)
             setLoading(false)
         } else {
             setLoading(false)
@@ -248,6 +258,7 @@ export default function VehicleProfileManage() {
         })
 
         if(res.status === 'SUCCESS'){
+            getVehicle()
             setLoading(false)
             closeEditModalII();
         } else {
@@ -610,7 +621,7 @@ export default function VehicleProfileManage() {
                                                                 }}
                                                             >
 
-                                                                <label className="block">
+                                                                {/* <label className="block">
                                                                     <span className="text-gray-700 font-medium">Filter by Status</span>
                                                                     <select
                                                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -625,7 +636,7 @@ export default function VehicleProfileManage() {
                                                                         </option>
                                                                         <option value="ONGOING">Ongoing Orders</option>
                                                                     </select>
-                                                                </label>
+                                                                </label> */}
 
                                                                 {
                                                                     pendingOrder && pendingOrder.length > 0 ? (
