@@ -17,6 +17,7 @@ import {
   SELECTED_GUIDE_GET_URL,
 } from "../../../config&Varibles/endPointUrls.js";
 import OrderNotify from "../../../component/orderNotify";
+import SubLayout from "../../../layout/subLayout.tsx";
 
 export default function GuideProfileManage() {
   // State to track the selected tab
@@ -210,7 +211,7 @@ export default function GuideProfileManage() {
           <div className="w-10 h-10 border-4 border-gray-200 border-t-[#3bd7f7] rounded-full animate-spin"></div>
         </div>
       )}
-      <Layout>
+      <SubLayout>
         <div className={"mt-28"}>
           <div>
             <div className="container mx-auto py-8">
@@ -603,7 +604,7 @@ export default function GuideProfileManage() {
             </div>
           )}
         </div>
-      </Layout>
+      </SubLayout>
     </>
   );
 }
