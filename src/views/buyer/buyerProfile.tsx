@@ -170,18 +170,6 @@ export default function BuyerProfile() {
                                                                 <option value="ONGOING">Ongoing Orders</option>
                                                             </select>
                                                         </label>
-                                                        {/* Filter by Buy Time */}
-                                                        <label className="block">
-                                                            <span className="text-gray-700 font-medium">Buy Time</span>
-                                                            <select
-                                                                className="block bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                                onChange={(e) => console.log("Selected Buy Time:", e.target.value)}
-                                                            >
-                                                                <option value="last-24-hours">Last 24 Hours</option>
-                                                                <option value="last-7-days">Last 7 Days</option>
-                                                                <option value="last-30-days">Last 30 Days</option>
-                                                            </select>
-                                                        </label>
                                                     </div>
 
                                                     {/* Filtered Orders */}
@@ -196,6 +184,12 @@ export default function BuyerProfile() {
 
                                                     </div>
                                                 </div>
+                                            </>
+                                        )}
+
+                                        {activeTab === "dashBord" && (
+                                            <>
+
                                             </>
                                         )}
 

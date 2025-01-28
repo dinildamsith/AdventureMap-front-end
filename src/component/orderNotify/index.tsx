@@ -6,29 +6,37 @@ import {BASE_URL, GUIDE_ORDER_ACCEPT_URL, VEHICLE_ORDER_ACCEPT_URL} from "../../
 
 export default function OrderNotify(params: any) {
 
-
+    const [loading, setLoading] = useState<any>(false);
     const [isVisible, setIsVisible] = useState<boolean>(true); // Track the visibility of the notification
 
     // Handle accepting the order
     const handleAccept = async (orderId:any, orderType:any) => {
 
         if (orderType === 'RENT_VEHICLE') {
+            setLoading(true);
             const res = await putRequest({
                 url : BASE_URL + VEHICLE_ORDER_ACCEPT_URL + orderId + "/" + localStorage.getItem("loginUserEmail")
             })
             if (res.status === 'SUCCESS') {
                 setIsVisible(false); // Hide the notification after accepting the order
+                setLoading(false);
+            } else {
+                setLoading(false);
             }
         }
 
 
 
         if (orderType === 'RENT_GUIDE') {
+            setLoading(true);
             const res = await putRequest({
                 url : BASE_URL + GUIDE_ORDER_ACCEPT_URL + orderId + "/" + localStorage.getItem("loginUserEmail")
             })
             if (res.status === 'SUCCESS') {
+                setLoading(false);
                 setIsVisible(false); // Hide the notification after accepting the order
+            } else {
+                setLoading(false);
             }
         }
 
@@ -51,6 +59,12 @@ export default function OrderNotify(params: any) {
             className="w-full max-w-xs p-4 text-gray-900 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-300 mt-3"
             role="alert"
         >
+            {loading && (
+                <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center z-[9999] bg-opacity-50 bg-gray-200">
+                    <div className="w-10 h-10 border-4 border-gray-200 border-t-[#3bd7f7] rounded-full animate-spin"></div>
+                </div>
+            )}
+
             <div className="flex items-center mb-3">
                 <span className="mb-1 text-sm font-semibold text-gray-900 dark:text-white">
                     New Order
