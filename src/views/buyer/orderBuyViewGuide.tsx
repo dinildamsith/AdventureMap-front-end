@@ -18,6 +18,8 @@ export default function OrderBuyViewGuide() {
     const [totalAmount, setTotalAmount] = useState<any>(0)
     const [lastLoginUser, setLastLoginUser] = useState<any>();
     const [loading, setLoading] = useState(true);
+    const [notifyMassage, setNotifyMassage] = useState<any>(null);
+    const [notifyType , setNonitfyType] = useState<any>(null)
 
     useEffect(() => {
       const user = JSON.parse(localStorage.getItem("user") as string);
@@ -69,7 +71,7 @@ export default function OrderBuyViewGuide() {
 
     const orderConfirmHandel = async () => {
         if(lastLoginUser !== null){
-            if(lastLoginUser.accType === 'buyer'){
+            if(lastLoginUser.accType === 'BUYER'){
                 if(startDate !== null && endDate !== null){
                     setLoading(true)
                     const res = await postRequest({
@@ -86,10 +88,15 @@ export default function OrderBuyViewGuide() {
                     })
             
                     if (res.status === 'SUCCESS') {
-                        navigation("/buyer-profile")
+                        setShowConfirmation(true)
+                        setNonitfyType(2)
+                        setNotifyMassage("Your order has been successfully placed. Please wait while your order is being picked up by the Guide. Check your pending orders under the Order tab.")
                         setLoading(false)
                     } else {
+                        setShowConfirmation(true)
                         setLoading(false)
+                        setNonitfyType(2)
+                        setNotifyMassage("Your order has been Failed. Please Try Again")
                     }
                 } else {
                     toast.error("Please Select Start and End Date")
@@ -97,16 +104,27 @@ export default function OrderBuyViewGuide() {
 
             }else{
                setShowConfirmation(true)
+                setNotifyMassage("You need to log in as a buyer to Account.First Login Buyer Account")
+                setNonitfyType(1)
             }
         } else {
             setShowConfirmation(true)
+            setNotifyMassage("You need to log in as a buyer to Account.First Login Buyer Account")
+            setNonitfyType(1)
         }
     }
 
 
     const handleConfirm = () => {
         setShowConfirmation(false);
-        navigate("/sign-in");
+
+        if (notifyType === 1) {
+            navigate("/sign-in");
+        }
+
+        if (notifyType === 2) {
+            navigation("/buyer-profile")
+        }
     };
 
     return (
@@ -115,7 +133,7 @@ export default function OrderBuyViewGuide() {
             {showConfirmation && (
                 <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center">
                     <div className="bg-white p-5 rounded shadow-lg text-center">
-                        <p className="mb-4">You need to log in first. Click OK to proceed.</p>
+                        <p className="mb-4">{notifyMassage}</p>
                         <button
                             onClick={handleConfirm}
                             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
