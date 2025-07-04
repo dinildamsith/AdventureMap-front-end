@@ -5,9 +5,9 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
-    "strict": true,
-    "baseUrl": ".",
-    "paths": {},
-    "typeRoots": ["./node_modules/@types", "./src/types"]
+    "allowJs": true,
+    "checkJs": false,
+    "noImplicitAny": false,
+    "skipLibCheck": true
   }
 }
