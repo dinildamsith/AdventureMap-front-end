@@ -3,7 +3,7 @@ import {PencilIcon, TrashIcon} from "@heroicons/react/16/solid";
 // @ts-ignore
 import {deleteRequest, getRequest, postRequest, putRequest} from "../../../services/httpServices.js";
 // @ts-ignore
-import {BASE_URL, DELETE_DRIVER_URL, DRIVER_DETAILS_UPDATE_URL, GET_SELECTED_VEHICLE, IMAGE_UPLOAD_URL, NEW_DRIVER_SAVE_URL, VEHICLE_DETAILS_UPDATE_URL, VEHICLE_RENT_PENDING_ORDERS_GET_URL} from "../../../config&Varibles/endPointUrls.js";
+import {BASE_URL, DELETE_DRIVER_URL, DRIVER_DETAILS_UPDATE_URL, GET_SELECTED_VEHICLE, IMAGE_UPLOAD_URL, NEW_DRIVER_SAVE_URL, VEHICLE_DETAILS_UPDATE_URL, VEHICLE_RENT_PENDING_ORDERS_GET_URL} from "../../../configAndVaribles/endPointUrls.js";
 import USER from '../../../assets/user.jpg'
 import SubLayout from "../../../layout/subLayout.tsx";
 import OrderNotify from "../../../component/orderNotify";

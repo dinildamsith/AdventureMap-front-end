@@ -5,7 +5,7 @@ import NoData  from '../../../assets/noData.png'
 // @ts-ignore
 import {getRequest} from "../../../services/httpServices.js";
 // @ts-ignore
-import {ALL_AVAILABLE_VEHICLES_GET_URL, BASE_URL} from "../../../config&Varibles/endPointUrls.js";
+import {ALL_AVAILABLE_VEHICLES_GET_URL, BASE_URL} from "../../../configAndVaribles/endPointUrls.js";
 
 export default function Vehicles(){
 

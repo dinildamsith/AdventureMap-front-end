@@ -6,7 +6,7 @@ import { getRequest } from "../../../services/httpServices.js";
 import {
   BASE_URL,
   SELECTED_GUIDE_GET_URL,
-} from "../../../config&Varibles/endPointUrls.js";
+} from "../../../configAndVaribles/endPointUrls.js";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function GuideProfile() {

@@ -4,7 +4,7 @@ import {useNavigate, useParams} from "react-router-dom";
 // @ts-ignore
 import {getRequest} from "../../../services/httpServices.js";
 // @ts-ignore
-import {BASE_URL, GET_SELECTED_VEHICLE} from "../../../config&Varibles/endPointUrls.js";
+import {BASE_URL, GET_SELECTED_VEHICLE} from "../../../configAndVaribles/endPointUrls.js";
 
 
 export default function VehicleProfile() {

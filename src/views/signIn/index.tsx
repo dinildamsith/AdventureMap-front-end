@@ -8,7 +8,7 @@ import {
   BUYER_SIGN_IN_URL,
   GUIDE_SIGN_IN_URL,
   VEHICLE_SIGN_IN_URL,
-} from "../../config&Varibles/endPointUrls.js";
+} from "../../configAndVaribles/endPointUrls.js";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom"; // Import the background image
 

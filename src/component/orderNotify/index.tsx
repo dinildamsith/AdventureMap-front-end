@@ -2,7 +2,7 @@ import  { useState } from 'react';
 // @ts-ignore
 import {putRequest} from "../../services/httpServices.js";
 // @ts-ignore
-import {BASE_URL, GUIDE_ORDER_ACCEPT_URL, VEHICLE_ORDER_ACCEPT_URL} from "../../config&Varibles/endPointUrls.js";
+import {BASE_URL, GUIDE_ORDER_ACCEPT_URL, VEHICLE_ORDER_ACCEPT_URL} from "../../configAndVaribles/endPointUrls.js";
 
 export default function OrderNotify(params: any) {
 

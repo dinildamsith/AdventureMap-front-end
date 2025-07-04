@@ -1,7 +1,7 @@
 // @ts-ignore
 import {getRequest, postRequest} from "../../services/httpServices.js";
 // @ts-ignore
-import {BASE_URL, SELECTED_GUIDE_GET_URL, ORDER_BUY_URL} from "../../config&Varibles/endPointUrls.js";
+import {BASE_URL, SELECTED_GUIDE_GET_URL, ORDER_BUY_URL} from "../../configAndVaribles/endPointUrls.js";
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import SubLayout from "../../layout/subLayout.tsx";

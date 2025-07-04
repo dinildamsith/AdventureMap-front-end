@@ -5,7 +5,7 @@ import NoData  from '../../../assets/noData.png'
 // @ts-ignore
 import {getRequest} from "../../../services/httpServices.js";
 // @ts-ignore
-import {BASE_URL, GET_ALL_AVAILABLE_GUIDES} from "../../../config&Varibles/endPointUrls.js";
+import {BASE_URL, GET_ALL_AVAILABLE_GUIDES} from "../../../configAndVaribles/endPointUrls.js";
 
 export default function Guides(){
 

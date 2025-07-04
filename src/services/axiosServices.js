@@ -1,4 +1,4 @@
-import {BASE_URL} from "../config&Varibles/endPointUrls.js";
+import {BASE_URL} from "../configAndVaribles/endPointUrls.js";
 import axios from "axios";
 
 export const AxiosInstance = axios.create({

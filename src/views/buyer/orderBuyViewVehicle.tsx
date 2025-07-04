@@ -3,7 +3,7 @@ import SubLayout from "../../layout/subLayout.tsx";
 // @ts-ignore
 import {getRequest, postRequest} from "../../services/httpServices.js";
 // @ts-ignore
-import {BASE_URL, GET_SELECTED_VEHICLE, ORDER_BUY_URL} from "../../config&Varibles/endPointUrls.js";
+import {BASE_URL, GET_SELECTED_VEHICLE, ORDER_BUY_URL} from "../../configAndVaribles/endPointUrls.js";
 import {useNavigate, useParams} from "react-router-dom";
 import toast from "react-hot-toast";
 

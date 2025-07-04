@@ -15,7 +15,7 @@ import {
   GUIDE_UPDATE_URL,
   IMAGE_UPLOAD_URL,
   SELECTED_GUIDE_GET_URL,
-} from "../../../config&Varibles/endPointUrls.js";
+} from "../../../configAndVaribles/endPointUrls.js";
 import OrderNotify from "../../../component/orderNotify";
 import SubLayout from "../../../layout/subLayout.tsx";
 

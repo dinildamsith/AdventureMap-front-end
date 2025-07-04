@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 // @ts-ignore
-import {BASE_URL, IMAGE_UPLOAD_URL, VEHICLE_DETAILS_SAVE_URL} from "../../../config&Varibles/endPointUrls.js";
+import {BASE_URL, IMAGE_UPLOAD_URL, VEHICLE_DETAILS_SAVE_URL} from "../../../configAndVaribles/endPointUrls.js";
 // @ts-ignore
 import {postRequest} from "../../../services/httpServices.js";
 import SubLayout from "../../../layout/subLayout.tsx";

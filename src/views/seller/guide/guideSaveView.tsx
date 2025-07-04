@@ -7,7 +7,7 @@ import {
   BASE_URL,
   GUIDE_SAVE_URL,
   IMAGE_UPLOAD_URL,
-} from "../../../config&Varibles/endPointUrls.js";
+} from "../../../configAndVaribles/endPointUrls.js";
 import { useNavigate } from "react-router-dom";
 
 export default function GuideSaveView() {

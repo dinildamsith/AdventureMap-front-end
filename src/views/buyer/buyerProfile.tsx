@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 // @ts-ignore
 import {getRequest} from "../../services/httpServices.js";
 // @ts-ignore
-import {BASE_URL, BUYER_SELECTED_ORDERS_GET, SIGN_IN_BUYER_DETAILS_GET_URL} from "../../config&Varibles/endPointUrls.js";
+import {BASE_URL, BUYER_SELECTED_ORDERS_GET, SIGN_IN_BUYER_DETAILS_GET_URL} from "../../configAndVaribles/endPointUrls.js";
 import NotifyII from "../../component/orderNotify/notifyII.tsx";
 import { useNavigate } from "react-router-dom";
 
